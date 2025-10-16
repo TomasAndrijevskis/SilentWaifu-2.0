@@ -5,7 +5,10 @@
 #include "GameFramework/GameModeBase.h"
 #include "SilentWaifuGameMode.generated.h"
 
+class USilentWaifuGameInstance;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMoneyIncreasedSignature);
+
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 {
@@ -27,6 +30,9 @@ protected:
 	
 private:
 
+	UPROPERTY()
+	USilentWaifuGameInstance* GameInstance;
+	
 	UPROPERTY()
 	int CurrentMoney;
 };

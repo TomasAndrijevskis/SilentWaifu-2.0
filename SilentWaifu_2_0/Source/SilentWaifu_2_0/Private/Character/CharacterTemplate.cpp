@@ -9,11 +9,13 @@
 void ACharacterTemplate::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("CharacterTemplate::BeginPlay"));
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode)
 	{
 		return;
 	}
+	
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::IncreaseMoney, 1.f, true);
 }
@@ -22,5 +24,4 @@ void ACharacterTemplate::BeginPlay()
 void ACharacterTemplate::IncreaseMoney() const
 {
 	GameMode->IncreaseMoney(MoneyPerSecond);
-	
 }
