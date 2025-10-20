@@ -18,12 +18,11 @@ class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 public:
 
 	UFUNCTION()
-	void ShowMoney();
-
-	UFUNCTION()
 	void IncreaseMoney(const int Money);
 
 	void DecreaseMoney(const int Money);
+
+	bool HasEnoughMoney(const int Money) const;
 	
 	UFUNCTION()
 	void SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass);
@@ -36,6 +35,9 @@ protected:
 	
 private:
 
+	UFUNCTION()
+	void ShowMoney();
+	
 	//UPROPERTY(EditAnywhere)
 	//TSubclassOf<ACharacterTemplate> CharacterClass;
 	

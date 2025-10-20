@@ -1,5 +1,6 @@
 
 #include "SaveGame/SilentWaifuGameInstance.h"
+#include "Character/CharacterTemplate.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuSaveGame.h"
@@ -20,16 +21,31 @@ void USilentWaifuGameInstance::HandleSaveGame()
 	if (!SaveGameInstance)
 	{
 		SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
-		/*FSavedCharactersData Data;
+		FSavedCharactersData Data;
 		Data.CharacterClass = DefaultCharacter;
-		SaveCharacter(1, Data);*/
+		SaveCharacter(1, Data);
 	}
+}
+
+
+bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const
+{
+	for (auto const c : SaveGameInstance->GetCharacters())
+	{
+		if (c.Value.CharacterClass == Character)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
+			return true;
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Character locked"));
+	return false;
 }
 
 
 void USilentWaifuGameInstance::LoadCharacters()
 {
-	for (auto const Character : SaveGameInstance->GetCharactersData())
+	for (auto const Character : SaveGameInstance->GetCharacters())
 	{
 		GameMode->SpawnCharacters(Character.Value.CharacterClass);
 		UE_LOG(LogTemp, Warning, TEXT("Loading character %d"), Character.Key);
@@ -67,3 +83,4 @@ void USilentWaifuGameInstance::LoadMoney() const
 	}
 	GameMode->IncreaseMoney(SaveGameInstance->GetMoney());
 }
+

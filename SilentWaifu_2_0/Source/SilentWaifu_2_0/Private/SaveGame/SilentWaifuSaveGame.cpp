@@ -20,7 +20,7 @@ void USilentWaifuSaveGame::SaveCharacter(int const Key, const FSavedCharactersDa
 }
 
 
-TMap<int, FSavedCharactersData> USilentWaifuSaveGame::GetCharactersData() const
+TMap<int, FSavedCharactersData> USilentWaifuSaveGame::GetCharacters() const
 {
 	return SavedCharacters;
 }

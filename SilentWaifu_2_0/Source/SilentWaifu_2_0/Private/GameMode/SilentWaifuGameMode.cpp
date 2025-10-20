@@ -46,3 +46,13 @@ void ASilentWaifuGameMode::DecreaseMoney(const int Money)
 	CurrentMoney -= Money;
 	OnMoneyChangedDelegate.Broadcast();
 }
+
+
+bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
+{
+	if (CurrentMoney >= Money)
+	{
+		return true;
+	}
+	return false;
+}

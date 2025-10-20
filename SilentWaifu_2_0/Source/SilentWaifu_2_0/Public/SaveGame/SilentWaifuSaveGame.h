@@ -24,7 +24,7 @@ public:
 	void SaveCharacter(int const Key, const FSavedCharactersData& Data);
 	
 	UFUNCTION()
-	TMap<int, FSavedCharactersData> GetCharactersData() const;
+	TMap<int, FSavedCharactersData> GetCharacters() const;
 	
 private:
 	

@@ -6,9 +6,12 @@
 #include "UnlockCharacterButton.generated.h"
 
 
+class ASilentWaifuGameMode;
 class USilentWaifuGameInstance;
 class ACharacterTemplate;
 class UButton;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUnlockedSignature);
 
 UCLASS()
 class SILENTWAIFU_2_0_API UUnlockCharacterButton : public UUserWidget
@@ -17,9 +20,10 @@ class SILENTWAIFU_2_0_API UUnlockCharacterButton : public UUserWidget
 
 public:
 
-	void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 
-
+	FOnCharacterUnlockedSignature OnCharacterUnlockedDelegate;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -29,13 +33,24 @@ private:
 	void UnlockCharacter();
 
 	void SetGameInstance();
+
+	void SetGameMode();
+
+	UFUNCTION()
+	void UpdateCharacterUnlockStatus();
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ACharacterTemplate> CharacterClass;
 
 	UPROPERTY(EditAnywhere)
 	int CharacterId;
+
+	UPROPERTY(EditAnywhere)
+	int Cost;
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
+
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
 };
