@@ -5,6 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "SilentWaifuGameMode.generated.h"
 
+class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMoneyIncreasedSignature);
@@ -22,6 +23,9 @@ public:
 	UFUNCTION()
 	void IncreaseMoney(const int Money);
 
+	UFUNCTION()
+	void SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass);
+	
 	FOnMoneyIncreasedSignature OnMoneyIncreasedDelegate;
 
 protected:
@@ -30,6 +34,9 @@ protected:
 	
 private:
 
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<ACharacterTemplate> CharacterClass;
+	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
 	

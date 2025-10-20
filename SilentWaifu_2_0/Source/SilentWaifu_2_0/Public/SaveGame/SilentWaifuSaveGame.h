@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SavedCharactersData.h"
 #include "GameFramework/SaveGame.h"
 #include "SilentWaifuSaveGame.generated.h"
 
@@ -12,14 +13,24 @@ class SILENTWAIFU_2_0_API USilentWaifuSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-
+	
 	UFUNCTION()
 	void SetMoney(int const NewMoney);
 
 	UFUNCTION()
 	int GetMoney() const;
+
+	UFUNCTION()
+	void SaveCharacter(int const Key, const FSavedCharactersData& Data);
+	
+	UFUNCTION()
+	TMap<int, FSavedCharactersData> GetCharactersData() const;
 	
 private:
+	
 	UPROPERTY()
 	int CurrentMoney;
+
+	UPROPERTY()
+	TMap<int, FSavedCharactersData> SavedCharacters;
 };

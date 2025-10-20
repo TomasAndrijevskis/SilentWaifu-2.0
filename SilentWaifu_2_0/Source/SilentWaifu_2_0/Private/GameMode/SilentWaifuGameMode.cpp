@@ -1,5 +1,6 @@
 
 #include "GameMode/SilentWaifuGameMode.h"
+#include "Character/CharacterTemplate.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
 
@@ -7,14 +8,23 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	//UE_LOG(LogTemp, Error, TEXT("GameMode"));
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	if (!GameInstance)
 	{
 		return;
 	}
+	GameInstance->SetGameMode(this);
 	GameInstance->LoadMoney();
+	//SpawnCharacters();
 	OnMoneyIncreasedDelegate.AddDynamic(this, &ASilentWaifuGameMode::ShowMoney);
+}
+
+
+void ASilentWaifuGameMode::SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass)
+{
+	FActorSpawnParameters SpawnParameters;
+	GetWorld()->SpawnActor<ACharacterTemplate>(CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+	UE_LOG(LogTemp, Warning, TEXT("SpawnCharacters"));
 }
 
 
