@@ -11,7 +11,8 @@ class ACharacterTemplate;
 class USilentWaifuSaveGame;
 class ASilentWaifuGameMode;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameModeAssignedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameModeLoadedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
 UCLASS()
 class SILENTWAIFU_2_0_API USilentWaifuGameInstance : public UGameInstance
 {
@@ -27,7 +28,9 @@ public:
 	
 	void SetGameMode(AGameModeBase* NewGameMode);
 
-	FOnGameModeAssignedSignature OnGameModeAssignedDelegate;
+	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
+	
+	FOnCharacterAddedSignature OnCharacterAddedDelegate;
 	
 private:
 
@@ -36,7 +39,8 @@ private:
 	UFUNCTION()
 	void LoadCharacters();
 
-	void SaveCharacter(int const Key, const FSavedCharactersData& Data) const;
+	UFUNCTION()
+	void SaveCharacter(int const Key, const FSavedCharactersData& Data);
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;

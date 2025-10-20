@@ -15,8 +15,7 @@ void ASilentWaifuGameMode::BeginPlay()
 	}
 	GameInstance->SetGameMode(this);
 	GameInstance->LoadMoney();
-	//SpawnCharacters();
-	OnMoneyIncreasedDelegate.AddDynamic(this, &ASilentWaifuGameMode::ShowMoney);
+	OnMoneyChangedDelegate.AddDynamic(this, &ASilentWaifuGameMode::ShowMoney);
 }
 
 
@@ -38,5 +37,12 @@ void ASilentWaifuGameMode::ShowMoney()
 void ASilentWaifuGameMode::IncreaseMoney(const int Money)
 {
 	CurrentMoney += Money;
-	OnMoneyIncreasedDelegate.Broadcast();
+	OnMoneyChangedDelegate.Broadcast();
+}
+
+
+void ASilentWaifuGameMode::DecreaseMoney(const int Money)
+{
+	CurrentMoney -= Money;
+	OnMoneyChangedDelegate.Broadcast();
 }

@@ -17,7 +17,7 @@ void ACharacterTemplate::BeginPlay()
 	}
 	
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::IncreaseMoney, 1.f, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::IncreaseMoney, 2.f, true);
 }
 
 

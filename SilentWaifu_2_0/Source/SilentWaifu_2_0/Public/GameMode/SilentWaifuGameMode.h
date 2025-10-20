@@ -8,7 +8,7 @@
 class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMoneyIncreasedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMoneyChangedSignature);
 
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
@@ -23,10 +23,12 @@ public:
 	UFUNCTION()
 	void IncreaseMoney(const int Money);
 
+	void DecreaseMoney(const int Money);
+	
 	UFUNCTION()
 	void SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass);
 	
-	FOnMoneyIncreasedSignature OnMoneyIncreasedDelegate;
+	FOnMoneyChangedSignature OnMoneyChangedDelegate;
 
 protected:
 
