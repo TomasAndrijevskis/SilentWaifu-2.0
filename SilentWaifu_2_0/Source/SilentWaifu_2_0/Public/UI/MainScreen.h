@@ -2,13 +2,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WidgetReferenceDataAsset.h"
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UBackgroundBlur;
 class ASilentWaifuGameMode;
+class UButton;
 class UTextBlock;
 class UHorizontalBox;
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWindowStateChangedSignature, float, BlurStrngth);
 
 UCLASS()
 class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
@@ -21,7 +26,14 @@ public:
 
 	UFUNCTION()
 	void UpdateMoney(int const Money);
+
+	FOnWindowStateChangedSignature FOnWindowStateChangedDelegate;
 	
+protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UWidgetReferenceDataAsset* WidgetReferences;
+
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -29,7 +41,24 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_CurrentMoney;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Storage;
+
+	UPROPERTY(meta = (BindWidget))
+	UBackgroundBlur* BackgroundBlur;
+	
+	UFUNCTION()
+	void CreateStorage();
+
+	UFUNCTION()
+	void RemoveStorage();
+
+	UFUNCTION()
+	void HandleBlur(const float BlurStrength);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
+
 };
+

@@ -37,6 +37,8 @@ protected:
 private:
 
 	void CreateMainScreenWidget();
+
+	void SetInputSettings() const;
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;

@@ -17,6 +17,7 @@ void ASilentWaifuGameMode::BeginPlay()
 	}
 	GameInstance->SetGameMode(this);
 	CreateMainScreenWidget();
+	SetInputSettings();
 	GameInstance->LoadMoney();
 	OnMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMoney);
 }
@@ -32,6 +33,15 @@ void ASilentWaifuGameMode::CreateMainScreenWidget()
 			MainScreenWidgetRef->AddToViewport(0);
 		}
 	}
+}
+
+
+void ASilentWaifuGameMode::SetInputSettings() const
+{
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(),0);
+	PC->SetShowMouseCursor(true);
+	FInputModeUIOnly InputMode;
+	PC->SetInputMode(InputMode);
 }
 
 
