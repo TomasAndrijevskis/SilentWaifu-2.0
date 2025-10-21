@@ -6,6 +6,7 @@
 #include "UnlockCharacterButton.generated.h"
 
 
+class UTextBlock;
 class ASilentWaifuGameMode;
 class USilentWaifuGameInstance;
 class ACharacterTemplate;
@@ -28,6 +29,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_UnlockCharacter;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_CharacterId;
 	
 	UFUNCTION()
 	void UnlockCharacter();

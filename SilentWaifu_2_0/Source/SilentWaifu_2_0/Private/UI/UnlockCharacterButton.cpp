@@ -1,6 +1,10 @@
 
 #include "UI/UnlockCharacterButton.h"
+
+#include <string>
+
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SavedCharactersData.h"
@@ -14,6 +18,8 @@ void UUnlockCharacterButton::NativeConstruct()
 	SetGameMode();
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UUnlockCharacterButton::UpdateCharacterUnlockStatus);
 	UpdateCharacterUnlockStatus();
+	
+	Text_CharacterId->SetText(FText::FromString(FString::FromInt(CharacterId)));
 }
 
 
@@ -40,6 +46,7 @@ void UUnlockCharacterButton::UnlockCharacter()
 	{
 		FSavedCharactersData Data;
 		Data.CharacterClass = CharacterClass;
+		Data.bIsOnScreen = false;
 		GameInstance->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 		GameMode->DecreaseMoney(Cost);
 		OnCharacterUnlockedDelegate.Broadcast();

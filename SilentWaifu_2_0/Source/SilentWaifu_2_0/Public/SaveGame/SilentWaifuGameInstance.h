@@ -21,8 +21,9 @@ class SILENTWAIFU_2_0_API USilentWaifuGameInstance : public UGameInstance
 public:
 
 	virtual void Init() override;
-	
-	void SaveMoney(int const Money) const;
+
+	UFUNCTION()
+	void SaveMoney(int const Money);
 
 	void LoadMoney() const;
 	

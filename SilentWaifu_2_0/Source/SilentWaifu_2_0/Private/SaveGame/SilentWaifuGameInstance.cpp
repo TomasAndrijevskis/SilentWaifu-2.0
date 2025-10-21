@@ -23,6 +23,7 @@ void USilentWaifuGameInstance::HandleSaveGame()
 		SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
 		FSavedCharactersData Data;
 		Data.CharacterClass = DefaultCharacter;
+		Data.bIsOnScreen = true;
 		SaveCharacter(1, Data);
 	}
 }
@@ -47,8 +48,11 @@ void USilentWaifuGameInstance::LoadCharacters()
 {
 	for (auto const Character : SaveGameInstance->GetCharacters())
 	{
-		GameMode->SpawnCharacters(Character.Value.CharacterClass);
-		UE_LOG(LogTemp, Warning, TEXT("Loading character %d"), Character.Key);
+		if (Character.Value.bIsOnScreen == true)
+		{
+			GameMode->SpawnCharacters(Character.Value.CharacterClass);
+			UE_LOG(LogTemp, Warning, TEXT("Loading character %d"), Character.Key);
+		}
 	}
 }
 
@@ -56,7 +60,7 @@ void USilentWaifuGameInstance::LoadCharacters()
 void USilentWaifuGameInstance::SaveCharacter(int const Key, const FSavedCharactersData& Data)
 {
 	SaveGameInstance->SaveCharacter(Key, Data);
-	UE_LOG(LogTemp, Warning, TEXT("Saving character"));
+	//UE_LOG(LogTemp, Warning, TEXT("Saving character"));
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
@@ -68,7 +72,7 @@ void USilentWaifuGameInstance::SetGameMode(AGameModeBase* NewGameMode)
 }
 
 
-void USilentWaifuGameInstance::SaveMoney(int const Money) const
+void USilentWaifuGameInstance::SaveMoney(int const Money)
 {
 	SaveGameInstance->SetMoney(Money);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
@@ -82,5 +86,6 @@ void USilentWaifuGameInstance::LoadMoney() const
 		return;
 	}
 	GameMode->IncreaseMoney(SaveGameInstance->GetMoney());
+	//UE_LOG(LogTemp, Warning, TEXT("Loading money"));
 }
 

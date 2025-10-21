@@ -1,8 +1,10 @@
 
 #include "GameMode/SilentWaifuGameMode.h"
+#include "Blueprint/UserWidget.h"
 #include "Character/CharacterTemplate.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
+#include "UI/MainScreen.h"
 
 
 void ASilentWaifuGameMode::BeginPlay()
@@ -14,8 +16,22 @@ void ASilentWaifuGameMode::BeginPlay()
 		return;
 	}
 	GameInstance->SetGameMode(this);
+	CreateMainScreenWidget();
 	GameInstance->LoadMoney();
-	OnMoneyChangedDelegate.AddDynamic(this, &ASilentWaifuGameMode::ShowMoney);
+	OnMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMoney);
+}
+
+
+void ASilentWaifuGameMode::CreateMainScreenWidget()
+{
+	if (MainScreenWidgetClass)
+	{
+		MainScreenWidgetRef = Cast<UMainScreen>(CreateWidget(GetWorld(), MainScreenWidgetClass));
+		if (MainScreenWidgetRef)
+		{
+			MainScreenWidgetRef->AddToViewport(0);
+		}
+	}
 }
 
 
@@ -27,24 +43,17 @@ void ASilentWaifuGameMode::SpawnCharacters(const TSubclassOf<ACharacterTemplate>
 }
 
 
-void ASilentWaifuGameMode::ShowMoney()
-{
-	UE_LOG(LogTemp, Warning, TEXT("ShowMoney: %i"), CurrentMoney);
-	GameInstance->SaveMoney(CurrentMoney);
-}
-
-
 void ASilentWaifuGameMode::IncreaseMoney(const int Money)
 {
 	CurrentMoney += Money;
-	OnMoneyChangedDelegate.Broadcast();
+	OnMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
 
 void ASilentWaifuGameMode::DecreaseMoney(const int Money)
 {
 	CurrentMoney -= Money;
-	OnMoneyChangedDelegate.Broadcast();
+	OnMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
 

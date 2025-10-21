@@ -5,10 +5,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "SilentWaifuGameMode.generated.h"
 
+class UMainScreen;
 class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMoneyChangedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChangedSignature, const int, Money);
 
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
@@ -35,15 +36,17 @@ protected:
 	
 private:
 
-	UFUNCTION()
-	void ShowMoney();
-	
-	//UPROPERTY(EditAnywhere)
-	//TSubclassOf<ACharacterTemplate> CharacterClass;
+	void CreateMainScreenWidget();
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UMainScreen> MainScreenWidgetClass;
+
+	UPROPERTY()
+	UMainScreen* MainScreenWidgetRef;
 	
 	UPROPERTY()
-	int CurrentMoney;
+	int CurrentMoney = 0;
 };

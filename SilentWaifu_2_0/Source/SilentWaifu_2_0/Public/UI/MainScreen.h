@@ -5,7 +5,10 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
-class UButton;
+class ASilentWaifuGameMode;
+class UTextBlock;
+class UHorizontalBox;
+
 
 UCLASS()
 class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
@@ -14,8 +17,19 @@ class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
 	
 public:
 
+	virtual void NativeConstruct() override;
 
+	UFUNCTION()
+	void UpdateMoney(int const Money);
+	
 private:
 
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* HorizontalBox_MoneyPanel;
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_CurrentMoney;
+	
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
 };
