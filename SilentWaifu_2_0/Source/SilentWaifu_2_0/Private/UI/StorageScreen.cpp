@@ -22,8 +22,9 @@ void UStorageScreen::CreateStorageCards()
 	{
 		return;
 	}
-	for (auto Character : GameMode->GetAvailableCharacters())
+	for (const auto Character : GameMode->GetAvailableCharacters())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Character %i created"), Character.Key);
 		if (WidgetReferences->StorageCharacterCardClass)
 		{
 			WidgetReferences->StorageCharacterCardRef = Cast<UStorageCharacterCard>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));

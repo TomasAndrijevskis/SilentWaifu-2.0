@@ -10,6 +10,8 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SetAvailableCharacters);
+	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	if (!GameInstance)
 	{
@@ -45,11 +47,14 @@ void ASilentWaifuGameMode::SetInputSettings() const
 }
 
 
-void ASilentWaifuGameMode::SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass)
+void ASilentWaifuGameMode::SpawnCharacters()
 {
-	FActorSpawnParameters SpawnParameters;
-	GetWorld()->SpawnActor<ACharacterTemplate>(CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-	UE_LOG(LogTemp, Warning, TEXT("LoadCharacters"));
+	for (auto Character : GetAvailableCharacters())
+	{
+		FActorSpawnParameters SpawnParameters;
+		GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+		UE_LOG(LogTemp, Warning, TEXT("SpawnCharacter: %i"), Character.Key);
+	}
 }
 
 

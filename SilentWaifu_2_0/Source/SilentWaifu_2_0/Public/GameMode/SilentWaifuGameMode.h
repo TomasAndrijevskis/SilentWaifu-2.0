@@ -12,7 +12,8 @@ class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChangedSignature, const int, Money);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 {
@@ -26,16 +27,20 @@ public:
 	void DecreaseMoney(const int Money);
 
 	bool HasEnoughMoney(const int Money) const;
+
+	UFUNCTION()
+	void SpawnCharacters();
 	
 	UFUNCTION()
-	void SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass);
-
-	UFUNCTION()
 	void SetAvailableCharacters(int const Key, const FSavedCharactersData& Data);
-
+	
 	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
 	
 	FOnMoneyChangedSignature OnMoneyChangedDelegate;
+
+	FOnCharacterAddedSignature OnCharacterAddedDelegate;
+
+	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
 	
 protected:
 

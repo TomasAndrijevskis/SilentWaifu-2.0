@@ -11,7 +11,12 @@ void USilentWaifuGameInstance::Init()
 	Super::Init();
 	HandleSaveGame();
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
-	OnCharacterAddedDelegate.AddDynamic(this, &USilentWaifuGameInstance::SaveCharacter);
+}
+
+void USilentWaifuGameInstance::Shutdown()
+{
+	SaveCharacters();
+	Super::Shutdown();
 }
 
 
@@ -24,14 +29,15 @@ void USilentWaifuGameInstance::HandleSaveGame()
 		FSavedCharactersData Data;
 		Data.CharacterClass = DefaultCharacter;
 		Data.bIsOnScreen = true;
-		SaveCharacter(1, Data);
+		SaveFirstCharacter(1, Data);
+		UE_LOG(LogTemp, Warning, TEXT("First character saved"));
 	}
 }
 
 
 bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const
 {
-	for (auto const c : SaveGameInstance->GetCharacters())
+	for (auto const c : GameMode->GetAvailableCharacters())
 	{
 		if (c.Value.CharacterClass == Character)
 		{
@@ -48,19 +54,25 @@ void USilentWaifuGameInstance::LoadCharacters()
 {
 	for (auto const Character : SaveGameInstance->GetCharacters())
 	{
-		/*if (Character.Value.bIsOnScreen == true)
-		{
-			GameMode->SpawnCharacters(Character.Value.CharacterClass);
-			UE_LOG(LogTemp, Warning, TEXT("Loading character %d"), Character.Key);
-		}*/
-		GameMode->SetAvailableCharacters(Character.Key, Character.Value);
+		GameMode->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
 	}
+	GameMode->OnCharactersLoadedDelegate.Broadcast();
 }
 
 
-void USilentWaifuGameInstance::SaveCharacter(int const Key, const FSavedCharactersData& Data)
+void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCharactersData& Data) const
 {
 	SaveGameInstance->SaveCharacter(Key, Data);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::SaveCharacters()
+{
+	for (auto Character : GameMode->GetAvailableCharacters())
+	{
+		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
+	}
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
