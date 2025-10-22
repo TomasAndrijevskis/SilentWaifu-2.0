@@ -2,6 +2,7 @@
 #include "UI/StorageScreen.h"
 
 #include "Components/ScrollBox.h"
+#include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/StorageCharacterCard.h"
@@ -28,7 +29,8 @@ void UStorageScreen::CreateStorageCards()
 		if (WidgetReferences->StorageCharacterCardClass)
 		{
 			WidgetReferences->StorageCharacterCardRef = Cast<UStorageCharacterCard>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));
-			ScrollBox->AddChild(WidgetReferences->StorageCharacterCardRef);
+			WrapBox->AddChild(WidgetReferences->StorageCharacterCardRef);
+			WidgetReferences->StorageCharacterCardRef->CreateCard(Character.Value.CharacterId);
 		}
 	}
 }

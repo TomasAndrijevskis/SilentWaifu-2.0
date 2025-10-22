@@ -6,6 +6,8 @@
 #include "StorageScreen.generated.h"
 
 
+class UTextBlock;
+class UHorizontalBox;
 class UWidgetReferenceDataAsset;
 class ASilentWaifuGameMode;
 class UButton;
@@ -32,6 +34,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* WrapBox;
 
+	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* HorizontalBox_Header;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_Exit;
+	
 	void CreateStorageCards();
 
 	UPROPERTY(EditAnywhere)

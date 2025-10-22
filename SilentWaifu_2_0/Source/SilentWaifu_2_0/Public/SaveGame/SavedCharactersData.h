@@ -9,6 +9,9 @@ USTRUCT(BlueprintType)
 struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int CharacterId;
 	
 	UPROPERTY()
 	TSubclassOf<ACharacterTemplate> CharacterClass;

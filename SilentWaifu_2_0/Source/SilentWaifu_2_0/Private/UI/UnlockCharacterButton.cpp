@@ -44,6 +44,7 @@ void UUnlockCharacterButton::UnlockCharacter()
 		FSavedCharactersData Data;
 		Data.CharacterClass = CharacterClass;
 		Data.bIsOnScreen = false;
+		Data.CharacterId = CharacterId;
 		GameMode->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 		GameMode->DecreaseMoney(Cost);
 		OnCharacterUnlockedDelegate.Broadcast();

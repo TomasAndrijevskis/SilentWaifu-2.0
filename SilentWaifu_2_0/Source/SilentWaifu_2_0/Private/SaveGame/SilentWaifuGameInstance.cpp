@@ -29,6 +29,7 @@ void USilentWaifuGameInstance::HandleSaveGame()
 		FSavedCharactersData Data;
 		Data.CharacterClass = DefaultCharacter;
 		Data.bIsOnScreen = true;
+		Data.CharacterId = 1;
 		SaveFirstCharacter(1, Data);
 		UE_LOG(LogTemp, Warning, TEXT("First character saved"));
 	}
