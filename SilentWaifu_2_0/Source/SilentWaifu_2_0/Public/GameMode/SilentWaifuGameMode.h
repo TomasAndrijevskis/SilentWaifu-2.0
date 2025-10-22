@@ -33,6 +33,9 @@ public:
 	
 	UFUNCTION()
 	void SetAvailableCharacters(int const Key, const FSavedCharactersData& Data);
+
+	UFUNCTION()
+	void SortCharactersById();
 	
 	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
 	

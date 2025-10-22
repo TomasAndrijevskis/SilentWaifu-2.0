@@ -82,6 +82,21 @@ bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
 }
 
 
+void ASilentWaifuGameMode::SortCharactersById()
+{
+	TArray<TPair<int, FSavedCharactersData>> SortedCharacters = AvailableCharacters.Array();
+	SortedCharacters.Sort([](const TPair<int, FSavedCharactersData>& A, const TPair<int, FSavedCharactersData>& B)
+	{
+		return A.Value.CharacterId < B.Value.CharacterId;
+	});
+	AvailableCharacters.Empty();
+	for (const TPair<int, FSavedCharactersData>& Elem : SortedCharacters)
+	{
+		SetAvailableCharacters(Elem.Key, Elem.Value);
+	}
+}
+
+
 void ASilentWaifuGameMode::SetAvailableCharacters(int const Key, const FSavedCharactersData& Data)
 {
 	AvailableCharacters.Add(Key, Data);
@@ -92,3 +107,5 @@ TMap<int, FSavedCharactersData> ASilentWaifuGameMode::GetAvailableCharacters() c
 {
 	return AvailableCharacters;
 }
+
+

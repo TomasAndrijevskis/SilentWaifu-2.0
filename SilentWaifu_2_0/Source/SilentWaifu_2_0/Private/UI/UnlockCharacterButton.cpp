@@ -14,6 +14,7 @@ void UUnlockCharacterButton::NativeConstruct()
 	SetGameInstance();
 	SetGameMode();
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UUnlockCharacterButton::UpdateCharacterUnlockStatus);
+	OnCharacterUnlockedDelegate.AddDynamic(GameMode, &ASilentWaifuGameMode::SortCharactersById);
 	UpdateCharacterUnlockStatus();
 	Text_CharacterId->SetText(FText::FromString(FString::FromInt(CharacterId)));
 }
