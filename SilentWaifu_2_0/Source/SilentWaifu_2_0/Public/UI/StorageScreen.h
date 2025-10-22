@@ -6,6 +6,8 @@
 #include "StorageScreen.generated.h"
 
 
+class UWidgetReferenceDataAsset;
+class ASilentWaifuGameMode;
 class UButton;
 class UWrapBox;
 class UScrollBox;
@@ -20,6 +22,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_CloseStorage;
 	
+	virtual void NativeConstruct() override;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -27,6 +31,14 @@ private:
 	
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* WrapBox;
+
+	void CreateStorageCards();
+
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
 
 
 };

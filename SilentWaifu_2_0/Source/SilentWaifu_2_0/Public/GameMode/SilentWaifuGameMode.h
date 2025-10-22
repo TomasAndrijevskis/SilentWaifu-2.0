@@ -3,7 +3,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "SaveGame/SavedCharactersData.h"
 #include "SilentWaifuGameMode.generated.h"
+
 
 class UMainScreen;
 class ACharacterTemplate;
@@ -27,9 +29,14 @@ public:
 	
 	UFUNCTION()
 	void SpawnCharacters(const TSubclassOf<ACharacterTemplate>& CharacterClass);
+
+	UFUNCTION()
+	void SetAvailableCharacters(int const Key, const FSavedCharactersData& Data);
+
+	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
 	
 	FOnMoneyChangedSignature OnMoneyChangedDelegate;
-
+	
 protected:
 
 	virtual void BeginPlay() override;
@@ -48,6 +55,9 @@ private:
 
 	UPROPERTY()
 	UMainScreen* MainScreenWidgetRef;
+
+	UPROPERTY()
+	TMap<int, FSavedCharactersData> AvailableCharacters;
 	
 	UPROPERTY()
 	int CurrentMoney = 0;

@@ -49,7 +49,7 @@ void ASilentWaifuGameMode::SpawnCharacters(const TSubclassOf<ACharacterTemplate>
 {
 	FActorSpawnParameters SpawnParameters;
 	GetWorld()->SpawnActor<ACharacterTemplate>(CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-	UE_LOG(LogTemp, Warning, TEXT("SpawnCharacters"));
+	UE_LOG(LogTemp, Warning, TEXT("LoadCharacters"));
 }
 
 
@@ -74,4 +74,16 @@ bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
 		return true;
 	}
 	return false;
+}
+
+
+void ASilentWaifuGameMode::SetAvailableCharacters(int const Key, const FSavedCharactersData& Data)
+{
+	AvailableCharacters.Add(Key, Data);
+}
+
+
+TMap<int, FSavedCharactersData> ASilentWaifuGameMode::GetAvailableCharacters() const
+{
+	return AvailableCharacters;
 }

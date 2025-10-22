@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UStorageCharacterCard;
 class UStorageScreen;
 
 UCLASS(BlueprintType)
@@ -19,5 +20,11 @@ public:
 	
 	UPROPERTY()
 	UStorageScreen* StorageScreenRef;
+
 	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UStorageCharacterCard> StorageCharacterCardClass;
+
+	UPROPERTY()
+	UStorageCharacterCard* StorageCharacterCardRef;
 };
