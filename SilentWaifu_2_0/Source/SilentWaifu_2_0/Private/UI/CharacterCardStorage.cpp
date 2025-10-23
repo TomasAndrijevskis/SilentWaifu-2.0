@@ -1,10 +1,9 @@
 
-#include "UI/StorageCharacterCard.h"
+#include "UI/CharacterCardStorage.h"
 #include "Components/Button.h"
-#include "DataTables/CharacterData.h"
 
 
-void UStorageCharacterCard::SetImage(UTexture2D* NewImage)
+void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage)
 	{
@@ -41,16 +40,9 @@ void UStorageCharacterCard::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Character->SetStyle(CustomStyle);
-	
 }
 
-
-void UStorageCharacterCard::CreateCard(const int Id)
+void UCharacterCardStorage::Action()
 {
-	UE_LOG(LogTemp, Warning, TEXT("UStorageCharacterCard::CreateCard"));
-	if (!CharacterDataTable) return;
-	FName RowName = FName(*FString::FromInt(Id));
-	FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
-	if (!CharacterRow)	return;
-	SetImage(CharacterRow->Image);
+	UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
 }

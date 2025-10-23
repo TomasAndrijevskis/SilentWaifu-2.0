@@ -3,8 +3,10 @@
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/StorageCharacterCard.h"
+#include "UI/CharacterCardBase.h"
+#include "UI/CharacterCardChoose.h"
 #include "UI/WidgetReferenceDataAsset.h"
+
 
 void UChooseCharacterScreen::NativeConstruct()
 {
@@ -16,18 +18,15 @@ void UChooseCharacterScreen::NativeConstruct()
 
 void UChooseCharacterScreen::CreateChooseCharacterCards()
 {
-	if (!GameMode)
-	{
-		return;
-	}
+	if (!GameMode)return;
 	for (const auto Character : GameMode->GetAvailableCharacters())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Character %i created"), Character.Key);
-		if (WidgetReferences->StorageCharacterCardClass)
+		if (WidgetReferences->ChooseCharacterCardClass)
 		{
-			WidgetReferences->StorageCharacterCardRef = Cast<UStorageCharacterCard>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));
-			WrapBox->AddChild(WidgetReferences->StorageCharacterCardRef);
-			WidgetReferences->StorageCharacterCardRef->CreateCard(Character.Value.CharacterId);
+			WidgetReferences->ChooseCharacterCardRef = Cast<UCharacterCardChoose>(CreateWidget(GetWorld(), WidgetReferences->ChooseCharacterCardClass));
+			WrapBox->AddChild(WidgetReferences->ChooseCharacterCardRef);
+			WidgetReferences->ChooseCharacterCardRef->CreateCard(Character.Value.CharacterId);
 		}
 	}
 }

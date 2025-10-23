@@ -5,8 +5,10 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterCardStorage;
+class UCharacterCardChoose;
 class UChooseCharacterScreen;
-class UStorageCharacterCard;
+class UCharacterCardBase;
 class UStorageScreen;
 
 UCLASS(BlueprintType)
@@ -29,10 +31,17 @@ public:
 	UPROPERTY()
 	UChooseCharacterScreen* ChooseScreenRef;
 	
-	
+
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UStorageCharacterCard> StorageCharacterCardClass;
+	TSubclassOf<UCharacterCardChoose> ChooseCharacterCardClass;
 
 	UPROPERTY()
-	UStorageCharacterCard* StorageCharacterCardRef;
+	UCharacterCardChoose* ChooseCharacterCardRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterCardStorage> StorageCharacterCardClass;
+
+	UPROPERTY()
+	UCharacterCardBase* StorageCharacterCardRef;
 };
