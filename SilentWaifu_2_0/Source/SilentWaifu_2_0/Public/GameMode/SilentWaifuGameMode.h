@@ -30,6 +30,9 @@ public:
 
 	UFUNCTION()
 	void SpawnCharacters();
+
+	UFUNCTION()
+	void SpawnCharacter(const int CharacterId);
 	
 	UFUNCTION()
 	void SetAvailableCharacters(int const Key, const FSavedCharactersData& Data);

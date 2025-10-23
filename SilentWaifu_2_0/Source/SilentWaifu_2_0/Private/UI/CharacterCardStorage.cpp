@@ -44,5 +44,5 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardStorage::Action()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
+	//UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
 }

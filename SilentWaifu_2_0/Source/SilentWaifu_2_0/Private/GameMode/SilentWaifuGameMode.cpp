@@ -52,9 +52,17 @@ void ASilentWaifuGameMode::SpawnCharacters()
 		{
 			FActorSpawnParameters SpawnParameters;
 			GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-			UE_LOG(LogTemp, Warning, TEXT("SpawnCharacter: %i"), Character.Key);
 		}
 	}
+}
+
+
+void ASilentWaifuGameMode::SpawnCharacter(const int CharacterId)
+{
+	FActorSpawnParameters SpawnParameters;
+	GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
+	Data->bIsOnScreen = true;
 }
 
 

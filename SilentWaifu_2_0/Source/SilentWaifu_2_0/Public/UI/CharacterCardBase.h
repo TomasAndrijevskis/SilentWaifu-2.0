@@ -6,6 +6,8 @@
 #include "CharacterCardBase.generated.h"
 
 
+class ACharacterTemplate;
+class ASilentWaifuGameMode;
 class UBorder;
 class UButton;
 
@@ -33,7 +35,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D ImageSize = FVector2D(280, 420);
 
+	UPROPERTY(EditAnywhere)
+	ASilentWaifuGameMode* GameMode;
+
 	int CharacterId;
+
 private:
 
 	UPROPERTY(meta = (BindWidget))

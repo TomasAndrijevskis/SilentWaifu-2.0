@@ -1,16 +1,21 @@
 
 #include "UI/CharacterCardChoose.h"
 #include "Components/Button.h"
+#include "GameMode/SilentWaifuGameMode.h"
+
+
+void UCharacterCardChoose::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_Character->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
+}
 
 
 void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 {
-	if (!NewImage)
-	{
-		return;
-	}
+	if (!NewImage) return;
+	
 	FButtonStyle CustomStyle;
-
 	// Normal Brush (Image)
 	FSlateBrush NormalBrush;
 	NormalBrush.SetResourceObject(NewImage);
@@ -40,9 +45,20 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Character->SetStyle(CustomStyle);
+	HandleCardState();
 }
+
+
+void UCharacterCardChoose::HandleCardState()
+{
+	FSavedCharactersData* Data = GameMode->GetAvailableCharacters().Find(CharacterId);
+	Button_Character->SetIsEnabled(!Data->bIsOnScreen);
+}
+
 
 void UCharacterCardChoose::Action()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Choose Action: %i"), CharacterId);
+	GameMode->SpawnCharacter(CharacterId);
 }
+
+
