@@ -1,22 +1,13 @@
 
-#include "UI/ChooseCharacterScreen.h"
+#include "UI/CharacterMenuChooseCharacter.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "Kismet/GameplayStatics.h"
 #include "UI/CharacterCardBase.h"
 #include "UI/CharacterCardChoose.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
 
-void UChooseCharacterScreen::NativeConstruct()
-{
-	Super::NativeConstruct();
-	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
-	CreateChooseCharacterCards();
-}
-
-
-void UChooseCharacterScreen::CreateChooseCharacterCards()
+void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 {
 	if (!GameMode)return;
 	for (const auto Character : GameMode->GetAvailableCharacters())

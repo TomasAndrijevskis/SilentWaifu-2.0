@@ -7,9 +7,9 @@
 
 class UCharacterCardStorage;
 class UCharacterCardChoose;
-class UChooseCharacterScreen;
+class UCharacterMenuChooseCharacter;
 class UCharacterCardBase;
-class UStorageScreen;
+class UCharacterMenuStorage;
 
 UCLASS(BlueprintType)
 class SILENTWAIFU_2_0_API UWidgetReferenceDataAsset : public UDataAsset
@@ -19,17 +19,17 @@ class SILENTWAIFU_2_0_API UWidgetReferenceDataAsset : public UDataAsset
 public:
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UStorageScreen> StorageScreenClass;
+	TSubclassOf<UCharacterMenuStorage> StorageScreenClass;
 	
 	UPROPERTY()
-	UStorageScreen* StorageScreenRef;
+	UCharacterMenuStorage* StorageScreenRef;
 
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UChooseCharacterScreen> ChooseScreenClass;
+	TSubclassOf<UCharacterMenuChooseCharacter> ChooseScreenClass;
 	
 	UPROPERTY()
-	UChooseCharacterScreen* ChooseScreenRef;
+	UCharacterMenuChooseCharacter* ChooseScreenRef;
 	
 
 	UPROPERTY(EditDefaultsOnly)

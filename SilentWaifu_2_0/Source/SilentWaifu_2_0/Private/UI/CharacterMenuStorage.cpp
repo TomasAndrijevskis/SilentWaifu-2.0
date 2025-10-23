@@ -1,22 +1,13 @@
 
-#include "UI/StorageScreen.h"
+#include "UI/CharacterMenuStorage.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "Kismet/GameplayStatics.h"
 #include "UI/CharacterCardBase.h"
 #include "UI/CharacterCardStorage.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
 
-void UStorageScreen::NativeConstruct()
-{
-	Super::NativeConstruct();
-	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
-	CreateStorageCards();
-}
-
-
-void UStorageScreen::CreateStorageCards()
+void UCharacterMenuStorage::CreateCharacterMenu()
 {
 	if (!GameMode) return;
 

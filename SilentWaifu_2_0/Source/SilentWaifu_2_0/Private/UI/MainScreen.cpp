@@ -5,8 +5,8 @@
 #include "Components/TextBlock.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/ChooseCharacterScreen.h"
-#include "UI/StorageScreen.h"
+#include "UI/CharacterMenuChooseCharacter.h"
+#include "UI/CharacterMenuStorage.h"
 
 
 void UMainScreen::NativeConstruct()
@@ -31,7 +31,7 @@ void UMainScreen::CreateStorage()
 {
 	if (WidgetReferences->StorageScreenClass)
 	{
-		WidgetReferences->StorageScreenRef = Cast<UStorageScreen>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
+		WidgetReferences->StorageScreenRef = Cast<UCharacterMenuStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
 		WidgetReferences->StorageScreenRef->AddToViewport(1);
 		WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
 		FOnWindowStateChangedDelegate.Broadcast(false);
@@ -54,7 +54,7 @@ void UMainScreen::CreateChooseScreen()
 {
 	if (WidgetReferences->ChooseScreenClass)
 	{
-		WidgetReferences->ChooseScreenRef = Cast<UChooseCharacterScreen>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
+		WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
 		WidgetReferences->ChooseScreenRef->AddToViewport(1);
 		WidgetReferences->ChooseScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveChooseScreen);
 		FOnWindowStateChangedDelegate.Broadcast(false);
