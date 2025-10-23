@@ -36,10 +36,8 @@ void UUnlockCharacterButton::UpdateCharacterUnlockStatus()
 
 void UUnlockCharacterButton::UnlockCharacter()
 {
-	if (!GameInstance)
-	{
-		return;
-	}
+	if (!GameInstance) return;
+
 	if (GameMode->HasEnoughMoney(Cost))
 	{
 		FSavedCharactersData Data;

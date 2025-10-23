@@ -94,10 +94,7 @@ void USilentWaifuGameInstance::SaveMoney(int const Money)
 
 void USilentWaifuGameInstance::LoadMoney() const
 {
-	if (!GameMode)
-	{
-		return;
-	}
+	if (!GameMode) return;
 	GameMode->IncreaseMoney(SaveGameInstance->GetMoney());
 }
 

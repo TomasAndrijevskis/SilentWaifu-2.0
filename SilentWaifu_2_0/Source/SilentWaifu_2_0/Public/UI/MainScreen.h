@@ -13,7 +13,7 @@ class UTextBlock;
 class UHorizontalBox;
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWindowStateChangedSignature, float, BlurStrngth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWindowStateChangedSignature, bool, State);
 
 UCLASS()
 class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
@@ -46,6 +46,9 @@ private:
 	UButton* Button_Storage;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* Button_ChooseScreen;
+
+	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;
 	
 	UFUNCTION()
@@ -55,7 +58,15 @@ private:
 	void RemoveStorage();
 
 	UFUNCTION()
+	void CreateChooseScreen();
+
+	UFUNCTION()
+	void RemoveChooseScreen();
+	
 	void HandleBlur(const float BlurStrength);
+
+	UFUNCTION()
+	void HandleWindowState(const bool NewState);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

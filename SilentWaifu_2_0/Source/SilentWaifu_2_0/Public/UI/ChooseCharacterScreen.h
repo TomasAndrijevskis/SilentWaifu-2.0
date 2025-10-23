@@ -3,8 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "StorageScreen.generated.h"
-
+#include "ChooseCharacterScreen.generated.h"
 
 class UTextBlock;
 class UHorizontalBox;
@@ -14,8 +13,9 @@ class UButton;
 class UWrapBox;
 class UScrollBox;
 
+
 UCLASS()
-class SILENTWAIFU_2_0_API UStorageScreen : public UUserWidget
+class SILENTWAIFU_2_0_API UChooseCharacterScreen : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -40,7 +40,7 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Exit;
 	
-	void CreateStorageCards();
+	void CreateChooseCharacterCards();
 
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
