@@ -10,6 +10,10 @@ UCLASS()
 class SILENTWAIFU_2_0_API UCharacterMenuChooseCharacter : public UCharacterMenuBase
 {
 	GENERATED_BODY()
+
+public:
+
+	virtual void RemoveCharacterMenu() override;
 	
 protected:
 

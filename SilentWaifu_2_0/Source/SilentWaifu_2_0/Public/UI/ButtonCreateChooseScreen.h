@@ -3,14 +3,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CreateChooseScreenButton.generated.h"
+#include "ButtonCreateChooseScreen.generated.h"
 
 class UWidgetReferenceDataAsset;
 class ASilentWaifuGameMode;
 class UButton;
 
 UCLASS()
-class SILENTWAIFU_2_0_API UCreateChooseScreenButton : public UUserWidget
+class SILENTWAIFU_2_0_API UButtonCreateChooseScreen : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -20,7 +20,7 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 	
 private:
@@ -30,9 +30,6 @@ private:
 
 	UFUNCTION()
 	void CreateChooseScreen();
-
-	UFUNCTION()
-	void RemoveChooseScreen();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

@@ -25,13 +25,16 @@ public:
 	
 	virtual void NativeConstruct() override;
 
+	UFUNCTION()
+	virtual void RemoveCharacterMenu(){};
+	
 protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* WrapBox;
 
 	virtual void CreateCharacterMenu(){};
-
+	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 	

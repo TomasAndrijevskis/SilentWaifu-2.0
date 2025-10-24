@@ -2,11 +2,14 @@
 #include "UI/MainScreen.h"
 #include "Components/BackgroundBlur.h"
 #include "Components/Button.h"
+#include "Components/HorizontalBox.h"
+#include "Components/HorizontalBoxSlot.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/CharacterMenuChooseCharacter.h"
 #include "UI/CharacterMenuStorage.h"
+#include "UI/ButtonCreateChooseScreen.h"
 
 
 void UMainScreen::NativeConstruct()
@@ -17,6 +20,7 @@ void UMainScreen::NativeConstruct()
 	GameMode->OnMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	FOnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
+	CreateSlots();
 }
 
 
@@ -59,6 +63,31 @@ void UMainScreen::HandleWindowState(const bool NewState)
 	else
 	{
 		HandleBlur(0.f);
+	}
+}
+
+
+void UMainScreen::CreateSlots()
+{
+	for (int i = 0 ; i < AmountOfSlots; i++)
+	{
+		UVerticalBox* VB = NewObject<UVerticalBox>(this);
+		UHorizontalBoxSlot* HBSlot = Cast<UHorizontalBoxSlot>(HorizontalBox_CharacterSlots->AddChild(VB));
+		if (HBSlot)
+		{
+			HBSlot->SetSize( FSlateChildSize(ESlateSizeRule::Fill));
+		}
+	}
+	CreateButtons();
+}
+
+
+void UMainScreen::CreateButtons()
+{
+	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
+	{
+		UButtonCreateChooseScreen* Button = CreateWidget<UButtonCreateChooseScreen>(GetWorld(), WidgetReferences->ButtonCreateChooseScreenClass);
+		Cast<UVerticalBox>(CharacterSlot)->AddChild(Button);
 	}
 }
 

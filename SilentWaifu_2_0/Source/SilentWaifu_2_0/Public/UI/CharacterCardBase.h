@@ -18,14 +18,14 @@ class SILENTWAIFU_2_0_API UCharacterCardBase : public UUserWidget
 	
 public:
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Character;
+	
 	virtual void NativeConstruct() override;
 	
 	void CreateCard(const int Id);
 
 protected:
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Character;
 	
 	virtual void SetImage(UTexture2D* NewImage){};
 

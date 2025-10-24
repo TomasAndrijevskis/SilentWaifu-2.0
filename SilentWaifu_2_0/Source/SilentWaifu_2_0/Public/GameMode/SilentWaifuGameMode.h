@@ -53,7 +53,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 	
 private:

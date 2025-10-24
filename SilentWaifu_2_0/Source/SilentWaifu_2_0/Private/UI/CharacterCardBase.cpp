@@ -17,7 +17,7 @@ void UCharacterCardBase::NativeConstruct()
 
 void UCharacterCardBase::CreateCard(const int Id)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UCharacterCardBase::CreateCard"));
+	//UE_LOG(LogTemp, Warning, TEXT("UCharacterCardBase::CreateCard"));
 	if (!CharacterDataTable) return;
 	const FName RowName = FName(*FString::FromInt(Id));
 	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));

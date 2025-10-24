@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UVerticalBox;
 class UBackgroundBlur;
 class ASilentWaifuGameMode;
 class UButton;
@@ -31,7 +32,7 @@ public:
 	
 protected:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 
 private:
@@ -39,6 +40,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UHorizontalBox* HorizontalBox_MoneyPanel;
 
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* HorizontalBox_CharacterSlots;
+
+	UPROPERTY(meta = (BindWidget))
+	UVerticalBox* VerticalBox_Characters;
+	
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_CurrentMoney;
 
@@ -58,9 +65,14 @@ private:
 
 	UFUNCTION()
 	void HandleWindowState(const bool NewState);
+
+	void CreateSlots();
+
+	void CreateButtons();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 
+	int AmountOfSlots = 5;
 };
 
