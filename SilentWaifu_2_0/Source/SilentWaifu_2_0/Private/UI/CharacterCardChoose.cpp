@@ -26,9 +26,10 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 	// Hovered Brush
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::RoundedBox;
+	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
+	HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.7f)); 
 	
 	// Disabled Brush
 	FSlateBrush DisabledBrush;

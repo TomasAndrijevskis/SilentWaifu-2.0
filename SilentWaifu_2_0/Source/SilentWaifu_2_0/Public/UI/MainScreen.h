@@ -46,9 +46,6 @@ private:
 	UButton* Button_Storage;
 
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_ChooseScreen;
-
-	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;
 	
 	UFUNCTION()
@@ -56,12 +53,6 @@ private:
 
 	UFUNCTION()
 	void RemoveStorage();
-
-	UFUNCTION()
-	void CreateChooseScreen();
-
-	UFUNCTION()
-	void RemoveChooseScreen();
 	
 	void HandleBlur(const float BlurStrength);
 

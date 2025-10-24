@@ -16,7 +16,6 @@ void UMainScreen::NativeConstruct()
 	if (!GameMode) return;
 	GameMode->OnMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
-	Button_ChooseScreen->OnClicked.AddDynamic(this, &UMainScreen::CreateChooseScreen);
 	FOnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 }
 
@@ -50,33 +49,9 @@ void UMainScreen::RemoveStorage()
 }
 
 
-void UMainScreen::CreateChooseScreen()
-{
-	if (WidgetReferences->ChooseScreenClass)
-	{
-		WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
-		WidgetReferences->ChooseScreenRef->AddToViewport(1);
-		WidgetReferences->ChooseScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveChooseScreen);
-		FOnWindowStateChangedDelegate.Broadcast(false);
-	}
-}
-
-
-void UMainScreen::RemoveChooseScreen()
-{
-	if (WidgetReferences->ChooseScreenRef)
-	{
-		WidgetReferences->ChooseScreenRef->RemoveFromParent();
-		WidgetReferences->ChooseScreenRef = nullptr;
-		FOnWindowStateChangedDelegate.Broadcast(true);
-	}
-}
-
-
 void UMainScreen::HandleWindowState(const bool NewState)
 {
 	Button_Storage->SetIsEnabled(NewState);
-	Button_ChooseScreen->SetIsEnabled(NewState);
 	if (!NewState)
 	{
 		HandleBlur(20.f);

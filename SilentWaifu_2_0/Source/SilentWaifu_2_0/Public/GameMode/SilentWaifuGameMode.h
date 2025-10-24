@@ -7,6 +7,7 @@
 #include "SilentWaifuGameMode.generated.h"
 
 
+class UWidgetReferenceDataAsset;
 class UMainScreen;
 class ACharacterTemplate;
 class USilentWaifuGameInstance;
@@ -51,21 +52,20 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UWidgetReferenceDataAsset* WidgetReferences;
 	
 private:
 
+	void HandleGameLoad();
+	
 	void CreateMainScreenWidget();
 
 	void SetInputSettings() const;
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UMainScreen> MainScreenWidgetClass;
-
-	UPROPERTY()
-	UMainScreen* MainScreenWidgetRef;
 
 	UPROPERTY()
 	TMap<int, FSavedCharactersData> AvailableCharacters;

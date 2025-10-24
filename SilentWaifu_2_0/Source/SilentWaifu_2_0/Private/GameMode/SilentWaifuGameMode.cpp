@@ -13,6 +13,12 @@ void ASilentWaifuGameMode::BeginPlay()
 	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SetAvailableCharacters);
 	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
+	HandleGameLoad();
+}
+
+
+void ASilentWaifuGameMode::HandleGameLoad()
+{
 	if (!GameInstance) return;
 	GameInstance->SetGameMode(this);
 	CreateMainScreenWidget();
@@ -24,12 +30,12 @@ void ASilentWaifuGameMode::BeginPlay()
 
 void ASilentWaifuGameMode::CreateMainScreenWidget()
 {
-	if (MainScreenWidgetClass)
+	if (WidgetReferences->MainScreenClass)
 	{
-		MainScreenWidgetRef = Cast<UMainScreen>(CreateWidget(GetWorld(), MainScreenWidgetClass));
-		if (MainScreenWidgetRef)
+		WidgetReferences->MainScreenRef = Cast<UMainScreen>(CreateWidget(GetWorld(), WidgetReferences->MainScreenClass));
+		if (WidgetReferences->MainScreenRef)
 		{
-			MainScreenWidgetRef->AddToViewport(0);
+			WidgetReferences->MainScreenRef->AddToViewport(0);
 		}
 	}
 }
