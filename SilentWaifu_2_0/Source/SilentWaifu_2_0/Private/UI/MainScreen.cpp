@@ -84,10 +84,16 @@ void UMainScreen::CreateSlots()
 
 void UMainScreen::CreateButtons()
 {
+	int i = 0;
 	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
 		UButtonCreateChooseScreen* Button = CreateWidget<UButtonCreateChooseScreen>(GetWorld(), WidgetReferences->ButtonCreateChooseScreenClass);
+		Button->SetSpawnPosition(i);
+		bool IsSpawned = GameMode->GetTakenPositions().FindRef(i);
+		UE_LOG(LogTemp, Warning, TEXT("Button Spawned: %i"), IsSpawned);
+		Button->HandleButtonState(IsSpawned);
 		Cast<UVerticalBox>(CharacterSlot)->AddChild(Button);
+		i++;
 	}
 }
 

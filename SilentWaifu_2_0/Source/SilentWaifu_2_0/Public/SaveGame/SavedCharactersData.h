@@ -18,4 +18,7 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 
 	UPROPERTY()
 	bool bIsOnScreen;
+
+	UPROPERTY()
+	int Position;
 };

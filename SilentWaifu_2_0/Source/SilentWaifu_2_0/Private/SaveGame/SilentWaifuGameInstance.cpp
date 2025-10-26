@@ -15,6 +15,7 @@ void USilentWaifuGameInstance::Init()
 
 void USilentWaifuGameInstance::Shutdown()
 {
+	SavePositions();
 	SaveCharacters();
 	Super::Shutdown();
 }
@@ -53,6 +54,7 @@ bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterT
 
 void USilentWaifuGameInstance::LoadCharacters()
 {
+	if (!GameMode) return;
 	for (auto const Character : SaveGameInstance->GetCharacters())
 	{
 		GameMode->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
@@ -96,5 +98,25 @@ void USilentWaifuGameInstance::LoadMoney() const
 {
 	if (!GameMode) return;
 	GameMode->IncreaseMoney(SaveGameInstance->GetMoney());
+}
+
+
+void USilentWaifuGameInstance::LoadPositions() const
+{
+	if (!GameMode) return;
+	for (auto const Position : SaveGameInstance->GetTakenPositions())
+	{
+		GameMode->AddTakenPosition(Position.Key, Position.Value);
+	}
+}
+
+
+void USilentWaifuGameInstance::SavePositions()
+{
+	for (auto Position : GameMode->GetTakenPositions())
+	{
+		SaveGameInstance->SaveTakenPositions(Position.Key, Position.Value);
+	}
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 

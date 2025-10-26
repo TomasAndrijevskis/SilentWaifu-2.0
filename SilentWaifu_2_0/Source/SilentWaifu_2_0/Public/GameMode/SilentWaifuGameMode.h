@@ -36,12 +36,18 @@ public:
 	void SpawnCharacter(const int CharacterId);
 	
 	UFUNCTION()
-	void SetAvailableCharacters(int const Key, const FSavedCharactersData& Data);
+	void AddAvailableCharacter(const int Key, const FSavedCharactersData& Data);
 
 	UFUNCTION()
 	void SortCharactersById();
+
+	void SetCurrentSpawnPosition(const int NewSpawnPosition);
+
+	void AddTakenPosition(const int Key, const bool Value);
 	
 	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
+
+	TMap<int, bool> GetTakenPositions() const;
 	
 	FOnMoneyChangedSignature OnMoneyChangedDelegate;
 
@@ -69,7 +75,12 @@ private:
 
 	UPROPERTY()
 	TMap<int, FSavedCharactersData> AvailableCharacters;
+
+	UPROPERTY()
+	TMap<int, bool> TakenPositions;
 	
 	UPROPERTY()
 	int CurrentMoney = 0;
+
+	int CurrentSpawnPosition = -1;
 };

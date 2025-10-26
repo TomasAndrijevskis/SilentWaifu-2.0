@@ -18,6 +18,12 @@ public:
 
 	virtual void NativeConstruct() override;
 
+	void SetSpawnPosition(const int NewSpawnPosition);
+
+	int GetSpawnPosition() const;
+
+	void HandleButtonState(const bool IsCharacterSpawned);
+	
 protected:
 
 	UPROPERTY(EditAnywhere)
@@ -33,4 +39,6 @@ private:
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
+
+	int SpawnPosition;
 };

@@ -10,7 +10,7 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SetAvailableCharacters);
+	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::AddAvailableCharacter);
 	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	HandleGameLoad();
@@ -21,6 +21,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 {
 	if (!GameInstance) return;
 	GameInstance->SetGameMode(this);
+	GameInstance->LoadPositions();
 	CreateMainScreenWidget();
 	SetInputSettings();
 	GameInstance->LoadMoney();
@@ -69,6 +70,9 @@ void ASilentWaifuGameMode::SpawnCharacter(const int CharacterId)
 	GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
 	Data->bIsOnScreen = true;
+	Data->Position = CurrentSpawnPosition;
+	AddTakenPosition(CurrentSpawnPosition, true);
+	UE_LOG(LogTemp, Error, TEXT("Position: %i"), CurrentSpawnPosition);
 }
 
 
@@ -106,12 +110,12 @@ void ASilentWaifuGameMode::SortCharactersById()
 	AvailableCharacters.Empty();
 	for (const TPair<int, FSavedCharactersData>& Elem : SortedCharacters)
 	{
-		SetAvailableCharacters(Elem.Key, Elem.Value);
+		AddAvailableCharacter(Elem.Key, Elem.Value);
 	}
 }
 
 
-void ASilentWaifuGameMode::SetAvailableCharacters(int const Key, const FSavedCharactersData& Data)
+void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedCharactersData& Data)
 {
 	AvailableCharacters.Add(Key, Data);
 }
@@ -123,3 +127,23 @@ TMap<int, FSavedCharactersData> ASilentWaifuGameMode::GetAvailableCharacters() c
 }
 
 
+TMap<int, bool> ASilentWaifuGameMode::GetTakenPositions() const
+{
+	return TakenPositions;
+}
+
+
+void ASilentWaifuGameMode::SetCurrentSpawnPosition(const int NewSpawnPosition)
+{
+	CurrentSpawnPosition = NewSpawnPosition;
+}
+
+
+void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
+{
+	TakenPositions.Add(Key, Value);
+	for (auto position : TakenPositions)
+	{
+		UE_LOG(LogTemp, Error, TEXT("position: %i, is taken: %i"), position.Key, position.Value);
+	}
+}

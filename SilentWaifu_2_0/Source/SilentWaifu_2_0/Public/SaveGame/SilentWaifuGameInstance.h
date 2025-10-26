@@ -27,6 +27,10 @@ public:
 	void SaveMoney(int const Money);
 
 	void LoadMoney() const;
+
+	void LoadPositions() const;
+
+	void SavePositions();
 	
 	void SetGameMode(AGameModeBase* NewGameMode);
 

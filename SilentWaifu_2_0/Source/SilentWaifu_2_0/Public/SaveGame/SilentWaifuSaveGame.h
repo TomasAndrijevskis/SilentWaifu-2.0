@@ -21,10 +21,16 @@ public:
 	int GetMoney() const;
 
 	UFUNCTION()
-	void SaveCharacter(int const Key, const FSavedCharactersData& Data);
+	void SaveCharacter(const int Key, const FSavedCharactersData& Data);
 	
 	UFUNCTION()
 	TMap<int, FSavedCharactersData> GetCharacters() const;
+
+	UFUNCTION()
+	TMap<int, bool> GetTakenPositions() const;
+
+	UFUNCTION()
+	void SaveTakenPositions(const int Key, const bool Value);
 	
 private:
 	
@@ -33,4 +39,7 @@ private:
 
 	UPROPERTY()
 	TMap<int, FSavedCharactersData> SavedCharacters;
+
+	UPROPERTY()
+	TMap<int, bool>  TakenPositions;
 };
