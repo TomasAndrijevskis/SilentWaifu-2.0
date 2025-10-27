@@ -13,7 +13,8 @@ class UButton;
 class UTextBlock;
 class UHorizontalBox;
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterRemovedSignature, const int, Position);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterSpawnedSignature, const int, Position);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWindowStateChangedSignature, bool, State);
 
 UCLASS()
@@ -28,7 +29,11 @@ public:
 	UFUNCTION()
 	void UpdateMoney(int const Money);
 
-	FOnWindowStateChangedSignature FOnWindowStateChangedDelegate;
+	FOnWindowStateChangedSignature OnWindowStateChangedDelegate;
+
+	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
+
+	FOnCharacterSpawnedSignature OnCharacterSpawnedDelegate;;
 	
 protected:
 	
@@ -68,11 +73,17 @@ private:
 
 	void CreateSlots();
 
+	void FillSlots();
+	
 	UButtonCreateChooseScreen* CreateButton(const int SpawnPosition) const;
 
 	UCharacterCardMainScreen* CreateCharacterCard(const int SpawnPosition) const;
-	
-	void FillSlots();
+
+	UFUNCTION()
+	void RemoveButton(const int Position);
+
+	UFUNCTION()
+	void RemoveCharacter(const int Position);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

@@ -30,7 +30,7 @@ public:
 	TMap<int, bool> GetTakenPositions() const;
 
 	UFUNCTION()
-	void SaveTakenPositions(const int Key, const bool Value);
+	void SaveTakenPositions(const TMap<int, bool>&  Positions);
 	
 private:
 	

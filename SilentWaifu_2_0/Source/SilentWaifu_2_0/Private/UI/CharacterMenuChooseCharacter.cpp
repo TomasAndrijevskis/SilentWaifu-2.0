@@ -31,6 +31,6 @@ void UCharacterMenuChooseCharacter::RemoveCharacterMenu()
 	{
 		WidgetReferences->ChooseScreenRef->RemoveFromParent();
 		WidgetReferences->ChooseScreenRef = nullptr;
-		WidgetReferences->MainScreenRef->FOnWindowStateChangedDelegate.Broadcast(true);
+		WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(true);
 	}
 }

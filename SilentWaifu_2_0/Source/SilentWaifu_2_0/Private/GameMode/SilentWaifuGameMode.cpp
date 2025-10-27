@@ -72,7 +72,28 @@ void ASilentWaifuGameMode::SpawnCharacter(const int CharacterId)
 	Data->bIsOnScreen = true;
 	Data->Position = CurrentSpawnPosition;
 	AddTakenPosition(CurrentSpawnPosition, true);
+	WidgetReferences->MainScreenRef->OnCharacterSpawnedDelegate.Broadcast(CurrentSpawnPosition);
 	UE_LOG(LogTemp, Error, TEXT("Position: %i"), CurrentSpawnPosition);
+}
+
+
+void ASilentWaifuGameMode::RemoveCharacter(const int CharacterId)
+{
+	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
+	TArray<AActor*> ActorsToRemove;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->CharacterClass,ActorsToRemove);
+	for (auto Actor : ActorsToRemove)
+	{
+		if (IsValid(Actor))
+		{
+			Actor->Destroy();
+			Actor = nullptr;
+		}
+	}
+	TakenPositions.Remove(Data->Position);
+	Data->bIsOnScreen = false;
+	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Data->Position);
+	Data->Position = NULL;
 }
 
 
@@ -115,6 +136,13 @@ void ASilentWaifuGameMode::SortCharactersById()
 }
 
 
+void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
+{
+	TakenPositions.Add(Key, Value);
+}
+
+
+
 void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedCharactersData& Data)
 {
 	AvailableCharacters.Add(Key, Data);
@@ -127,7 +155,7 @@ TMap<int, FSavedCharactersData> ASilentWaifuGameMode::GetAvailableCharacters() c
 }
 
 
-TMap<int, bool> ASilentWaifuGameMode::GetTakenPositions() const
+TMap<int, bool>& ASilentWaifuGameMode::GetTakenPositions()
 {
 	return TakenPositions;
 }
@@ -136,14 +164,4 @@ TMap<int, bool> ASilentWaifuGameMode::GetTakenPositions() const
 void ASilentWaifuGameMode::SetCurrentSpawnPosition(const int NewSpawnPosition)
 {
 	CurrentSpawnPosition = NewSpawnPosition;
-}
-
-
-void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
-{
-	TakenPositions.Add(Key, Value);
-	for (auto position : TakenPositions)
-	{
-		UE_LOG(LogTemp, Error, TEXT("position: %i, is taken: %i"), position.Key, position.Value);
-	}
 }

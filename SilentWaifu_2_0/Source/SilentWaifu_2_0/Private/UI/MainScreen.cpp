@@ -19,7 +19,9 @@ void UMainScreen::NativeConstruct()
 	if (!GameMode) return;
 	GameMode->OnMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
-	FOnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
+	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
+	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
+	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
 	CreateSlots();
 }
 
@@ -37,7 +39,7 @@ void UMainScreen::CreateStorage()
 		WidgetReferences->StorageScreenRef = Cast<UCharacterMenuStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
 		WidgetReferences->StorageScreenRef->AddToViewport(1);
 		WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
-		FOnWindowStateChangedDelegate.Broadcast(false);
+		OnWindowStateChangedDelegate.Broadcast(false);
 	}
 }
 
@@ -48,7 +50,7 @@ void UMainScreen::RemoveStorage()
 	{
 		WidgetReferences->StorageScreenRef->RemoveFromParent();
 		WidgetReferences->StorageScreenRef = nullptr;
-		FOnWindowStateChangedDelegate.Broadcast(true);
+		OnWindowStateChangedDelegate.Broadcast(true);
 	}
 }
 
@@ -88,6 +90,7 @@ void UMainScreen::FillSlots()
 	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
 		bool IsSpawned = GameMode->GetTakenPositions().FindRef(SlotNumber);
+		UE_LOG(LogTemp, Error, TEXT("is spawned: %i"), IsSpawned);
 		if (!IsSpawned)
 		{
 			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
@@ -115,17 +118,36 @@ UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPositi
 	UCharacterCardMainScreen* CharacterCard = CreateWidget<UCharacterCardMainScreen>(GetWorld(), WidgetReferences->CharacterCardMainScreenClass);
 	if (!CharacterCard) return nullptr;
 
-	int CharacterId = -1;
+	int CharacterId = NULL;
 	for (const auto Character : GameMode->GetAvailableCharacters())
 	{
 		if (Character.Value.Position == SpawnPosition)
 		{
 			CharacterId = Character.Value.CharacterId;
+			UE_LOG(LogTemp, Error, TEXT("CreateCharacterCard||CharacterId: %i"), CharacterId);
 			break;
 		}
 	}
 	CharacterCard->CreateCard(CharacterId);
 	return CharacterCard;
+}
+
+
+void UMainScreen::RemoveButton(const int Position)
+{
+	UVerticalBox* VB_Slot = Cast<UVerticalBox>(HorizontalBox_CharacterSlots->GetChildAt(Position));
+	if (!VB_Slot) return;
+	VB_Slot->RemoveChildAt(0);
+	VB_Slot->AddChild(CreateCharacterCard(Position));
+}
+
+
+void UMainScreen::RemoveCharacter(const int Position)
+{
+	UVerticalBox* VB_Slot = Cast<UVerticalBox>(HorizontalBox_CharacterSlots->GetChildAt(Position));
+	if (!VB_Slot) return;
+	VB_Slot->RemoveChildAt(0);
+	VB_Slot->AddChild(CreateButton(Position));
 }
 
 

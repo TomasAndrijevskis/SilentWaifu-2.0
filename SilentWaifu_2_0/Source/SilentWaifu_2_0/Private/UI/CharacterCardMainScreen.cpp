@@ -2,6 +2,7 @@
 #include "UI/CharacterCardMainScreen.h"
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
+#include "GameMode/SilentWaifuGameMode.h"
 
 
 void UCharacterCardMainScreen::CreateCard(const int Id)
@@ -57,5 +58,5 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardMainScreen::Action()
 {
-	UE_LOG(LogTemp, Error, TEXT("Clicked"));
+	GameMode->RemoveCharacter(CharacterId);
 }

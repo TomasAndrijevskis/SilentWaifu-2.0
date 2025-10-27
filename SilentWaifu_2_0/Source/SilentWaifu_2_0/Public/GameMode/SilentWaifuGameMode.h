@@ -35,6 +35,8 @@ public:
 	UFUNCTION()
 	void SpawnCharacter(const int CharacterId);
 	
+	void RemoveCharacter(const int CharacterId);
+	
 	UFUNCTION()
 	void AddAvailableCharacter(const int Key, const FSavedCharactersData& Data);
 
@@ -42,12 +44,12 @@ public:
 	void SortCharactersById();
 
 	void SetCurrentSpawnPosition(const int NewSpawnPosition);
-
+	
 	void AddTakenPosition(const int Key, const bool Value);
 	
 	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
 
-	TMap<int, bool> GetTakenPositions() const;
+	TMap<int, bool>& GetTakenPositions();
 	
 	FOnMoneyChangedSignature OnMoneyChangedDelegate;
 

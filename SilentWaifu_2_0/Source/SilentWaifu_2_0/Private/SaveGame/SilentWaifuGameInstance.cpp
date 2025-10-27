@@ -113,10 +113,12 @@ void USilentWaifuGameInstance::LoadPositions() const
 
 void USilentWaifuGameInstance::SavePositions()
 {
-	for (auto Position : GameMode->GetTakenPositions())
+	/*for (auto const Position : GameMode->GetTakenPositions())
 	{
-		SaveGameInstance->SaveTakenPositions(Position.Key, Position.Value);
-	}
+		UE_LOG(LogTemp, Warning, TEXT("Save Position:%i, value: %i"), Position.Key, Position.Value);
+		//SaveGameInstance->SaveTakenPositions(Position.Key, Position.Value);
+	}*/
+	SaveGameInstance->SaveTakenPositions(GameMode->GetTakenPositions());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 

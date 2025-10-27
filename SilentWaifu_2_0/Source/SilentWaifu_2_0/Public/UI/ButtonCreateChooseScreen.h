@@ -22,8 +22,6 @@ public:
 
 	int GetSpawnPosition() const;
 
-	//void HandleButtonState(const bool IsCharacterSpawned);
-	
 protected:
 
 	UPROPERTY(EditAnywhere)
