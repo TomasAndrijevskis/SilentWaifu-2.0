@@ -29,11 +29,11 @@ void UButtonCreateChooseScreen::CreateChooseScreen()
 	}
 }
 
-
+/*
 void UButtonCreateChooseScreen::HandleButtonState(const bool IsCharacterSpawned)
 {
 	Button_CreateChooseScreen->SetIsEnabled(!IsCharacterSpawned);
-}
+}*/
 
 
 

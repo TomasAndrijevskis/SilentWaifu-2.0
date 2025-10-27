@@ -22,7 +22,7 @@ public:
 
 	int GetSpawnPosition() const;
 
-	void HandleButtonState(const bool IsCharacterSpawned);
+	//void HandleButtonState(const bool IsCharacterSpawned);
 	
 protected:
 

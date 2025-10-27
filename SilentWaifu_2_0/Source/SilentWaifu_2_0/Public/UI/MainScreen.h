@@ -68,7 +68,11 @@ private:
 
 	void CreateSlots();
 
-	void CreateButtons();
+	UButtonCreateChooseScreen* CreateButton(const int SpawnPosition) const;
+
+	UCharacterCardMainScreen* CreateCharacterCard(const int SpawnPosition) const;
+	
+	void FillSlots();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

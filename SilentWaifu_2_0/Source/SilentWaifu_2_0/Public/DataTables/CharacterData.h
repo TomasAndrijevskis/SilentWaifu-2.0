@@ -17,6 +17,9 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 	TSubclassOf<ACharacterTemplate> CharacterClass;
 
 	UPROPERTY(EditDefaultsOnly)
-	UTexture2D* Image;
+	UTexture2D* CardImage;
+
+	UPROPERTY(EditDefaultsOnly)
+	UTexture2D* MainScreenImage;
 	
 };

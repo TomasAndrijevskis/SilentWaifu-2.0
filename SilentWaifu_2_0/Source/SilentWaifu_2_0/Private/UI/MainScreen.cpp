@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
-
+#include "UI/CharacterCardMainScreen.h"
 
 void UMainScreen::NativeConstruct()
 {
@@ -78,23 +78,54 @@ void UMainScreen::CreateSlots()
 			HBSlot->SetSize( FSlateChildSize(ESlateSizeRule::Fill));
 		}
 	}
-	CreateButtons();
+	FillSlots();
 }
 
 
-void UMainScreen::CreateButtons()
+void UMainScreen::FillSlots()
 {
-	int i = 0;
+	int SlotNumber = 0;
 	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
-		UButtonCreateChooseScreen* Button = CreateWidget<UButtonCreateChooseScreen>(GetWorld(), WidgetReferences->ButtonCreateChooseScreenClass);
-		Button->SetSpawnPosition(i);
-		bool IsSpawned = GameMode->GetTakenPositions().FindRef(i);
-		UE_LOG(LogTemp, Warning, TEXT("Button Spawned: %i"), IsSpawned);
-		Button->HandleButtonState(IsSpawned);
-		Cast<UVerticalBox>(CharacterSlot)->AddChild(Button);
-		i++;
+		bool IsSpawned = GameMode->GetTakenPositions().FindRef(SlotNumber);
+		if (!IsSpawned)
+		{
+			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
+		}
+		else
+		{
+			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateCharacterCard(SlotNumber));
+		}
+		SlotNumber++;
 	}
+}
+
+
+UButtonCreateChooseScreen* UMainScreen::CreateButton(const int SpawnPosition) const
+{
+	UButtonCreateChooseScreen* Button = CreateWidget<UButtonCreateChooseScreen>(GetWorld(), WidgetReferences->ButtonCreateChooseScreenClass);
+	if (!Button) return nullptr;
+	Button->SetSpawnPosition(SpawnPosition);
+	return Button;
+}
+
+
+UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPosition) const
+{
+	UCharacterCardMainScreen* CharacterCard = CreateWidget<UCharacterCardMainScreen>(GetWorld(), WidgetReferences->CharacterCardMainScreenClass);
+	if (!CharacterCard) return nullptr;
+
+	int CharacterId = -1;
+	for (const auto Character : GameMode->GetAvailableCharacters())
+	{
+		if (Character.Value.Position == SpawnPosition)
+		{
+			CharacterId = Character.Value.CharacterId;
+			break;
+		}
+	}
+	CharacterCard->CreateCard(CharacterId);
+	return CharacterCard;
 }
 
 

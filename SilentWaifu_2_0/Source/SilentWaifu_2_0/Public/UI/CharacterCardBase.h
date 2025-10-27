@@ -23,7 +23,7 @@ public:
 	
 	virtual void NativeConstruct() override;
 	
-	void CreateCard(const int Id);
+	virtual void CreateCard(const int Id);
 
 protected:
 	
@@ -38,14 +38,14 @@ protected:
 	UPROPERTY(EditAnywhere)
 	ASilentWaifuGameMode* GameMode;
 
+	UPROPERTY(EditAnywhere)
+	UDataTable* CharacterDataTable;
+	
 	int CharacterId;
 
 private:
 
 	UPROPERTY(meta = (BindWidget))
 	UBorder* Border_Padding;
-
-	UPROPERTY(EditAnywhere)
-	UDataTable* CharacterDataTable;
 	
 };
