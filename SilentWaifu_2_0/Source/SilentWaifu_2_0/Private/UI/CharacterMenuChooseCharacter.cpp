@@ -12,7 +12,7 @@
 void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-	for (const auto Character : GameMode->GetAvailableCharacters())
+	for (const auto Character : GameMode->GetSortedCharacters())
 	{
 		if (WidgetReferences->ChooseCharacterCardClass)
 		{

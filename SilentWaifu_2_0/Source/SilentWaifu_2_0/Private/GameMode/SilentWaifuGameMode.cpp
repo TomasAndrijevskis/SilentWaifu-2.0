@@ -99,7 +99,14 @@ void ASilentWaifuGameMode::RemoveCharacter(const int CharacterId)
 
 void ASilentWaifuGameMode::IncreaseMoney(const int Money)
 {
-	CurrentMoney += Money;
+	if (CurrentMoney + Money < MaxMoney)
+	{
+		CurrentMoney += Money;
+	}
+	else
+	{
+		CurrentMoney = MaxMoney;
+	}
 	OnMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
@@ -121,18 +128,20 @@ bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
 }
 
 
-void ASilentWaifuGameMode::SortCharactersById()
+void ASilentWaifuGameMode::IncreaseMoneyLimit(const int NewMaxMoney)
+{
+	MaxMoney = NewMaxMoney;
+}
+
+
+TArray<TPair<int, FSavedCharactersData>> ASilentWaifuGameMode::GetSortedCharacters() const
 {
 	TArray<TPair<int, FSavedCharactersData>> SortedCharacters = AvailableCharacters.Array();
-	SortedCharacters.Sort([](const TPair<int, FSavedCharactersData>& A, const TPair<int, FSavedCharactersData>& B)
+	SortedCharacters.Sort([](const auto& A, const auto& B)
 	{
 		return A.Value.CharacterId < B.Value.CharacterId;
 	});
-	AvailableCharacters.Empty();
-	for (const TPair<int, FSavedCharactersData>& Elem : SortedCharacters)
-	{
-		AddAvailableCharacter(Elem.Key, Elem.Value);
-	}
+	return SortedCharacters;
 }
 
 
@@ -142,14 +151,13 @@ void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
 }
 
 
-
 void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedCharactersData& Data)
 {
 	AvailableCharacters.Add(Key, Data);
 }
 
 
-TMap<int, FSavedCharactersData> ASilentWaifuGameMode::GetAvailableCharacters() const
+TMap<int, FSavedCharactersData>& ASilentWaifuGameMode::GetAvailableCharacters()
 {
 	return AvailableCharacters;
 }

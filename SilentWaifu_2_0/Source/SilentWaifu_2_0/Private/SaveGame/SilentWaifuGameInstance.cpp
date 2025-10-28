@@ -74,6 +74,7 @@ void USilentWaifuGameInstance::SaveCharacters()
 {
 	for (auto Character : GameMode->GetAvailableCharacters())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Character saved: %i"), Character.Key);
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
 	}
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);

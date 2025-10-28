@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterMenuShop;
 class UCharacterCardMainScreen;
 class UButtonCreateChooseScreen;
 class UCharacterCardStorage;
@@ -68,5 +69,12 @@ public:
 
 	UPROPERTY()
 	UCharacterCardMainScreen* CharacterCardMainScreenRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterMenuShop> CharacterMenuShopClass;
+
+	UPROPERTY()
+	UCharacterMenuShop* CharacterMenuShopRef;
 
 };

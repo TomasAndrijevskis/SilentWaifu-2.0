@@ -29,6 +29,8 @@ public:
 
 	bool HasEnoughMoney(const int Money) const;
 
+	void IncreaseMoneyLimit(const int NewMaxMoney);
+	
 	UFUNCTION()
 	void SpawnCharacters();
 
@@ -39,15 +41,14 @@ public:
 	
 	UFUNCTION()
 	void AddAvailableCharacter(const int Key, const FSavedCharactersData& Data);
-
-	UFUNCTION()
-	void SortCharactersById();
-
+	
+	TArray<TPair<int, FSavedCharactersData>> GetSortedCharacters() const;
+	
 	void SetCurrentSpawnPosition(const int NewSpawnPosition);
 	
 	void AddTakenPosition(const int Key, const bool Value);
 	
-	TMap<int, FSavedCharactersData> GetAvailableCharacters() const;
+	TMap<int, FSavedCharactersData>& GetAvailableCharacters();
 
 	TMap<int, bool>& GetTakenPositions();
 	
@@ -83,6 +84,9 @@ private:
 	
 	UPROPERTY()
 	int CurrentMoney = 0;
+
+	UPROPERTY()
+	int MaxMoney = 100;
 
 	int CurrentSpawnPosition = -1;
 };
