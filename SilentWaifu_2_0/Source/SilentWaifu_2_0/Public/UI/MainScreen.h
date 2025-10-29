@@ -58,6 +58,9 @@ private:
 	UButton* Button_Storage;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Shop;
+	
+	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;
 	
 	UFUNCTION()
@@ -65,6 +68,12 @@ private:
 
 	UFUNCTION()
 	void RemoveStorage();
+
+	UFUNCTION()
+	void CreateShop();
+
+	UFUNCTION()
+	void RemoveShop();
 	
 	void HandleBlur(const float BlurStrength);
 

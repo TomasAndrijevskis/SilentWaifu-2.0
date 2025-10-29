@@ -11,6 +11,7 @@
 #include "UI/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
 #include "UI/CharacterCardMainScreen.h"
+#include "UI/CharacterMenuShop.h"
 
 void UMainScreen::NativeConstruct()
 {
@@ -19,6 +20,7 @@ void UMainScreen::NativeConstruct()
 	if (!GameMode) return;
 	GameMode->OnMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
+	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
@@ -50,6 +52,29 @@ void UMainScreen::RemoveStorage()
 	{
 		WidgetReferences->StorageScreenRef->RemoveFromParent();
 		WidgetReferences->StorageScreenRef = nullptr;
+		OnWindowStateChangedDelegate.Broadcast(true);
+	}
+}
+
+
+void UMainScreen::CreateShop()
+{
+	if (WidgetReferences->ShopScreenClass)
+	{
+		WidgetReferences->ShopScreenRef = Cast<UCharacterMenuShop>(CreateWidget(GetWorld(), WidgetReferences->ShopScreenClass));
+		WidgetReferences->ShopScreenRef->AddToViewport(1);
+		WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);
+		OnWindowStateChangedDelegate.Broadcast(false);
+	}
+}
+
+
+void UMainScreen::RemoveShop()
+{
+	if (WidgetReferences->ShopScreenRef)
+	{
+		WidgetReferences->ShopScreenRef->RemoveFromParent();
+		WidgetReferences->ShopScreenRef = nullptr;
 		OnWindowStateChangedDelegate.Broadcast(true);
 	}
 }

@@ -72,9 +72,9 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCharacterMenuShop> CharacterMenuShopClass;
+	TSubclassOf<UCharacterMenuShop> ShopScreenClass;
 
 	UPROPERTY()
-	UCharacterMenuShop* CharacterMenuShopRef;
+	UCharacterMenuShop* ShopScreenRef;
 
 };
