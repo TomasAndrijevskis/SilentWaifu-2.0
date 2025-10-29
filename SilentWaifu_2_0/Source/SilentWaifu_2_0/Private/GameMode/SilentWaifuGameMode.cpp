@@ -25,7 +25,8 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	CreateMainScreenWidget();
 	SetInputSettings();
 	GameInstance->LoadMoney();
-	OnMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMoney);
+	OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
+	OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
 }
 
 
@@ -107,14 +108,14 @@ void ASilentWaifuGameMode::IncreaseMoney(const int Money)
 	{
 		CurrentMoney = MaxMoney;
 	}
-	OnMoneyChangedDelegate.Broadcast(CurrentMoney);
+	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
 
 void ASilentWaifuGameMode::DecreaseMoney(const int Money)
 {
 	CurrentMoney -= Money;
-	OnMoneyChangedDelegate.Broadcast(CurrentMoney);
+	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
 
@@ -128,9 +129,17 @@ bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
 }
 
 
-void ASilentWaifuGameMode::IncreaseMoneyLimit(const int NewMaxMoney)
+void ASilentWaifuGameMode::IncreaseMoneyLimit()
+{
+	MaxMoney += 200;
+	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
+}
+
+
+void ASilentWaifuGameMode::SetMaxMoney(const int NewMaxMoney)
 {
 	MaxMoney = NewMaxMoney;
+	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
 }
 
 

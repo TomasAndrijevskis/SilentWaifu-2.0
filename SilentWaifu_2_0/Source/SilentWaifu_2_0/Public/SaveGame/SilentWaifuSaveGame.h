@@ -15,10 +15,16 @@ class SILENTWAIFU_2_0_API USilentWaifuSaveGame : public USaveGame
 public:
 	
 	UFUNCTION()
-	void SetMoney(int const NewMoney);
+	void SaveCurrentMoney(int const NewCurrentMoney);
 
 	UFUNCTION()
-	int GetMoney() const;
+	void SaveMaxMoney(int const NewMaxMoney);
+
+	UFUNCTION()
+	int GetCurrentMoney() const;
+
+	UFUNCTION()
+	int GetMaxMoney() const;
 
 	UFUNCTION()
 	void SaveCharacter(const int Key, const FSavedCharactersData& Data);
@@ -36,6 +42,9 @@ private:
 	
 	UPROPERTY()
 	int CurrentMoney;
+
+	UPROPERTY()
+	int MaxMoney;
 
 	UPROPERTY()
 	TMap<int, FSavedCharactersData> SavedCharacters;

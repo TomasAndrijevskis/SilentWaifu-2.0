@@ -27,7 +27,10 @@ public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-	void UpdateMoney(int const Money);
+	void UpdateCurrentMoney(int const Money);
+
+	UFUNCTION()
+	void UpdateMaxMoney(int const Money);
 
 	FOnWindowStateChangedSignature OnWindowStateChangedDelegate;
 
@@ -55,10 +58,16 @@ private:
 	UTextBlock* Text_CurrentMoney;
 
 	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_MaxMoney;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Storage;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Shop;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_IncreaseMoneyLimit;
 	
 	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;

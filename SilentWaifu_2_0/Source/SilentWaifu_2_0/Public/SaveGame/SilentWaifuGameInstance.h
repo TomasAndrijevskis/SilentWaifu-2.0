@@ -24,7 +24,10 @@ public:
 	virtual void Shutdown() override;
 	
 	UFUNCTION()
-	void SaveMoney(int const Money);
+	void SaveCurrentMoney(int const CurrentMoney);
+
+	UFUNCTION()
+	void SaveMaxMoney(int const MaxMoney);
 
 	void LoadMoney() const;
 

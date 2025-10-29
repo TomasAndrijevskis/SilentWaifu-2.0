@@ -2,15 +2,27 @@
 #include "SaveGame/SilentWaifuSaveGame.h"
 
 
-void USilentWaifuSaveGame::SetMoney(int const NewMoney)
+void USilentWaifuSaveGame::SaveCurrentMoney(int const NewCurrentMoney)
 {
-	CurrentMoney = NewMoney;
+	CurrentMoney = NewCurrentMoney;
 }
 
 
-int USilentWaifuSaveGame::GetMoney() const
+void USilentWaifuSaveGame::SaveMaxMoney(int const NewMaxMoney)
+{
+	MaxMoney = NewMaxMoney;
+}
+
+
+int USilentWaifuSaveGame::GetCurrentMoney() const
 {
 	return CurrentMoney;
+}
+
+
+int USilentWaifuSaveGame::GetMaxMoney() const
+{
+	return MaxMoney;
 }
 
 

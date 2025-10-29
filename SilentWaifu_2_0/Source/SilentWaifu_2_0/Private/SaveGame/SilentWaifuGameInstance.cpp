@@ -32,6 +32,7 @@ void USilentWaifuGameInstance::HandleSaveGame()
 		Data.bIsOnScreen = false;
 		Data.CharacterId = 1;
 		SaveFirstCharacter(1, Data);
+		SaveMaxMoney(100);
 		UE_LOG(LogTemp, Warning, TEXT("First character saved"));
 	}
 }
@@ -88,9 +89,16 @@ void USilentWaifuGameInstance::SetGameMode(AGameModeBase* NewGameMode)
 }
 
 
-void USilentWaifuGameInstance::SaveMoney(int const Money)
+void USilentWaifuGameInstance::SaveCurrentMoney(int const CurrentMoney)
 {
-	SaveGameInstance->SetMoney(Money);
+	SaveGameInstance->SaveCurrentMoney(CurrentMoney);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
+{
+	SaveGameInstance->SaveMaxMoney(MaxMoney);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
@@ -98,7 +106,8 @@ void USilentWaifuGameInstance::SaveMoney(int const Money)
 void USilentWaifuGameInstance::LoadMoney() const
 {
 	if (!GameMode) return;
-	GameMode->IncreaseMoney(SaveGameInstance->GetMoney());
+	GameMode->SetMaxMoney(SaveGameInstance->GetMaxMoney());
+	GameMode->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
 
 

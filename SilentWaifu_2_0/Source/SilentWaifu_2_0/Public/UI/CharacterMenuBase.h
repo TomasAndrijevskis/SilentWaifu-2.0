@@ -5,6 +5,8 @@
 #include "Blueprint/UserWidget.h"
 #include "CharacterMenuBase.generated.h"
 
+class UVerticalBox;
+class USizeBox;
 class UBorder;
 class UTextBlock;
 class UHorizontalBox;
@@ -46,12 +48,15 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UScrollBox* ScrollBox;
+
+	UPROPERTY(meta = (BindWidget))
+	UVerticalBox* VerticalBox_Content;
 	
-	//UPROPERTY(meta=(BindWidget))
-	//UHorizontalBox* HorizontalBox_Header;
+	UPROPERTY(meta = (BindWidget))
+	USizeBox* SizeBox;
 
 	UPROPERTY(meta=(BindWidget))
-	UBorder* Border_Screen;
+	UBorder* Border_ScreenBorder;
 
 	UPROPERTY(meta=(BindWidget))
 	UBorder* Border;

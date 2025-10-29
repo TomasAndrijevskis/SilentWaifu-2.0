@@ -12,7 +12,8 @@ class UMainScreen;
 class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChangedSignature, const int, Money);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentMoneyChangedSignature, const int, Money);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
 UCLASS()
@@ -29,7 +30,10 @@ public:
 
 	bool HasEnoughMoney(const int Money) const;
 
-	void IncreaseMoneyLimit(const int NewMaxMoney);
+	UFUNCTION()
+	void IncreaseMoneyLimit();
+
+	void SetMaxMoney(const int NewMaxMoney);
 	
 	UFUNCTION()
 	void SpawnCharacters();
@@ -52,8 +56,10 @@ public:
 
 	TMap<int, bool>& GetTakenPositions();
 	
-	FOnMoneyChangedSignature OnMoneyChangedDelegate;
+	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
+	FOnMaxMoneyChangedSignature OnMaxMoneyChangedDelegate;
+	
 	FOnCharacterAddedSignature OnCharacterAddedDelegate;
 
 	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
@@ -86,7 +92,7 @@ private:
 	int CurrentMoney = 0;
 
 	UPROPERTY()
-	int MaxMoney = 100;
+	int MaxMoney;
 
 	int CurrentSpawnPosition = -1;
 };

@@ -18,9 +18,11 @@ void UMainScreen::NativeConstruct()
 	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	if (!GameMode) return;
-	GameMode->OnMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMoney);
+	GameMode->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
+	GameMode->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
+	Button_IncreaseMoneyLimit->OnClicked.AddDynamic(GameMode, &ASilentWaifuGameMode::IncreaseMoneyLimit);
 	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
@@ -28,9 +30,15 @@ void UMainScreen::NativeConstruct()
 }
 
 
-void UMainScreen::UpdateMoney(int const Money)
+void UMainScreen::UpdateCurrentMoney(int const Money)
 {
 	Text_CurrentMoney->SetText(FText::FromString(FString::FromInt(Money)));
+}
+
+
+void UMainScreen::UpdateMaxMoney(int const Money)
+{
+	Text_MaxMoney->SetText(FText::FromString(FString::FromInt(Money)));
 }
 
 
