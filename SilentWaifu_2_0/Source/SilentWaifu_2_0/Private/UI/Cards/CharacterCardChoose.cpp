@@ -1,16 +1,21 @@
 
-#include "UI/CharacterCardStorage.h"
+#include "UI/Cards/CharacterCardChoose.h"
 #include "Components/Button.h"
+#include "GameMode/SilentWaifuGameMode.h"
 
 
-void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
+void UCharacterCardChoose::NativeConstruct()
 {
-	if (!NewImage)
-	{
-		return;
-	}
-	FButtonStyle CustomStyle;
+	Super::NativeConstruct();
+	Button_Character->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
+}
 
+
+void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
+{
+	if (!NewImage) return;
+	
+	FButtonStyle CustomStyle;
 	// Normal Brush (Image)
 	FSlateBrush NormalBrush;
 	NormalBrush.SetResourceObject(NewImage);
@@ -21,9 +26,10 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 	// Hovered Brush
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::RoundedBox;
+	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
+	HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.7f)); 
 	
 	// Disabled Brush
 	FSlateBrush DisabledBrush;
@@ -40,9 +46,20 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Character->SetStyle(CustomStyle);
+	HandleCardState();
 }
 
-void UCharacterCardStorage::Action()
+
+void UCharacterCardChoose::HandleCardState()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
+	FSavedCharactersData* Data = GameMode->GetAvailableCharacters().Find(CharacterId);
+	Button_Character->SetIsEnabled(!Data->bIsOnScreen);
 }
+
+
+void UCharacterCardChoose::Action()
+{
+	GameMode->SpawnCharacter(CharacterId);
+}
+
+

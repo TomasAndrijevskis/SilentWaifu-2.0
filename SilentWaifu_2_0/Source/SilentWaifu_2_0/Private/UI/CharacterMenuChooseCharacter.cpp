@@ -3,10 +3,9 @@
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "UI/CharacterCardBase.h"
-#include "UI/CharacterCardChoose.h"
 #include "UI/MainScreen.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Cards/CharacterCardChoose.h"
 
 
 void UCharacterMenuChooseCharacter::CreateCharacterMenu()

@@ -19,4 +19,11 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UHorizontalBox* HorizontalBox_Shop;
+
+	int GetCharactersCount() const;
+
+	TArray<int> GetRandomCharacters() const;
+	
+	UPROPERTY(EditAnywhere)
+	UDataTable* CharacterDataTable;
 };

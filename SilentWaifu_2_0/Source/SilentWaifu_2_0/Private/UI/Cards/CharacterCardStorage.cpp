@@ -1,22 +1,9 @@
 
-#include "UI/CharacterCardMainScreen.h"
+#include "UI/Cards/CharacterCardStorage.h"
 #include "Components/Button.h"
-#include "DataTables/CharacterData.h"
-#include "GameMode/SilentWaifuGameMode.h"
 
 
-void UCharacterCardMainScreen::CreateCard(const int Id)
-{
-	if (!CharacterDataTable) return;
-	const FName RowName = FName(*FString::FromInt(Id));
-	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
-	if (!CharacterRow)	return;
-	CharacterId = CharacterRow->CharacterId;
-	SetImage(CharacterRow->MainScreenImage);
-}
-
-
-void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
+void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage)
 	{
@@ -55,8 +42,7 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 	Button_Character->SetStyle(CustomStyle);
 }
 
-
-void UCharacterCardMainScreen::Action()
+void UCharacterCardStorage::Action()
 {
-	GameMode->RemoveCharacter(CharacterId);
+	//UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
 }

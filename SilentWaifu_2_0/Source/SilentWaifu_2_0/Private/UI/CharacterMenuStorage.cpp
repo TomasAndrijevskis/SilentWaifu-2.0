@@ -2,9 +2,8 @@
 #include "UI/CharacterMenuStorage.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "UI/CharacterCardBase.h"
-#include "UI/CharacterCardStorage.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Cards/CharacterCardStorage.h"
 
 
 void UCharacterMenuStorage::CreateCharacterMenu()

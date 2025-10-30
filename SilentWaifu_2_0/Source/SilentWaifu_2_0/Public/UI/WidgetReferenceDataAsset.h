@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterCardShop;
 class UCharacterMenuShop;
 class UCharacterCardMainScreen;
 class UButtonCreateChooseScreen;
@@ -41,6 +42,21 @@ public:
 	
 	UPROPERTY()
 	UCharacterMenuChooseCharacter* ChooseScreenRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterMenuShop> ShopScreenClass;
+
+	UPROPERTY()
+	UCharacterMenuShop* ShopScreenRef;
+
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterCardMainScreen> CharacterCardMainScreenClass;
+
+	UPROPERTY()
+	UCharacterCardMainScreen* CharacterCardMainScreenRef;
 	
 
 	UPROPERTY(EditDefaultsOnly)
@@ -56,25 +72,20 @@ public:
 	UPROPERTY()
 	UCharacterCardBase* StorageCharacterCardRef;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterCardShop> ShopCharacterCardClass;
+
+	UPROPERTY()
+	UCharacterCardShop* ShopCharacterCardRef;
+
+
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UButtonCreateChooseScreen> ButtonCreateChooseScreenClass;
 
 	UPROPERTY()
 	UButtonCreateChooseScreen* ButtonCreateChooseScreenRef;
-
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCharacterCardMainScreen> CharacterCardMainScreenClass;
-
-	UPROPERTY()
-	UCharacterCardMainScreen* CharacterCardMainScreenRef;
-
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCharacterMenuShop> ShopScreenClass;
-
-	UPROPERTY()
-	UCharacterMenuShop* ShopScreenRef;
+	
 
 };

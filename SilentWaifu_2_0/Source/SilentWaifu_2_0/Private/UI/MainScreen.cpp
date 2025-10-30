@@ -10,8 +10,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
-#include "UI/CharacterCardMainScreen.h"
+#include "UI/Cards/CharacterCardMainScreen.h"
 #include "UI/CharacterMenuShop.h"
+
 
 void UMainScreen::NativeConstruct()
 {

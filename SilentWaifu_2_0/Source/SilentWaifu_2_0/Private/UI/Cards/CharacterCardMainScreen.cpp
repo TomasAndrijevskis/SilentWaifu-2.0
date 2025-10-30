@@ -1,21 +1,29 @@
 
-#include "UI/CharacterCardChoose.h"
+#include "UI/Cards/CharacterCardMainScreen.h"
 #include "Components/Button.h"
+#include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
 
 
-void UCharacterCardChoose::NativeConstruct()
+void UCharacterCardMainScreen::CreateCard(const int Id)
 {
-	Super::NativeConstruct();
-	Button_Character->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
+	if (!CharacterDataTable) return;
+	const FName RowName = FName(*FString::FromInt(Id));
+	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
+	if (!CharacterRow)	return;
+	CharacterId = CharacterRow->CharacterId;
+	SetImage(CharacterRow->MainScreenImage);
 }
 
 
-void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
+void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 {
-	if (!NewImage) return;
-	
+	if (!NewImage)
+	{
+		return;
+	}
 	FButtonStyle CustomStyle;
+
 	// Normal Brush (Image)
 	FSlateBrush NormalBrush;
 	NormalBrush.SetResourceObject(NewImage);
@@ -26,10 +34,9 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 	// Hovered Brush
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
+	HoveredBrush.DrawAs = ESlateBrushDrawType::RoundedBox;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
-	HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.7f)); 
 	
 	// Disabled Brush
 	FSlateBrush DisabledBrush;
@@ -46,20 +53,10 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Character->SetStyle(CustomStyle);
-	HandleCardState();
 }
 
 
-void UCharacterCardChoose::HandleCardState()
+void UCharacterCardMainScreen::Action()
 {
-	FSavedCharactersData* Data = GameMode->GetAvailableCharacters().Find(CharacterId);
-	Button_Character->SetIsEnabled(!Data->bIsOnScreen);
+	GameMode->RemoveCharacter(CharacterId);
 }
-
-
-void UCharacterCardChoose::Action()
-{
-	GameMode->SpawnCharacter(CharacterId);
-}
-
-

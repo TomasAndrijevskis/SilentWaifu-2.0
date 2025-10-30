@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/CharacterCardBase.h"
+#include "CharacterCardBase.h"
 #include "CharacterCardMainScreen.generated.h"
 
 

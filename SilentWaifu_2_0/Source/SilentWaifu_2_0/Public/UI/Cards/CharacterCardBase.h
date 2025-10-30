@@ -33,7 +33,7 @@ protected:
 	virtual void Action(){};
 	
 	UPROPERTY(EditDefaultsOnly)
-	FVector2D ImageSize = FVector2D(280, 420);
+	FVector2D ImageSize = FVector2D(340, 540);
 
 	UPROPERTY(EditAnywhere)
 	ASilentWaifuGameMode* GameMode;

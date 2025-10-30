@@ -1,5 +1,5 @@
 
-#include "UI/CharacterCardBase.h"
+#include "UI/Cards/CharacterCardBase.h"
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
