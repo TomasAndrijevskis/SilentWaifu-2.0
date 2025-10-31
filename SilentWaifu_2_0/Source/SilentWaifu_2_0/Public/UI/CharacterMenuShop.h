@@ -19,15 +19,15 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UHorizontalBox* HorizontalBox_Shop;
-
+	
 	int GetCharactersCount() const;
 
 	TArray<int> GetRandomCharacters() const;
 
-	void CreateSavedShop();
-
-	void CreateNewShop();
+	void CreateShop(TArray<int> Characters);
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
+
+	int AmountOfSlots = 5;
 };

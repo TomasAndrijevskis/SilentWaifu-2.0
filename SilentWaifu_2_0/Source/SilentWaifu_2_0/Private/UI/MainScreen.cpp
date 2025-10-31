@@ -70,6 +70,7 @@ void UMainScreen::CreateShop()
 {
 	if (WidgetReferences->ShopScreenClass)
 	{
+		UE_LOG(LogTemp, Error, TEXT("Creating Shop Screen"));
 		WidgetReferences->ShopScreenRef = Cast<UCharacterMenuShop>(CreateWidget(GetWorld(), WidgetReferences->ShopScreenClass));
 		WidgetReferences->ShopScreenRef->AddToViewport(1);
 		WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);

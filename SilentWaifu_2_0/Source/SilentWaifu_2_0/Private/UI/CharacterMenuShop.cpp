@@ -1,6 +1,7 @@
 
 #include "UI/CharacterMenuShop.h"
 #include "Components/HorizontalBox.h"
+#include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardShop.h"
@@ -9,7 +10,6 @@
 void UCharacterMenuShop::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-
 	if (WidgetReferences->ShopCharacterCardClass)
 	{
 		WidgetReferences->ShopCharacterCardRef = Cast<UCharacterCardShop>(CreateWidget(GetWorld(), WidgetReferences->ShopCharacterCardClass));
@@ -17,37 +17,28 @@ void UCharacterMenuShop::CreateCharacterMenu()
 		WidgetReferences->ShopCharacterCardRef->CreateLimitIncreaseCard();
 		if (GameMode->GetShopCharacters().IsEmpty())
 		{
-			CreateNewShop();
+			const TArray<int> CharacterIds = GetRandomCharacters();
+			CreateShop(CharacterIds);
+			GameMode->SetShopCharacters(CharacterIds);
 		}
 		else
 		{
-			CreateSavedShop();
+			CreateShop(GameMode->GetShopCharacters());
 		}
 	}
 }
 
 
-void UCharacterMenuShop::CreateSavedShop()
+void UCharacterMenuShop::CreateShop(TArray<int> Characters)
 {
-	for (const int CharacterId : GameMode->GetShopCharacters())
+	int i = 1;
+	for (const int CharacterId : Characters)
 	{
 		WidgetReferences->ShopCharacterCardRef = Cast<UCharacterCardShop>(CreateWidget(GetWorld(), WidgetReferences->ShopCharacterCardClass));
 		HorizontalBox_Shop->AddChild(WidgetReferences->ShopCharacterCardRef);
 		WidgetReferences->ShopCharacterCardRef->CreateCard(CharacterId);
+		i++;
 	}
-}
-
-
-void UCharacterMenuShop::CreateNewShop()
-{
-	const TArray<int> CharacterIds = GetRandomCharacters();
-	for (const int CharacterId : CharacterIds)
-	{
-		WidgetReferences->ShopCharacterCardRef = Cast<UCharacterCardShop>(CreateWidget(GetWorld(), WidgetReferences->ShopCharacterCardClass));
-		HorizontalBox_Shop->AddChild(WidgetReferences->ShopCharacterCardRef);
-		WidgetReferences->ShopCharacterCardRef->CreateCard(CharacterId);
-	}
-	GameMode->SetShopCharacters(CharacterIds);
 }
 
 

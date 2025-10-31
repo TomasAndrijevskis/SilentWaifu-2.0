@@ -51,9 +51,6 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UVerticalBox* VerticalBox_Content;
-	
-	UPROPERTY(meta = (BindWidget))
-	USizeBox* SizeBox;
 
 	UPROPERTY(meta=(BindWidget))
 	UBorder* Border_ScreenBorder;

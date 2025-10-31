@@ -30,4 +30,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UTexture2D* Image_LimitIncreaseImage;
+
+	void HandleCardState();
+	
 };
