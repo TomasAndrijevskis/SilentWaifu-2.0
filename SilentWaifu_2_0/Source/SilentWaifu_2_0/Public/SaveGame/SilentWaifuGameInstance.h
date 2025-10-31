@@ -39,6 +39,8 @@ public:
 
 	bool IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const;
 
+	bool IsCharacterUnlocked(const int CharacterId) const;
+	
 	void SaveShop();
 
 	void LoadShop() const;

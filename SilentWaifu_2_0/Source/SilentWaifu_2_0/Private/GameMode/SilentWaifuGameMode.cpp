@@ -169,6 +169,10 @@ void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedChar
 
 TMap<int, FSavedCharactersData>& ASilentWaifuGameMode::GetAvailableCharacters()
 {
+	/*for (auto ch : AvailableCharacters)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Character: %i"), ch.Value.CharacterId);
+	}*/
 	return AvailableCharacters;
 }
 

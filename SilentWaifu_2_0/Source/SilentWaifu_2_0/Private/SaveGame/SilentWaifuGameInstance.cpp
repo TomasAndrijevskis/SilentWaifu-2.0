@@ -54,6 +54,21 @@ bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterT
 }
 
 
+bool USilentWaifuGameInstance::IsCharacterUnlocked(const int CharacterId) const
+{
+	for (auto const Character : GameMode->GetAvailableCharacters())
+	{
+		if (Character.Value.CharacterId == CharacterId)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
+			return true;
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Character locked"));
+	return false;
+}
+
+
 void USilentWaifuGameInstance::LoadCharacters()
 {
 	if (!GameMode) return;

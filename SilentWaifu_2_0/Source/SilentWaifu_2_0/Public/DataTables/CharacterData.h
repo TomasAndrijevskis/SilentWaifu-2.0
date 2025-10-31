@@ -21,5 +21,8 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	UTexture2D* MainScreenImage;
+
+	UPROPERTY(EditDefaultsOnly)
+	int Price;
 	
 };

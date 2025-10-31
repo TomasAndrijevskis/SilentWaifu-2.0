@@ -3,11 +3,15 @@
 
 #include "CoreMinimal.h"
 #include "CharacterCardBase.h"
+#include "DataTables/CharacterData.h"
 #include "CharacterCardShop.generated.h"
 
 
+class USilentWaifuGameInstance;
 class UImage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardCreatedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUnlockedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UCharacterCardShop : public UCharacterCardBase
 {
@@ -15,7 +19,13 @@ class SILENTWAIFU_2_0_API UCharacterCardShop : public UCharacterCardBase
 
 public:
 
+	virtual void NativeConstruct() override;
+	
 	void CreateLimitIncreaseCard();
+
+	FOnCardCreatedSignature OnCardCreatedDelegate;
+	
+	FOnCharacterUnlockedSignature OnCharacterUnlockedDelegate;
 	
 protected:
 
@@ -31,6 +41,23 @@ private:
 	UPROPERTY(EditAnywhere)
 	UTexture2D* Image_LimitIncreaseImage;
 
-	void HandleCardState();
+	UFUNCTION()
+	void HandleState();
+
+	UFUNCTION()
+	void UnlockCharacter();
+
+	UFUNCTION()
+	void SetGameInstance();
 	
+	int GetCharacterPrice() const;
+
+	UFUNCTION()
+	void SetCharacterRow();
+	
+	const FCharacterData* CharacterRow;
+	
+	UPROPERTY()
+	USilentWaifuGameInstance* GameInstance;
+
 };
