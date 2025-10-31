@@ -37,6 +37,12 @@ public:
 
 	UFUNCTION()
 	void SaveTakenPositions(const TMap<int, bool>&  Positions);
+
+	UFUNCTION()
+	void SaveShop(const TArray<int>& NewShopCharacters);
+
+	UFUNCTION()
+	TArray<int> GetShop() const;
 	
 private:
 	
@@ -50,5 +56,8 @@ private:
 	TMap<int, FSavedCharactersData> SavedCharacters;
 
 	UPROPERTY()
-	TMap<int, bool>  TakenPositions;
+	TMap<int, bool> TakenPositions;
+
+	UPROPERTY()
+	TArray<int> ShopCharacters;
 };

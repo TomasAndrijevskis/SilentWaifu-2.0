@@ -23,6 +23,10 @@ private:
 	int GetCharactersCount() const;
 
 	TArray<int> GetRandomCharacters() const;
+
+	void CreateSavedShop();
+
+	void CreateNewShop();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;

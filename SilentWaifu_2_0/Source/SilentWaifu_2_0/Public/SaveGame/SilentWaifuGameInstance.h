@@ -38,6 +38,10 @@ public:
 	void SetGameMode(AGameModeBase* NewGameMode);
 
 	bool IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const;
+
+	void SaveShop();
+
+	void LoadShop() const;
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	

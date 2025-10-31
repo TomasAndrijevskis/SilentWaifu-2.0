@@ -49,3 +49,15 @@ void USilentWaifuSaveGame::SaveTakenPositions(const TMap<int, bool>&  Positions)
 	//TakenPositions.Add(Key, Value);
 	TakenPositions = Positions;
 }
+
+
+void USilentWaifuSaveGame::SaveShop(const TArray<int>& NewShopCharacters)
+{
+	ShopCharacters = NewShopCharacters;
+}
+
+
+TArray<int> USilentWaifuSaveGame::GetShop() const
+{
+	return ShopCharacters;
+}

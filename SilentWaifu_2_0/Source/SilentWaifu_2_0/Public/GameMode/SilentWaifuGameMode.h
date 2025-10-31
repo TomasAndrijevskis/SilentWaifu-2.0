@@ -55,6 +55,12 @@ public:
 	TMap<int, FSavedCharactersData>& GetAvailableCharacters();
 
 	TMap<int, bool>& GetTakenPositions();
+
+	UFUNCTION()
+	void SetShopCharacters(const TArray<int>& NewShopCharacters);
+
+	UFUNCTION()
+	TArray<int> GetShopCharacters() const;
 	
 	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
@@ -87,6 +93,9 @@ private:
 
 	UPROPERTY()
 	TMap<int, bool> TakenPositions;
+
+	UPROPERTY()
+	TArray<int> ShopCharacters;
 	
 	UPROPERTY()
 	int CurrentMoney = 0;

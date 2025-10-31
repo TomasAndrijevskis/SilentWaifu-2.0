@@ -17,6 +17,7 @@ void USilentWaifuGameInstance::Shutdown()
 {
 	SavePositions();
 	SaveCharacters();
+	SaveShop();
 	Super::Shutdown();
 }
 
@@ -123,12 +124,19 @@ void USilentWaifuGameInstance::LoadPositions() const
 
 void USilentWaifuGameInstance::SavePositions()
 {
-	/*for (auto const Position : GameMode->GetTakenPositions())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Save Position:%i, value: %i"), Position.Key, Position.Value);
-		//SaveGameInstance->SaveTakenPositions(Position.Key, Position.Value);
-	}*/
 	SaveGameInstance->SaveTakenPositions(GameMode->GetTakenPositions());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
+
+void USilentWaifuGameInstance::SaveShop()
+{
+	SaveGameInstance->SaveShop(GameMode->GetShopCharacters());
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::LoadShop() const
+{
+	GameMode->SetShopCharacters(SaveGameInstance->GetShop());
+}

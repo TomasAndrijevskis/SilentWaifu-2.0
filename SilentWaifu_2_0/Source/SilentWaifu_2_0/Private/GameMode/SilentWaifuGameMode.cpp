@@ -25,6 +25,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	CreateMainScreenWidget();
 	SetInputSettings();
 	GameInstance->LoadMoney();
+	GameInstance->LoadShop();
 	OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
 }
@@ -181,4 +182,16 @@ TMap<int, bool>& ASilentWaifuGameMode::GetTakenPositions()
 void ASilentWaifuGameMode::SetCurrentSpawnPosition(const int NewSpawnPosition)
 {
 	CurrentSpawnPosition = NewSpawnPosition;
+}
+
+
+void ASilentWaifuGameMode::SetShopCharacters(const TArray<int>& NewShopCharacters)
+{
+	ShopCharacters = NewShopCharacters;
+}
+
+
+TArray<int> ASilentWaifuGameMode::GetShopCharacters() const
+{
+	return ShopCharacters;
 }
