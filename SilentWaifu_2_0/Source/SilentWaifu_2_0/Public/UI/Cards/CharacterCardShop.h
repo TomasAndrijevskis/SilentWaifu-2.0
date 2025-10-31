@@ -2,26 +2,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterCardBase.h"
+#include "CardBase.h"
 #include "DataTables/CharacterData.h"
 #include "CharacterCardShop.generated.h"
 
 
+class UTextBlock;
 class USilentWaifuGameInstance;
 class UImage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardCreatedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUnlockedSignature);
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterCardShop : public UCharacterCardBase
+class SILENTWAIFU_2_0_API UCharacterCardShop : public UCardBase
 {
 	GENERATED_BODY()
 
 public:
 
 	virtual void NativeConstruct() override;
-	
-	void CreateLimitIncreaseCard();
 
 	FOnCardCreatedSignature OnCardCreatedDelegate;
 	
@@ -36,11 +35,11 @@ protected:
 private:
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* Image_CardImage;
+	UButton* Button_CharacterImage;
 
-	UPROPERTY(EditAnywhere)
-	UTexture2D* Image_LimitIncreaseImage;
-
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_Price;
+	
 	UFUNCTION()
 	void HandleState();
 
@@ -54,6 +53,9 @@ private:
 
 	UFUNCTION()
 	void SetCharacterRow();
+
+	UFUNCTION()
+	void SetPriceText();
 	
 	const FCharacterData* CharacterRow;
 	

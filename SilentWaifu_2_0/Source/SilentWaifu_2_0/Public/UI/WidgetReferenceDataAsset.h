@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class ULimitIncreaseCard;
 class UCharacterCardShop;
 class UCharacterMenuShop;
 class UCharacterCardMainScreen;
@@ -12,7 +13,7 @@ class UButtonCreateChooseScreen;
 class UCharacterCardStorage;
 class UCharacterCardChoose;
 class UCharacterMenuChooseCharacter;
-class UCharacterCardBase;
+class UCardBase;
 class UCharacterMenuStorage;
 class UMainScreen;
 
@@ -70,7 +71,7 @@ public:
 	TSubclassOf<UCharacterCardStorage> StorageCharacterCardClass;
 
 	UPROPERTY()
-	UCharacterCardBase* StorageCharacterCardRef;
+	UCardBase* StorageCharacterCardRef;
 
 
 	UPROPERTY(EditDefaultsOnly)
@@ -78,6 +79,13 @@ public:
 
 	UPROPERTY()
 	UCharacterCardShop* ShopCharacterCardRef;
+
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ULimitIncreaseCard> LimitIncreaseCardClass;
+
+	UPROPERTY()
+	ULimitIncreaseCard* LimitIncreaseCardRef;
 
 
 	

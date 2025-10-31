@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CharacterCardBase.generated.h"
+#include "CardBase.generated.h"
 
 
 class ACharacterTemplate;
@@ -12,14 +12,14 @@ class UBorder;
 class UButton;
 
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterCardBase : public UUserWidget
+class SILENTWAIFU_2_0_API UCardBase : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
 
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Character;
+	UButton* Button_Action;
 	
 	virtual void NativeConstruct() override;
 	

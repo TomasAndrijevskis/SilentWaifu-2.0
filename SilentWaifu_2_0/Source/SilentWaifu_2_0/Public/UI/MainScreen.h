@@ -65,9 +65,6 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Shop;
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_IncreaseMoneyLimit;
 	
 	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;

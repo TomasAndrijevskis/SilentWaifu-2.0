@@ -2,6 +2,7 @@
 #include "UI/Cards/CharacterCardShop.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,21 +15,38 @@ void UCharacterCardShop::NativeConstruct()
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetGameInstance);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetCharacterRow);
+	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetPriceText);
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
-}
-
-
-void UCharacterCardShop::CreateLimitIncreaseCard()
-{
-	SetImage(Image_LimitIncreaseImage);
 }
 
 
 void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
-	Image_CardImage->SetDesiredSizeOverride(ImageSize);
-	Image_CardImage->SetBrushFromTexture(NewImage);
+
+	FButtonStyle CustomStyle;
+	// Normal Brush (Image)
+	FSlateBrush NormalBrush;
+	NormalBrush.SetResourceObject(NewImage);
+	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
+	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
+	NormalBrush.ImageSize = ImageSize;
+	
+	// Disabled Brush
+	FSlateBrush DisabledBrush;
+	DisabledBrush.SetResourceObject(NewImage);
+	DisabledBrush.DrawAs = ESlateBrushDrawType::Image;
+	DisabledBrush.Tiling = ESlateBrushTileType::NoTile;
+	DisabledBrush.ImageSize = ImageSize;
+	DisabledBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.3f)); 
+	
+	// Apply Brushes
+	CustomStyle.SetNormal(NormalBrush);
+	CustomStyle.SetHovered(NormalBrush);
+	CustomStyle.SetDisabled(DisabledBrush);
+	CustomStyle.SetPressed(NormalBrush);
+	
+	Button_CharacterImage->SetStyle(CustomStyle);
 	OnCardCreatedDelegate.Broadcast();
 }
 
@@ -42,7 +60,8 @@ void UCharacterCardShop::Action()
 void UCharacterCardShop::HandleState()
 {
 	if (!GameInstance) return;
-	Button_Character->SetIsEnabled(!GameInstance->IsCharacterUnlocked(CharacterId));
+	Button_Action->SetIsEnabled(!GameInstance->IsCharacterUnlocked(CharacterId));
+	Button_CharacterImage->SetIsEnabled(!GameInstance->IsCharacterUnlocked(CharacterId));
 }
 
 
@@ -64,6 +83,7 @@ void UCharacterCardShop::UnlockCharacter()
 }
 
 
+
 void UCharacterCardShop::SetGameInstance()
 {
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
@@ -77,6 +97,11 @@ void UCharacterCardShop::SetCharacterRow()
 	CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
 }
 
+
+void UCharacterCardShop::SetPriceText()
+{
+	Text_Price->SetText(FText::FromString(FString::FromInt(GetCharacterPrice())));
+}
 
 
 int UCharacterCardShop::GetCharacterPrice() const

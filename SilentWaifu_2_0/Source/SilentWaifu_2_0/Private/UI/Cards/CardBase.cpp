@@ -1,21 +1,21 @@
 
-#include "UI/Cards/CharacterCardBase.h"
+#include "UI/Cards/CardBase.h"
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 
-void UCharacterCardBase::NativeConstruct()
+void UCardBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	if (!GameMode) return;
-	Button_Character->OnClicked.AddDynamic(this, &UCharacterCardBase::Action);
+	Button_Action->OnClicked.AddDynamic(this, &UCardBase::Action);
 }
 
 
-void UCharacterCardBase::CreateCard(const int Id)
+void UCardBase::CreateCard(const int Id)
 {
 	if (!CharacterDataTable) return;
 	const FName RowName = FName(*FString::FromInt(Id));

@@ -5,16 +5,18 @@
 #include "GameMode/SilentWaifuGameMode.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardShop.h"
+#include "UI/Cards/LimitIncreaseCard.h"
 
 
 void UCharacterMenuShop::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-	if (WidgetReferences->ShopCharacterCardClass)
+	if (WidgetReferences->LimitIncreaseCardClass)
 	{
-		WidgetReferences->ShopCharacterCardRef = Cast<UCharacterCardShop>(CreateWidget(GetWorld(), WidgetReferences->ShopCharacterCardClass));
-		HorizontalBox_Shop->AddChild(WidgetReferences->ShopCharacterCardRef);
-		WidgetReferences->ShopCharacterCardRef->CreateLimitIncreaseCard();
+		WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
+		HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
+		WidgetReferences->LimitIncreaseCardRef->CreateCard(1);
+		
 		if (GameMode->GetShopCharacters().IsEmpty())
 		{
 			const TArray<int> CharacterIds = GetRandomCharacters();
@@ -27,6 +29,7 @@ void UCharacterMenuShop::CreateCharacterMenu()
 		}
 	}
 }
+
 
 
 void UCharacterMenuShop::CreateShop(TArray<int> Characters)

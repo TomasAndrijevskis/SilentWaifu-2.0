@@ -45,11 +45,11 @@ bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterT
 	{
 		if (c.Value.CharacterClass == Character)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
+			//UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
 			return true;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Character locked"));
+	//UE_LOG(LogTemp, Warning, TEXT("Character locked"));
 	return false;
 }
 
@@ -60,11 +60,11 @@ bool USilentWaifuGameInstance::IsCharacterUnlocked(const int CharacterId) const
 	{
 		if (Character.Value.CharacterId == CharacterId)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
+			//UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
 			return true;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Character locked"));
+	//UE_LOG(LogTemp, Warning, TEXT("Character locked"));
 	return false;
 }
 

@@ -52,7 +52,7 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetDisabled(DisabledBrush);
 	CustomStyle.SetPressed(HoveredBrush);
 	
-	Button_Character->SetStyle(CustomStyle);
+	Button_Action->SetStyle(CustomStyle);
 }
 
 

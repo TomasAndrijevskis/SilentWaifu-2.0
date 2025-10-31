@@ -7,7 +7,7 @@
 void UCharacterCardChoose::NativeConstruct()
 {
 	Super::NativeConstruct();
-	Button_Character->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
+	Button_Action->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
 }
 
 
@@ -45,7 +45,7 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetDisabled(DisabledBrush);
 	CustomStyle.SetPressed(HoveredBrush);
 	
-	Button_Character->SetStyle(CustomStyle);
+	Button_Action->SetStyle(CustomStyle);
 	HandleCardState();
 }
 
@@ -53,7 +53,7 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 void UCharacterCardChoose::HandleCardState()
 {
 	FSavedCharactersData* Data = GameMode->GetAvailableCharacters().Find(CharacterId);
-	Button_Character->SetIsEnabled(!Data->bIsOnScreen);
+	Button_Action->SetIsEnabled(!Data->bIsOnScreen);
 }
 
 

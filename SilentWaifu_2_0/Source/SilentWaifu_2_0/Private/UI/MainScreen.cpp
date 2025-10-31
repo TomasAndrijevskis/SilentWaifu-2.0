@@ -23,7 +23,6 @@ void UMainScreen::NativeConstruct()
 	GameMode->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
-	Button_IncreaseMoneyLimit->OnClicked.AddDynamic(GameMode, &ASilentWaifuGameMode::IncreaseMoneyLimit);
 	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
