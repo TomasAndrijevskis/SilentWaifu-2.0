@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CardBase.h"
+#include "CharacterCard.h"
 #include "CharacterCardMainScreen.generated.h"
 
 
@@ -10,7 +10,7 @@ class UWidgetReferenceDataAsset;
 class UButton;
 
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterCardMainScreen : public UCardBase
+class SILENTWAIFU_2_0_API UCharacterCardMainScreen : public UCharacterCard
 {
 	GENERATED_BODY()
 

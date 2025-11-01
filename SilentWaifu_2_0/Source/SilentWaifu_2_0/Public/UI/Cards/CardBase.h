@@ -11,6 +11,7 @@ class ASilentWaifuGameMode;
 class UBorder;
 class UButton;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardCreatedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UCardBase : public UUserWidget
 {
@@ -23,8 +24,12 @@ public:
 	
 	virtual void NativeConstruct() override;
 	
-	virtual void CreateCard(const int Id);
+	virtual void CreateCard(const int NewCharacterId) {};
 
+	virtual void CreateCard() {}
+
+	FOnCardCreatedSignature OnCardCreatedDelegate;
+	
 protected:
 	
 	virtual void SetImage(UTexture2D* NewImage){};
@@ -37,11 +42,6 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	ASilentWaifuGameMode* GameMode;
-
-	UPROPERTY(EditAnywhere)
-	UDataTable* CharacterDataTable;
-	
-	int CharacterId;
 
 private:
 

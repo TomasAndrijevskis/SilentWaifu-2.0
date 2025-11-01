@@ -2,12 +2,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CardBase.h"
+#include "CharacterCard.h"
 #include "CharacterCardStorage.generated.h"
 
 
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterCardStorage : public UCardBase
+class SILENTWAIFU_2_0_API UCharacterCardStorage : public UCharacterCard
 {
 	GENERATED_BODY()
 

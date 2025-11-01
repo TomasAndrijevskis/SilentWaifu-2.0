@@ -47,7 +47,6 @@ void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(NormalBrush);
 	
 	Button_CharacterImage->SetStyle(CustomStyle);
-	OnCardCreatedDelegate.Broadcast();
 }
 
 

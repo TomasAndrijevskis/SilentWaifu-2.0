@@ -1,0 +1,24 @@
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "UI/Cards/CardBase.h"
+#include "CharacterCard.generated.h"
+
+
+UCLASS()
+class SILENTWAIFU_2_0_API UCharacterCard : public UCardBase
+{
+	GENERATED_BODY()
+
+public:
+	
+	virtual void CreateCard(const int NewCharacterId) override;
+
+protected:
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* CharacterDataTable;
+	
+	int CharacterId;
+};

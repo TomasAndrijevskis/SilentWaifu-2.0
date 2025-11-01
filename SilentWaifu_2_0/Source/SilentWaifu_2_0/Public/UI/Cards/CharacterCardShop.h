@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CardBase.h"
+#include "CharacterCard.h"
 #include "DataTables/CharacterData.h"
 #include "CharacterCardShop.generated.h"
 
@@ -11,18 +11,15 @@ class UTextBlock;
 class USilentWaifuGameInstance;
 class UImage;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardCreatedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUnlockedSignature);
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterCardShop : public UCardBase
+class SILENTWAIFU_2_0_API UCharacterCardShop : public UCharacterCard
 {
 	GENERATED_BODY()
 
 public:
 
 	virtual void NativeConstruct() override;
-
-	FOnCardCreatedSignature OnCardCreatedDelegate;
 	
 	FOnCharacterUnlockedSignature OnCharacterUnlockedDelegate;
 	

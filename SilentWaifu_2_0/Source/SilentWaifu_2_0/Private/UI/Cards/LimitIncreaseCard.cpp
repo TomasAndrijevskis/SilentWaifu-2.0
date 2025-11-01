@@ -1,17 +1,24 @@
 
 #include "UI/Cards/LimitIncreaseCard.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "GameMode/SilentWaifuGameMode.h"
 
 
+void ULimitIncreaseCard::NativeConstruct()
+{
+	Super::NativeConstruct();
+	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::SetPriceText);
+}
+
 void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 {
-	if (!Image_LimitIncreaseImage) return;
+	if (!NewImage) return;
 	
 	FButtonStyle CustomStyle;
 	// Normal Brush (Image)
 	FSlateBrush NormalBrush;
-	NormalBrush.SetResourceObject(Image_LimitIncreaseImage);
+	NormalBrush.SetResourceObject(NewImage);
 	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
 	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
 	NormalBrush.ImageSize = ImageSize;
@@ -29,5 +36,16 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 void ULimitIncreaseCard::Action()
 {
 	if (!GameMode) return;
-	GameMode->IncreaseMoneyLimit();
+	if (GameMode->HasEnoughMoney(Price))
+	{
+		GameMode->DecreaseMoney(Price);
+		GameMode->IncreaseMoneyLimit();
+	}
+	
+}
+
+
+void ULimitIncreaseCard::SetPriceText()
+{
+	Text_Price->SetText(FText::FromString(FString::FromInt(Price)));
 }

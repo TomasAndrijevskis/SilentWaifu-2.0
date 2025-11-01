@@ -15,7 +15,7 @@ void UCharacterMenuShop::CreateCharacterMenu()
 	{
 		WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
 		HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
-		WidgetReferences->LimitIncreaseCardRef->CreateCard(1);
+		WidgetReferences->LimitIncreaseCardRef->CreateCard();
 		
 		if (GameMode->GetShopCharacters().IsEmpty())
 		{
