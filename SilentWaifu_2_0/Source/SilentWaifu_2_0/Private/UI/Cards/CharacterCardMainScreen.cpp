@@ -5,6 +5,15 @@
 #include "GameMode/SilentWaifuGameMode.h"
 
 
+void UCharacterCardMainScreen::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_Action->OnClicked.Clear();
+	Button_Action->OnPressed.AddDynamic(this, &UCharacterCardMainScreen::EnablePressedTimer);
+	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
+}
+
+
 void UCharacterCardMainScreen::CreateCard(const int Id)
 {
 	if (!CharacterDataTable) return;
@@ -34,25 +43,30 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 	// Hovered Brush
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::RoundedBox;
+	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
-	
-	// Disabled Brush
-	FSlateBrush DisabledBrush;
-	DisabledBrush.SetResourceObject(NewImage);
-	DisabledBrush.DrawAs = ESlateBrushDrawType::Image;
-	DisabledBrush.Tiling = ESlateBrushTileType::NoTile;
-	DisabledBrush.ImageSize = ImageSize;
-	DisabledBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.3f)); 
+	HoveredBrush.TintColor = FSlateColor(FLinearColor(0.65f, .4f, .4f, 1.f)); 
 	
 	// Apply Brushes
 	CustomStyle.SetNormal(NormalBrush);
 	CustomStyle.SetHovered(HoveredBrush);
-	CustomStyle.SetDisabled(DisabledBrush);
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Action->SetStyle(CustomStyle);
+}
+
+
+
+void UCharacterCardMainScreen::EnablePressedTimer()
+{
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCharacterCardMainScreen::Action, 1, false);
+}
+
+
+void UCharacterCardMainScreen::DisablePressedTimer()
+{
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
 

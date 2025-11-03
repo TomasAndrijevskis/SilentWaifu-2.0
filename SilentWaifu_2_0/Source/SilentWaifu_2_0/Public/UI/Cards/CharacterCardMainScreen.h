@@ -15,6 +15,8 @@ class SILENTWAIFU_2_0_API UCharacterCardMainScreen : public UCharacterCard
 	GENERATED_BODY()
 
 public:
+
+	virtual void NativeConstruct() override;
 	
 	virtual void CreateCard(const int Id) override;
 
@@ -23,5 +25,14 @@ protected:
 	virtual void SetImage(UTexture2D* NewImage) override;
 	
 	virtual void Action() override;
+
+private:
+
+	UFUNCTION()
+	void EnablePressedTimer();
+
+	UFUNCTION()
+	void DisablePressedTimer();
 	
+	FTimerHandle TimerHandle;
 };
