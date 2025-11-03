@@ -1,14 +1,14 @@
 
 #include "UI/Cards/CharacterCardStorage.h"
 #include "Components/Button.h"
+#include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/CharacterInfoScreen.h"
 
 
 void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 {
-	if (!NewImage)
-	{
-		return;
-	}
+	if (!NewImage) return;
+	
 	FButtonStyle CustomStyle;
 
 	// Normal Brush (Image)
@@ -21,9 +21,10 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 	// Hovered Brush
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::RoundedBox;
+	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
+	HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.7f));
 	
 	// Disabled Brush
 	FSlateBrush DisabledBrush;
@@ -44,5 +45,10 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardStorage::Action()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Storage Action: %i"), CharacterId);
+	if (WidgetReferences && WidgetReferences->CharacterInfoScreenClass)
+	{
+		WidgetReferences->CharacterInfoScreenRef = Cast<UCharacterInfoScreen>(CreateWidget(GetWorld(), WidgetReferences->CharacterInfoScreenClass));
+		WidgetReferences->CharacterInfoScreenRef->AddToViewport(2);
+		WidgetReferences->CharacterInfoScreenRef->SetCharacterId(CharacterId);
+	}
 }

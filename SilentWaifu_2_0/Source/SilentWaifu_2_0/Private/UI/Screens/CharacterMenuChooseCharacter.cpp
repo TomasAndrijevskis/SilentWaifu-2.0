@@ -1,9 +1,9 @@
 
-#include "UI/CharacterMenuChooseCharacter.h"
+#include "UI/Screens/CharacterMenuChooseCharacter.h"
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "UI/MainScreen.h"
+#include "UI/Screens/MainScreen.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardChoose.h"
 

@@ -3,8 +3,8 @@
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/CharacterMenuChooseCharacter.h"
-#include "UI/MainScreen.h"
+#include "UI/Screens/CharacterMenuChooseCharacter.h"
+#include "UI/Screens/MainScreen.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
 

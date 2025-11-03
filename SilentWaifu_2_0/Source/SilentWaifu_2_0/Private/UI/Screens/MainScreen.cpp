@@ -1,5 +1,5 @@
 
-#include "UI/MainScreen.h"
+#include "UI/Screens/MainScreen.h"
 #include "Components/BackgroundBlur.h"
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
@@ -8,10 +8,10 @@
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/CharacterMenuStorage.h"
+#include "UI/Screens/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
 #include "UI/Cards/CharacterCardMainScreen.h"
-#include "UI/CharacterMenuShop.h"
+#include "UI/Screens/CharacterMenuShop.h"
 
 
 void UMainScreen::NativeConstruct()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterValues.h"
 #include "CharacterData.generated.h"
 
 class ACharacterTemplate;
@@ -24,5 +25,7 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	int Price;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	FCharacterValues Values;
 };

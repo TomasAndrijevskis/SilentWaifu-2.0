@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterInfoScreen;
 class ULimitIncreaseCard;
 class UCharacterCardShop;
 class UCharacterMenuShop;
@@ -51,6 +52,13 @@ public:
 	UPROPERTY()
 	UCharacterMenuShop* ShopScreenRef;
 
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterInfoScreen> CharacterInfoScreenClass;
+
+	UPROPERTY()
+	UCharacterInfoScreen* CharacterInfoScreenRef;
+	
 
 
 	UPROPERTY(EditDefaultsOnly)
@@ -86,7 +94,7 @@ public:
 
 	UPROPERTY()
 	ULimitIncreaseCard* LimitIncreaseCardRef;
-
+	
 
 	
 	UPROPERTY(EditDefaultsOnly)

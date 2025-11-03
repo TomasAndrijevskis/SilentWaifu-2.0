@@ -27,10 +27,8 @@ void UCharacterCardMainScreen::CreateCard(const int Id)
 
 void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 {
-	if (!NewImage)
-	{
-		return;
-	}
+	if (!NewImage) return;
+	
 	FButtonStyle CustomStyle;
 
 	// Normal Brush (Image)

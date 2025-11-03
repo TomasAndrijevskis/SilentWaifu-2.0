@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WidgetReferenceDataAsset.h"
+#include "UI/WidgetReferenceDataAsset.h"
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 

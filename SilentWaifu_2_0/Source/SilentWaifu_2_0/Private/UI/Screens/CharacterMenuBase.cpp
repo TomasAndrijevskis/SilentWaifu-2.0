@@ -1,6 +1,5 @@
 
-#include "UI/CharacterMenuBase.h"
-
+#include "UI/Screens/CharacterMenuBase.h"
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Kismet/GameplayStatics.h"

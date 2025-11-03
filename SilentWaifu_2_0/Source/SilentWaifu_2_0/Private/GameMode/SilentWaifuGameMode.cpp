@@ -4,7 +4,7 @@
 #include "Character/CharacterTemplate.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
-#include "UI/MainScreen.h"
+#include "UI/Screens/MainScreen.h"
 
 
 void ASilentWaifuGameMode::BeginPlay()

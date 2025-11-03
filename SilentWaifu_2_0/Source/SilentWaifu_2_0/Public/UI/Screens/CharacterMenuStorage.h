@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/CharacterMenuBase.h"
+#include "UI/Screens/CharacterMenuBase.h"
 #include "CharacterMenuStorage.generated.h"
 
 UCLASS()
