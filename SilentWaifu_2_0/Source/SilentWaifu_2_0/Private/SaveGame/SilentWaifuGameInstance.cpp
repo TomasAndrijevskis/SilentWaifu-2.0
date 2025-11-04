@@ -32,40 +32,11 @@ void USilentWaifuGameInstance::HandleSaveGame()
 		Data.CharacterClass = DefaultCharacter;
 		Data.bIsOnScreen = false;
 		Data.CharacterId = 1;
+		Data.Level = 1;
 		SaveFirstCharacter(1, Data);
 		SaveMaxMoney(100);
 		UE_LOG(LogTemp, Warning, TEXT("First character saved"));
 	}
-}
-
-
-bool USilentWaifuGameInstance::IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const
-{
-	for (auto const c : GameMode->GetAvailableCharacters())
-	{
-		if (c.Value.CharacterClass == Character)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
-			return true;
-		}
-	}
-	//UE_LOG(LogTemp, Warning, TEXT("Character locked"));
-	return false;
-}
-
-
-bool USilentWaifuGameInstance::IsCharacterUnlocked(const int CharacterId) const
-{
-	for (auto const Character : GameMode->GetAvailableCharacters())
-	{
-		if (Character.Value.CharacterId == CharacterId)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Character unlocked"));
-			return true;
-		}
-	}
-	//UE_LOG(LogTemp, Warning, TEXT("Character locked"));
-	return false;
 }
 
 

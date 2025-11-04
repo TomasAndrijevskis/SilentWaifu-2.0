@@ -21,5 +21,7 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 
 	UPROPERTY()
 	int Position;
-	
+
+	UPROPERTY()
+	int Level;
 };

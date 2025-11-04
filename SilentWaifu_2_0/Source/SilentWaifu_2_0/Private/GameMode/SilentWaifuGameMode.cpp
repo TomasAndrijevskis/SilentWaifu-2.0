@@ -155,6 +155,19 @@ TArray<TPair<int, FSavedCharactersData>> ASilentWaifuGameMode::GetSortedCharacte
 }
 
 
+bool ASilentWaifuGameMode::IsCharacterUnlocked(const int CharacterId) const
+{
+	for (auto const Character : AvailableCharacters)
+	{
+		if (Character.Value.CharacterId == CharacterId)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
 {
 	TakenPositions.Add(Key, Value);

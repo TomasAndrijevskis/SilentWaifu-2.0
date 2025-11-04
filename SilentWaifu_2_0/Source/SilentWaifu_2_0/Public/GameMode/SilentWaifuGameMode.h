@@ -61,6 +61,8 @@ public:
 
 	UFUNCTION()
 	TArray<int> GetShopCharacters() const;
+
+	bool IsCharacterUnlocked(const int CharacterId) const;
 	
 	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 

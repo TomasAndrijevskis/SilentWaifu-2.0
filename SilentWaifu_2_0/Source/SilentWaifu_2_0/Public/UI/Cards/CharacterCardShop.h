@@ -42,9 +42,6 @@ private:
 
 	UFUNCTION()
 	void UnlockCharacter();
-
-	UFUNCTION()
-	void SetGameInstance();
 	
 	int GetCharacterPrice() const;
 
@@ -55,8 +52,5 @@ private:
 	void SetPriceText();
 	
 	const FCharacterData* CharacterRow;
-	
-	UPROPERTY()
-	USilentWaifuGameInstance* GameInstance;
 
 };

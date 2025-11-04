@@ -5,14 +5,11 @@
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
-#include "Kismet/GameplayStatics.h"
-#include "SaveGame/SilentWaifuGameInstance.h"
 
 
 void UCharacterCardShop::NativeConstruct()
 {
 	Super::NativeConstruct();
-	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetGameInstance);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetCharacterRow);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetPriceText);
@@ -58,15 +55,15 @@ void UCharacterCardShop::Action()
 
 void UCharacterCardShop::HandleState()
 {
-	if (!GameInstance) return;
-	Button_Action->SetIsEnabled(!GameInstance->IsCharacterUnlocked(CharacterId));
-	Button_CharacterImage->SetIsEnabled(!GameInstance->IsCharacterUnlocked(CharacterId));
+	if (!GameMode) return;
+	Button_Action->SetIsEnabled(!GameMode->IsCharacterUnlocked(CharacterId));
+	Button_CharacterImage->SetIsEnabled(!GameMode->IsCharacterUnlocked(CharacterId));
 }
 
 
 void UCharacterCardShop::UnlockCharacter()
 {
-	if (!GameInstance) return;
+	if (!GameMode) return;
 	int Price = GetCharacterPrice();
 	if (GameMode->HasEnoughMoney(Price))
 	{
@@ -75,18 +72,13 @@ void UCharacterCardShop::UnlockCharacter()
 		Data.CharacterClass = CharacterRow->CharacterClass;
 		Data.bIsOnScreen = false;
 		Data.CharacterId = CharacterId;
+		Data.Level = 1;
 		GameMode->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 		GameMode->DecreaseMoney(Price);
 		OnCharacterUnlockedDelegate.Broadcast();
 	}
 }
 
-
-
-void UCharacterCardShop::SetGameInstance()
-{
-	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
-}
 
 
 void UCharacterCardShop::SetCharacterRow()

@@ -18,6 +18,9 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 	TSubclassOf<ACharacterTemplate> CharacterClass;
 
 	UPROPERTY(EditDefaultsOnly)
+	FString Name;
+	
+	UPROPERTY(EditDefaultsOnly)
 	UTexture2D* CardImage;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -25,7 +28,7 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	int Price;
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	FCharacterValues Values;
 };

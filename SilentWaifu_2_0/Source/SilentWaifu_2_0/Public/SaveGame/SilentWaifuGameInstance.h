@@ -36,10 +36,6 @@ public:
 	void SavePositions();
 	
 	void SetGameMode(AGameModeBase* NewGameMode);
-
-	bool IsCharacterUnlocked(const TSubclassOf<ACharacterTemplate>& Character) const;
-
-	bool IsCharacterUnlocked(const int CharacterId) const;
 	
 	void SaveShop();
 

@@ -3,9 +3,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "DataTables/CharacterData.h"
 #include "CharacterInfoScreen.generated.h"
 
 
+class ASilentWaifuGameMode;
 class UWidgetReferenceDataAsset;
 class UBorder;
 class UTextBlock;
@@ -58,13 +60,13 @@ private:
 	UTextBlock* Text_LevelValue;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_CoinsGainText;
+	UTextBlock* Text_MoneyGainText;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_CoinsGainValue;
+	UTextBlock* Text_MoneyGainValue;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_CoinsGainDetails;
+	UTextBlock* Text_MoneyGainDetails;
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_UpgradePriceText;
@@ -78,19 +80,28 @@ private:
 	UFUNCTION()
 	void UpgradeCharacter();
 
-	void SetName(FString NewName);
+	void SetName(const FString& NewName);
 
-	void SetLevel(int NewLevel);
+	void SetLevel(const int NewLevel);
 
-	void SetCoins(int NewCoinsGain);
+	void SetMoneyGain(const int NewCoinsGain);
 
-	void SetUpgradePrice(int NewUpgradePrice);
+	void SetUpgradePrice(const int NewUpgradePrice);
 
 	UFUNCTION()
-	void GetCharacterInfo();
+	void SetCharacterInfo();
 
+	void GetCharacterInfo();
+	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
+
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
 	
 	int CharacterId;
+
+	int CurrentLevel;
+
+	FCharacterData* CharacterRow;
 };

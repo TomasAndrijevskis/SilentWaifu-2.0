@@ -2,6 +2,9 @@
 #include "UI/Screens/CharacterInfoScreen.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "DataTables/CharacterData.h"
+#include "GameMode/SilentWaifuGameMode.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
 
@@ -10,7 +13,8 @@ void UCharacterInfoScreen::NativeConstruct()
 	Super::NativeConstruct();
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
 	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
-	OnCharacterIdSetDelegate.AddDynamic(this, &UCharacterInfoScreen::GetCharacterInfo);
+	OnCharacterIdSetDelegate.AddDynamic(this, &UCharacterInfoScreen::SetCharacterInfo);
+	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 
@@ -21,12 +25,29 @@ void UCharacterInfoScreen::SetCharacterId(const int NewCharacterId)
 }
 
 
+void UCharacterInfoScreen::SetCharacterInfo()
+{
+	if (!GameMode) return;
+	if (!CharacterRow) GetCharacterInfo();
+	SetName(CharacterRow->Name);
+	for (const auto Character : GameMode->GetAvailableCharacters())
+	{
+		if (CharacterId == Character.Key)
+		{
+			SetLevel(Character.Value.Level);
+			break;
+		}
+	}
+	SetMoneyGain(CharacterRow->Values.CoinsPerLevel[CurrentLevel-1]);
+	SetUpgradePrice(CharacterRow->Values.UpgradeCost[CurrentLevel-1]);
+}
+
+
 void UCharacterInfoScreen::GetCharacterInfo()
 {
-	if (CharacterDataTable)
-	{
-		
-	}
+	if (!CharacterDataTable) return;
+	const FName RowName = FName(*FString::FromInt(CharacterId));
+	CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
 }
 
 
@@ -46,25 +67,26 @@ void UCharacterInfoScreen::UpgradeCharacter()
 }
 
 
-void UCharacterInfoScreen::SetName(FString NewName)
+void UCharacterInfoScreen::SetName(const FString& NewName)
 {
 	Text_CharacterName->SetText(FText::FromString(NewName));
 }
 
 
-void UCharacterInfoScreen::SetLevel(int NewLevel)
+void UCharacterInfoScreen::SetLevel(const int NewLevel)
 {
-	Text_CharacterName->SetText(FText::FromString(FString::FromInt(NewLevel)));
+	Text_LevelValue->SetText(FText::FromString(FString::FromInt(NewLevel)));
+	CurrentLevel = NewLevel;
 }
 
 
-void UCharacterInfoScreen::SetCoins(int NewCoinsGain)
+void UCharacterInfoScreen::SetMoneyGain(const int NewCoinsGain)
 {
-	Text_CharacterName->SetText(FText::FromString(FString::FromInt(NewCoinsGain)));
+	Text_MoneyGainValue->SetText(FText::FromString(FString::FromInt(NewCoinsGain)));
 }
 
 
-void UCharacterInfoScreen::SetUpgradePrice(int NewUpgradePrice)
+void UCharacterInfoScreen::SetUpgradePrice(const int NewUpgradePrice)
 {
-	Text_CharacterName->SetText(FText::FromString(FString::FromInt(NewUpgradePrice)));
+	Text_UpgradePriceValue->SetText(FText::FromString(FString::FromInt(NewUpgradePrice)));
 }
