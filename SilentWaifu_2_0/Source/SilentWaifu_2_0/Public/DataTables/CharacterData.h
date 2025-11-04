@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterImages.h"
 #include "CharacterValues.h"
 #include "CharacterData.generated.h"
 
@@ -21,14 +22,8 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 	FString Name;
 	
 	UPROPERTY(EditDefaultsOnly)
-	UTexture2D* CardImage;
+	FCharacterValues Numbers;
 
 	UPROPERTY(EditDefaultsOnly)
-	UTexture2D* MainScreenImage;
-
-	UPROPERTY(EditDefaultsOnly)
-	int Price;
-	
-	UPROPERTY(EditDefaultsOnly)
-	FCharacterValues Values;
+	FCharacterImages Images;
 };

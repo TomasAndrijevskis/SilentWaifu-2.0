@@ -98,5 +98,5 @@ void UCharacterCardShop::SetPriceText()
 int UCharacterCardShop::GetCharacterPrice() const
 {
 	if (!CharacterRow) return 0;
-	return CharacterRow->Price;
+	return CharacterRow->Numbers.Price;
 }

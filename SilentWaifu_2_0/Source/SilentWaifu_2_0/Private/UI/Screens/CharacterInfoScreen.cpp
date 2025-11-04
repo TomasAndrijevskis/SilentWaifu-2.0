@@ -1,6 +1,7 @@
 
 #include "UI/Screens/CharacterInfoScreen.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
@@ -30,6 +31,7 @@ void UCharacterInfoScreen::SetCharacterInfo()
 	if (!GameMode) return;
 	if (!CharacterRow) GetCharacterInfo();
 	SetName(CharacterRow->Name);
+	SetImage(CharacterRow->Images.DefaultImage);
 	for (const auto Character : GameMode->GetAvailableCharacters())
 	{
 		if (CharacterId == Character.Key)
@@ -38,8 +40,8 @@ void UCharacterInfoScreen::SetCharacterInfo()
 			break;
 		}
 	}
-	SetMoneyGain(CharacterRow->Values.CoinsPerLevel[CurrentLevel-1]);
-	SetUpgradePrice(CharacterRow->Values.UpgradeCost[CurrentLevel-1]);
+	SetMoneyGain(CharacterRow->Numbers.CoinsPerLevel[CurrentLevel-1]);
+	SetUpgradePrice(CharacterRow->Numbers.UpgradeCost[CurrentLevel-1]);
 }
 
 
@@ -64,6 +66,13 @@ void UCharacterInfoScreen::CloseScreen()
 void UCharacterInfoScreen::UpgradeCharacter()
 {
 	UE_LOG(LogTemp, Display, TEXT("UpgradeCharacter"));
+}
+
+
+void UCharacterInfoScreen::SetImage(UTexture2D* NewImage)
+{
+	if (!NewImage) return;
+	Image_Character->SetBrushFromTexture(NewImage);
 }
 
 

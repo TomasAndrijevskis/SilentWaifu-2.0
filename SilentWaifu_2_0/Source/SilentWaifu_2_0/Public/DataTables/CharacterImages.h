@@ -1,21 +1,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterValues.generated.h"
+#include "CharacterImages.generated.h"
 
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)
-struct SILENTWAIFU_2_0_API FCharacterValues: public FTableRowBase
+struct SILENTWAIFU_2_0_API FCharacterImages: public FTableRowBase
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	int Price;
+	UTexture2D* DefaultImage;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TArray<int> CoinsPerLevel;
-	
+	UTexture2D* CardImage;
+
 	UPROPERTY(EditDefaultsOnly)
-	TArray<int> UpgradeCost;
+	UTexture2D* MainScreenImage;
 };

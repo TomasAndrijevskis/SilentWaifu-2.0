@@ -21,7 +21,7 @@ void UCharacterCardMainScreen::CreateCard(const int Id)
 	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
 	if (!CharacterRow)	return;
 	CharacterId = CharacterRow->CharacterId;
-	SetImage(CharacterRow->MainScreenImage);
+	SetImage(CharacterRow->Images.MainScreenImage);
 }
 
 

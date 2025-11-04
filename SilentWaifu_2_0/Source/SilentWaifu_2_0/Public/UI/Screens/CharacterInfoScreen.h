@@ -80,6 +80,8 @@ private:
 	UFUNCTION()
 	void UpgradeCharacter();
 
+	void SetImage(UTexture2D* NewImage);
+	
 	void SetName(const FString& NewName);
 
 	void SetLevel(const int NewLevel);
