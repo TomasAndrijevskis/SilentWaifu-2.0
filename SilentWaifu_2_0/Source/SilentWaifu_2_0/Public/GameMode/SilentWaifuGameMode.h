@@ -15,6 +15,7 @@ class USilentWaifuGameInstance;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterUpgradeSignature, const int, CharacterId);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
@@ -71,6 +72,8 @@ public:
 	FOnCharacterAddedSignature OnCharacterAddedDelegate;
 
 	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
+
+	FOnCharacterUpgradeSignature OnCharacterUpgradeDelegate;
 	
 protected:
 
@@ -86,6 +89,9 @@ private:
 	void CreateMainScreenWidget();
 
 	void SetInputSettings() const;
+
+	UFUNCTION()
+	void UpdateCharacter(const int CharacterId);
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;

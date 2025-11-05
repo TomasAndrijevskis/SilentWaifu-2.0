@@ -14,6 +14,7 @@ void ASilentWaifuGameMode::BeginPlay()
 	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	HandleGameLoad();
+	OnCharacterUpgradeDelegate.AddDynamic(this, &ASilentWaifuGameMode::UpdateCharacter);
 }
 
 
@@ -53,14 +54,27 @@ void ASilentWaifuGameMode::SetInputSettings() const
 }
 
 
+void ASilentWaifuGameMode::UpdateCharacter(const int CharacterId)
+{
+	for (auto& Character : GetAvailableCharacters())
+	{
+		if (Character.Key == CharacterId && Character.Value.bIsOnScreen == true)
+		{
+			Cast<ACharacterTemplate>(UGameplayStatics::GetActorOfClass(GetWorld(),Character.Value.CharacterClass))->UpdateLevel(Character.Value.Level);
+		}
+	}
+}
+
+
 void ASilentWaifuGameMode::SpawnCharacters()
 {
-	for (auto Character : GetAvailableCharacters())
+	for (auto& Character : GetAvailableCharacters())
 	{
 		if (Character.Value.bIsOnScreen == true)
 		{
 			FActorSpawnParameters SpawnParameters;
-			GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+			ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+			Actor->SetValues(Character.Value.Level, Character.Key);
 		}
 	}
 }
@@ -69,8 +83,9 @@ void ASilentWaifuGameMode::SpawnCharacters()
 void ASilentWaifuGameMode::SpawnCharacter(const int CharacterId)
 {
 	FActorSpawnParameters SpawnParameters;
-	GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+	ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
+	Actor->SetValues(Data->Level, CharacterId);
 	Data->bIsOnScreen = true;
 	Data->Position = CurrentSpawnPosition;
 	AddTakenPosition(CurrentSpawnPosition, true);
@@ -182,10 +197,6 @@ void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedChar
 
 TMap<int, FSavedCharactersData>& ASilentWaifuGameMode::GetAvailableCharacters()
 {
-	/*for (auto ch : AvailableCharacters)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Character: %i"), ch.Value.CharacterId);
-	}*/
 	return AvailableCharacters;
 }
 

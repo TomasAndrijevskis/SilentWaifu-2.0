@@ -3,9 +3,9 @@
 #include "CoreMinimal.h"
 #include "CharacterImages.h"
 #include "CharacterValues.h"
-#include "ERarities.h"
 #include "CharacterData.generated.h"
 
+enum ERarities : int;
 class ACharacterTemplate;
 
 

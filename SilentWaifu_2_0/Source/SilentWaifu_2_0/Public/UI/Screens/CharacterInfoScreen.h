@@ -15,6 +15,7 @@ class UButton;
 class UImage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterIdSetSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUpgradedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UCharacterInfoScreen : public UUserWidget
 {
@@ -27,6 +28,8 @@ public:
 	void SetCharacterId(const int NewCharacterId);
 
 	FOnCharacterIdSetSignature OnCharacterIdSetDelegate;
+
+	FOnCharacterUpgradedSignature OnCharacterUpgradedDelegate;
 	
 protected:
 
@@ -74,36 +77,56 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_UpgradePriceValue;
 
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_Upgrade;
+	
 	UFUNCTION()
 	void CloseScreen();
 
 	UFUNCTION()
 	void UpgradeCharacter();
 
-	void SetImage(UTexture2D* NewImage);
+	void SetImage();
+
+	void SetRarityBorder();
 	
-	void SetName(const FString& NewName);
+	void SetName();
 
-	void SetLevel(const int NewLevel);
+	UFUNCTION()
+	void SetLevel();
 
-	void SetMoneyGain(const int NewCoinsGain);
+	void SetMaxLevel();
+	
+	UFUNCTION()
+	void SetMoneyGain();
 
-	void SetUpgradePrice(const int NewUpgradePrice);
+	UFUNCTION()
+	void SetUpgradePrice();
 
 	UFUNCTION()
 	void SetCharacterInfo();
 
 	void GetCharacterInfo();
+
+	UFUNCTION()
+	void HandleButtonState();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
 
+	UPROPERTY(EditAnywhere)
+	UDataTable* RarityDataTable;
+	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 	
 	int CharacterId;
 
 	int CurrentLevel;
+
+	int MaxLevel;
+
+	int CurrentUpgradePrice;
 
 	FCharacterData* CharacterRow;
 };
