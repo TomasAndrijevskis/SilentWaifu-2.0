@@ -5,6 +5,7 @@
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 
 
 void UCharacterCardShop::NativeConstruct()
@@ -65,7 +66,7 @@ void UCharacterCardShop::UnlockCharacter()
 {
 	if (!GameMode) return;
 	int Price = GetCharacterPrice();
-	if (GameMode->HasEnoughMoney(Price))
+	if (GameMode->MoneyManager->HasEnoughMoney(Price))
 	{
 		if (!CharacterRow) return;
 		FSavedCharactersData Data;
@@ -74,7 +75,7 @@ void UCharacterCardShop::UnlockCharacter()
 		Data.CharacterId = CharacterId;
 		Data.Level = 1;
 		GameMode->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
-		GameMode->DecreaseMoney(Price);
+		GameMode->MoneyManager->DecreaseMoney(Price);
 		OnCharacterUnlockedDelegate.Broadcast();
 	}
 }

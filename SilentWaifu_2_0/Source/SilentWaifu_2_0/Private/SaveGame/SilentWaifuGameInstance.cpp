@@ -2,6 +2,7 @@
 #include "SaveGame/SilentWaifuGameInstance.h"
 #include "Character/CharacterTemplate.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuSaveGame.h"
 
@@ -93,8 +94,8 @@ void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
 void USilentWaifuGameInstance::LoadMoney() const
 {
 	if (!GameMode) return;
-	GameMode->SetMaxMoney(SaveGameInstance->GetMaxMoney());
-	GameMode->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
+	GameMode->MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
+	GameMode->MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
 
 

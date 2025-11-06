@@ -9,6 +9,7 @@
 class ASilentWaifuGameMode;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterLoadedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnValuesUpdatedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API ACharacterTemplate : public AActor
 {
@@ -21,13 +22,16 @@ public:
 	void UpdateLevel(const int NewLevel);
 	
 	FOnCharacterLoadedSignature OnCharacterLoadedDelegate;
+
+	FOnValuesUpdatedSignature OnValuesUpdatedDelegate;
 	
 protected:
 
 	virtual void BeginPlay() override;
 
 private:
-	
+
+	UFUNCTION()
 	void SetMoney();
 	
 	void IncreaseMoney() const;

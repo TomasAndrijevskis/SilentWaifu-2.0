@@ -7,13 +7,12 @@
 #include "SilentWaifuGameMode.generated.h"
 
 
+class UMoneyManager;
 class UWidgetReferenceDataAsset;
 class UMainScreen;
 class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentMoneyChangedSignature, const int, Money);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterUpgradeSignature, const int, CharacterId);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
@@ -23,18 +22,6 @@ class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-
-	UFUNCTION()
-	void IncreaseMoney(const int Money);
-
-	void DecreaseMoney(const int Money);
-
-	bool HasEnoughMoney(const int Money) const;
-
-	UFUNCTION()
-	void IncreaseMoneyLimit();
-
-	void SetMaxMoney(const int NewMaxMoney);
 	
 	UFUNCTION()
 	void SpawnCharacters();
@@ -64,10 +51,9 @@ public:
 	TArray<int> GetShopCharacters() const;
 
 	bool IsCharacterUnlocked(const int CharacterId) const;
-	
-	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
-	FOnMaxMoneyChangedSignature OnMaxMoneyChangedDelegate;
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
 	
 	FOnCharacterAddedSignature OnCharacterAddedDelegate;
 
@@ -105,11 +91,5 @@ private:
 	UPROPERTY()
 	TArray<int> ShopCharacters;
 	
-	UPROPERTY()
-	int CurrentMoney = 0;
-
-	UPROPERTY()
-	int MaxMoney;
-
 	int CurrentSpawnPosition = -1;
 };

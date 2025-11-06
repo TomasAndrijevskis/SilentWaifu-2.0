@@ -4,6 +4,7 @@
 #include "DataTables/CharacterData.h"
 #include "Engine/World.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -13,6 +14,7 @@ void ACharacterTemplate::BeginPlay()
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
 	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableTimer);
+	OnValuesUpdatedDelegate.AddDynamic(this, &ACharacterTemplate::SetMoney);
 }
 
 
@@ -28,21 +30,23 @@ void ACharacterTemplate::SetValues(const int NewLevel, const int NewId)
 {
 	Level = NewLevel;
 	Id = NewId;
-	SetMoney();
+	OnValuesUpdatedDelegate.Broadcast();
 }
 
 
 void ACharacterTemplate::UpdateLevel(const int NewLevel)
 {
 	Level = NewLevel;
-	SetMoney();
+	OnValuesUpdatedDelegate.Broadcast();
 }
+
 
 void ACharacterTemplate::EnableTimer()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::IncreaseMoney, 2.f, true);
 }
+
 
 void ACharacterTemplate::GetCharacterRow()
 {
@@ -54,6 +58,5 @@ void ACharacterTemplate::GetCharacterRow()
 
 void ACharacterTemplate::IncreaseMoney() const
 {
-	UE_LOG(LogTemp, Warning, TEXT("IncreaseMoney"));
-	GameMode->IncreaseMoney(MoneyPerSecond);
+	GameMode->MoneyManager->IncreaseMoney(MoneyPerSecond);
 }

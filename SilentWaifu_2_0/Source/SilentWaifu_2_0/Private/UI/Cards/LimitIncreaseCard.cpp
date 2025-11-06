@@ -3,6 +3,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 
 
 void ULimitIncreaseCard::NativeConstruct()
@@ -36,12 +37,11 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 void ULimitIncreaseCard::Action()
 {
 	if (!GameMode) return;
-	if (GameMode->HasEnoughMoney(Price))
+	if (GameMode->MoneyManager->HasEnoughMoney(Price))
 	{
-		GameMode->DecreaseMoney(Price);
-		GameMode->IncreaseMoneyLimit();
+		GameMode->MoneyManager->DecreaseMoney(Price);
+		GameMode->MoneyManager->IncreaseMoneyLimit();
 	}
-	
 }
 
 

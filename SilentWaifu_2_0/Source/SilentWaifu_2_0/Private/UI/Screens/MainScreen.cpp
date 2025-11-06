@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/Screens/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
@@ -19,8 +20,8 @@ void UMainScreen::NativeConstruct()
 	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	if (!GameMode) return;
-	GameMode->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
-	GameMode->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
+	GameMode->MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
+	GameMode->MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);

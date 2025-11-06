@@ -8,6 +8,7 @@
 #include "DataTables/CharacterData.h"
 #include "DataTables/CharacterRarities.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
@@ -78,7 +79,7 @@ void UCharacterInfoScreen::CloseScreen()
 
 void UCharacterInfoScreen::UpgradeCharacter()
 {
-	if (!GameMode || !GameMode->HasEnoughMoney(CurrentUpgradePrice)) return;
+	if (!GameMode || !GameMode->MoneyManager->HasEnoughMoney(CurrentUpgradePrice)) return;
 	for (auto& Character : GameMode->GetAvailableCharacters())
 	{
 		if (CharacterId == Character.Key)
@@ -87,7 +88,7 @@ void UCharacterInfoScreen::UpgradeCharacter()
 			break;
 		}
 	}
-	GameMode->DecreaseMoney(CurrentUpgradePrice);
+	GameMode->MoneyManager->DecreaseMoney(CurrentUpgradePrice);
 	OnCharacterUpgradedDelegate.Broadcast();
 	GameMode->OnCharacterUpgradeDelegate.Broadcast(CharacterId);
 	UE_LOG(LogTemp, Display, TEXT("CharacterInfoScreen::UpdateCharacter"));

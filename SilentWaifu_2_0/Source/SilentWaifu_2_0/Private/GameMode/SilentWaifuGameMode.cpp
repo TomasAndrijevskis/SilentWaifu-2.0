@@ -2,6 +2,7 @@
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/CharacterTemplate.h"
+#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
 #include "UI/Screens/MainScreen.h"
@@ -10,6 +11,7 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	MoneyManager = NewObject<UMoneyManager>(this);
 	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::AddAvailableCharacter);
 	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
@@ -27,8 +29,8 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	SetInputSettings();
 	GameInstance->LoadMoney();
 	GameInstance->LoadShop();
-	OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
-	OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
+	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
+	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
 }
 
 
@@ -111,51 +113,6 @@ void ASilentWaifuGameMode::RemoveCharacter(const int CharacterId)
 	Data->bIsOnScreen = false;
 	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Data->Position);
 	Data->Position = NULL;
-}
-
-
-void ASilentWaifuGameMode::IncreaseMoney(const int Money)
-{
-	if (CurrentMoney + Money < MaxMoney)
-	{
-		CurrentMoney += Money;
-	}
-	else
-	{
-		CurrentMoney = MaxMoney;
-	}
-	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
-}
-
-
-void ASilentWaifuGameMode::DecreaseMoney(const int Money)
-{
-	CurrentMoney -= Money;
-	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
-}
-
-
-bool ASilentWaifuGameMode::HasEnoughMoney(const int Money) const
-{
-	if (CurrentMoney >= Money)
-	{
-		return true;
-	}
-	return false;
-}
-
-
-void ASilentWaifuGameMode::IncreaseMoneyLimit()
-{
-	MaxMoney += 200;
-	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
-}
-
-
-void ASilentWaifuGameMode::SetMaxMoney(const int NewMaxMoney)
-{
-	MaxMoney = NewMaxMoney;
-	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
 }
 
 
