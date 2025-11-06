@@ -2,6 +2,7 @@
 #include "UI/ButtonCreateChooseScreen.h"
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/Screens/CharacterMenuChooseCharacter.h"
 #include "UI/Screens/MainScreen.h"
@@ -25,7 +26,7 @@ void UButtonCreateChooseScreen::CreateChooseScreen()
 		WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
 		WidgetReferences->ChooseScreenRef->AddToViewport(1);
 		WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(false);
-		GameMode->SetCurrentSpawnPosition(GetSpawnPosition());
+		GameMode->CharactersManager->SetCurrentSpawnPosition(GetSpawnPosition());
 	}
 }
 

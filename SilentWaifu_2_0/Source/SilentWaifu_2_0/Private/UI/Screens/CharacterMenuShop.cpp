@@ -3,6 +3,7 @@
 #include "Components/HorizontalBox.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardShop.h"
 #include "UI/Cards/LimitIncreaseCard.h"
@@ -17,15 +18,15 @@ void UCharacterMenuShop::CreateCharacterMenu()
 		HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
 		WidgetReferences->LimitIncreaseCardRef->CreateCard();
 		
-		if (GameMode->GetShopCharacters().IsEmpty())
+		if (GameMode->CharactersManager->GetShopCharacters().IsEmpty())
 		{
 			const TArray<int> CharacterIds = GetRandomCharacters();
 			CreateShop(CharacterIds);
-			GameMode->SetShopCharacters(CharacterIds);
+			GameMode->CharactersManager->SetShopCharacters(CharacterIds);
 		}
 		else
 		{
-			CreateShop(GameMode->GetShopCharacters());
+			CreateShop(GameMode->CharactersManager->GetShopCharacters());
 		}
 	}
 }

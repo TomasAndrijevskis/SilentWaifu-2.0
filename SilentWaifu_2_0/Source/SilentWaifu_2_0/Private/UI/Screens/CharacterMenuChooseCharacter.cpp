@@ -3,6 +3,7 @@
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "UI/Screens/MainScreen.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardChoose.h"
@@ -11,7 +12,7 @@
 void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-	for (const auto Character : GameMode->GetSortedCharacters())
+	for (const auto& Character : GameMode->CharactersManager->GetSortedCharacters())
 	{
 		if (WidgetReferences->ChooseCharacterCardClass)
 		{

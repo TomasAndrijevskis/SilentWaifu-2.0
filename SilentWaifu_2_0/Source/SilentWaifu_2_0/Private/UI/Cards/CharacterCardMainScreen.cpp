@@ -3,6 +3,7 @@
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 
 
 void UCharacterCardMainScreen::NativeConstruct()
@@ -70,5 +71,5 @@ void UCharacterCardMainScreen::DisablePressedTimer()
 
 void UCharacterCardMainScreen::Action()
 {
-	GameMode->RemoveCharacter(CharacterId);
+	GameMode->CharactersManager->RemoveCharacter(CharacterId);
 }

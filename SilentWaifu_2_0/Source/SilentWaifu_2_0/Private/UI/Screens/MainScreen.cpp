@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/Screens/CharacterMenuStorage.h"
@@ -123,7 +124,7 @@ void UMainScreen::FillSlots()
 	int SlotNumber = 0;
 	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
-		bool IsSpawned = GameMode->GetTakenPositions().FindRef(SlotNumber);
+		bool IsSpawned = GameMode->CharactersManager->GetTakenPositions().FindRef(SlotNumber);
 		UE_LOG(LogTemp, Error, TEXT("is spawned: %i"), IsSpawned);
 		if (!IsSpawned)
 		{
@@ -153,7 +154,7 @@ UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPositi
 	if (!CharacterCard) return nullptr;
 
 	int CharacterId = NULL;
-	for (const auto Character : GameMode->GetAvailableCharacters())
+	for (const auto Character : GameMode->CharactersManager->GetAvailableCharacters())
 	{
 		if (Character.Value.Position == SpawnPosition)
 		{

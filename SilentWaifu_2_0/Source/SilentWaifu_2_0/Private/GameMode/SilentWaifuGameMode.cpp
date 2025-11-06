@@ -1,7 +1,7 @@
 
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Blueprint/UserWidget.h"
-#include "Character/CharacterTemplate.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
@@ -12,11 +12,11 @@ void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	MoneyManager = NewObject<UMoneyManager>(this);
-	OnCharacterAddedDelegate.AddDynamic(this, &ASilentWaifuGameMode::AddAvailableCharacter);
-	OnCharactersLoadedDelegate.AddDynamic(this, &ASilentWaifuGameMode::SpawnCharacters);
+	CharactersManager = NewObject<UCharactersManager>(this);
+	CharactersManager->Init();
+	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	HandleGameLoad();
-	OnCharacterUpgradeDelegate.AddDynamic(this, &ASilentWaifuGameMode::UpdateCharacter);
 }
 
 
@@ -36,13 +36,11 @@ void ASilentWaifuGameMode::HandleGameLoad()
 
 void ASilentWaifuGameMode::CreateMainScreenWidget()
 {
-	if (WidgetReferences->MainScreenClass)
+	if (!WidgetReferences && !WidgetReferences->MainScreenClass) return;
+	WidgetReferences->MainScreenRef = Cast<UMainScreen>(CreateWidget(GetWorld(), WidgetReferences->MainScreenClass));
+	if (WidgetReferences->MainScreenRef)
 	{
-		WidgetReferences->MainScreenRef = Cast<UMainScreen>(CreateWidget(GetWorld(), WidgetReferences->MainScreenClass));
-		if (WidgetReferences->MainScreenRef)
-		{
-			WidgetReferences->MainScreenRef->AddToViewport(0);
-		}
+		WidgetReferences->MainScreenRef->AddToViewport(0);
 	}
 }
 
@@ -51,132 +49,18 @@ void ASilentWaifuGameMode::SetInputSettings() const
 {
 	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(),0);
 	PC->SetShowMouseCursor(true);
-	FInputModeUIOnly InputMode;
+	const FInputModeUIOnly InputMode;
 	PC->SetInputMode(InputMode);
 }
 
 
-void ASilentWaifuGameMode::UpdateCharacter(const int CharacterId)
+void ASilentWaifuGameMode::OnCharacterSpawned(const int CurrentSpawnPosition) const
 {
-	for (auto& Character : GetAvailableCharacters())
-	{
-		if (Character.Key == CharacterId && Character.Value.bIsOnScreen == true)
-		{
-			Cast<ACharacterTemplate>(UGameplayStatics::GetActorOfClass(GetWorld(),Character.Value.CharacterClass))->UpdateLevel(Character.Value.Level);
-		}
-	}
-}
-
-
-void ASilentWaifuGameMode::SpawnCharacters()
-{
-	for (auto& Character : GetAvailableCharacters())
-	{
-		if (Character.Value.bIsOnScreen == true)
-		{
-			FActorSpawnParameters SpawnParameters;
-			ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-			Actor->SetValues(Character.Value.Level, Character.Key);
-		}
-	}
-}
-
-
-void ASilentWaifuGameMode::SpawnCharacter(const int CharacterId)
-{
-	FActorSpawnParameters SpawnParameters;
-	ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
-	Actor->SetValues(Data->Level, CharacterId);
-	Data->bIsOnScreen = true;
-	Data->Position = CurrentSpawnPosition;
-	AddTakenPosition(CurrentSpawnPosition, true);
 	WidgetReferences->MainScreenRef->OnCharacterSpawnedDelegate.Broadcast(CurrentSpawnPosition);
-	UE_LOG(LogTemp, Error, TEXT("Position: %i"), CurrentSpawnPosition);
 }
 
 
-void ASilentWaifuGameMode::RemoveCharacter(const int CharacterId)
+void ASilentWaifuGameMode::OnCharacterRemovedDelegate(const int Position) const
 {
-	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
-	TArray<AActor*> ActorsToRemove;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->CharacterClass,ActorsToRemove);
-	for (auto Actor : ActorsToRemove)
-	{
-		if (IsValid(Actor))
-		{
-			Actor->Destroy();
-			Actor = nullptr;
-		}
-	}
-	TakenPositions.Remove(Data->Position);
-	Data->bIsOnScreen = false;
-	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Data->Position);
-	Data->Position = NULL;
-}
-
-
-TArray<TPair<int, FSavedCharactersData>> ASilentWaifuGameMode::GetSortedCharacters() const
-{
-	TArray<TPair<int, FSavedCharactersData>> SortedCharacters = AvailableCharacters.Array();
-	SortedCharacters.Sort([](const auto& A, const auto& B)
-	{
-		return A.Value.CharacterId < B.Value.CharacterId;
-	});
-	return SortedCharacters;
-}
-
-
-bool ASilentWaifuGameMode::IsCharacterUnlocked(const int CharacterId) const
-{
-	for (auto const Character : AvailableCharacters)
-	{
-		if (Character.Value.CharacterId == CharacterId)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-
-void ASilentWaifuGameMode::AddTakenPosition(const int Key, const bool Value)
-{
-	TakenPositions.Add(Key, Value);
-}
-
-
-void ASilentWaifuGameMode::AddAvailableCharacter(int const Key, const FSavedCharactersData& Data)
-{
-	AvailableCharacters.Add(Key, Data);
-}
-
-
-TMap<int, FSavedCharactersData>& ASilentWaifuGameMode::GetAvailableCharacters()
-{
-	return AvailableCharacters;
-}
-
-
-TMap<int, bool>& ASilentWaifuGameMode::GetTakenPositions()
-{
-	return TakenPositions;
-}
-
-
-void ASilentWaifuGameMode::SetCurrentSpawnPosition(const int NewSpawnPosition)
-{
-	CurrentSpawnPosition = NewSpawnPosition;
-}
-
-
-void ASilentWaifuGameMode::SetShopCharacters(const TArray<int>& NewShopCharacters)
-{
-	ShopCharacters = NewShopCharacters;
-}
-
-
-TArray<int> ASilentWaifuGameMode::GetShopCharacters() const
-{
-	return ShopCharacters;
+	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Position);
 }

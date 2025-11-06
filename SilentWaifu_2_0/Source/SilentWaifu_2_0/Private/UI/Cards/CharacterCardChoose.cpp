@@ -2,6 +2,7 @@
 #include "UI/Cards/CharacterCardChoose.h"
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 
 
 void UCharacterCardChoose::NativeConstruct()
@@ -52,14 +53,14 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardChoose::HandleCardState()
 {
-	FSavedCharactersData* Data = GameMode->GetAvailableCharacters().Find(CharacterId);
+	FSavedCharactersData* Data = GameMode->CharactersManager->GetAvailableCharacters().Find(CharacterId);
 	Button_Action->SetIsEnabled(!Data->bIsOnScreen);
 }
 
 
 void UCharacterCardChoose::Action()
 {
-	GameMode->SpawnCharacter(CharacterId);
+	GameMode->CharactersManager->SpawnCharacter(CharacterId);
 }
 
 

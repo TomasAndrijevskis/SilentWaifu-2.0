@@ -5,6 +5,7 @@
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 
 
@@ -57,8 +58,8 @@ void UCharacterCardShop::Action()
 void UCharacterCardShop::HandleState()
 {
 	if (!GameMode) return;
-	Button_Action->SetIsEnabled(!GameMode->IsCharacterUnlocked(CharacterId));
-	Button_CharacterImage->SetIsEnabled(!GameMode->IsCharacterUnlocked(CharacterId));
+	Button_Action->SetIsEnabled(!GameMode->CharactersManager->IsCharacterUnlocked(CharacterId));
+	Button_CharacterImage->SetIsEnabled(!GameMode->CharactersManager->IsCharacterUnlocked(CharacterId));
 }
 
 
@@ -74,7 +75,7 @@ void UCharacterCardShop::UnlockCharacter()
 		Data.bIsOnScreen = false;
 		Data.CharacterId = CharacterId;
 		Data.Level = 1;
-		GameMode->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
+		GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 		GameMode->MoneyManager->DecreaseMoney(Price);
 		OnCharacterUnlockedDelegate.Broadcast();
 	}

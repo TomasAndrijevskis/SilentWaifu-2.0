@@ -2,6 +2,7 @@
 #include "SaveGame/SilentWaifuGameInstance.h"
 #include "Character/CharacterTemplate.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuSaveGame.h"
@@ -46,7 +47,7 @@ void USilentWaifuGameInstance::LoadCharacters()
 	if (!GameMode) return;
 	for (auto const Character : SaveGameInstance->GetCharacters())
 	{
-		GameMode->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
+		GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
 	}
 	GameMode->OnCharactersLoadedDelegate.Broadcast();
 }
@@ -61,7 +62,7 @@ void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCha
 
 void USilentWaifuGameInstance::SaveCharacters()
 {
-	for (auto Character : GameMode->GetAvailableCharacters())
+	for (auto Character : GameMode->CharactersManager->GetAvailableCharacters())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Character saved: %i"), Character.Key);
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
@@ -104,26 +105,26 @@ void USilentWaifuGameInstance::LoadPositions() const
 	if (!GameMode) return;
 	for (auto const Position : SaveGameInstance->GetTakenPositions())
 	{
-		GameMode->AddTakenPosition(Position.Key, Position.Value);
+		GameMode->CharactersManager->AddTakenPosition(Position.Key, Position.Value);
 	}
 }
 
 
 void USilentWaifuGameInstance::SavePositions()
 {
-	SaveGameInstance->SaveTakenPositions(GameMode->GetTakenPositions());
+	SaveGameInstance->SaveTakenPositions(GameMode->CharactersManager->GetTakenPositions());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
 void USilentWaifuGameInstance::SaveShop()
 {
-	SaveGameInstance->SaveShop(GameMode->GetShopCharacters());
+	SaveGameInstance->SaveShop(GameMode->CharactersManager->GetShopCharacters());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
 void USilentWaifuGameInstance::LoadShop() const
 {
-	GameMode->SetShopCharacters(SaveGameInstance->GetShop());
+	GameMode->CharactersManager->SetShopCharacters(SaveGameInstance->GetShop());
 }
