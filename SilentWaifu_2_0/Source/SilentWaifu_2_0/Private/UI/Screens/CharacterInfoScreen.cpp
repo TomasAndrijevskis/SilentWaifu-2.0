@@ -17,6 +17,8 @@
 void UCharacterInfoScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
+	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode) return;
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
 	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
 	OnCharacterIdSetDelegate.AddDynamic(this, &UCharacterInfoScreen::SetCharacterInfo);
@@ -24,7 +26,6 @@ void UCharacterInfoScreen::NativeConstruct()
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetMoneyGain);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetUpgradePrice);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::HandleButtonState);
-	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 
@@ -70,11 +71,9 @@ void UCharacterInfoScreen::HandleButtonState()
 
 void UCharacterInfoScreen::CloseScreen()
 {
-	if (WidgetReferences && WidgetReferences->CharacterInfoScreenRef)
-	{
-		this->RemoveFromParent();
-		WidgetReferences->CharacterInfoScreenRef = nullptr;
-	}
+	if (!WidgetReferences || !WidgetReferences->CharacterInfoScreenRef) return;
+	this->RemoveFromParent();
+	WidgetReferences->CharacterInfoScreenRef = nullptr;
 }
 
 

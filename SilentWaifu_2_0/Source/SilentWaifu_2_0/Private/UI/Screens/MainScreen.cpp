@@ -46,47 +46,41 @@ void UMainScreen::UpdateMaxMoney(int const Money)
 
 void UMainScreen::CreateStorage()
 {
-	if (WidgetReferences->StorageScreenClass)
-	{
-		WidgetReferences->StorageScreenRef = Cast<UCharacterMenuStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
-		WidgetReferences->StorageScreenRef->AddToViewport(1);
-		WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
-		OnWindowStateChangedDelegate.Broadcast(false);
-	}
+	if (!WidgetReferences || !WidgetReferences->StorageScreenClass) return;
+	WidgetReferences->StorageScreenRef = Cast<UCharacterMenuStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
+	if (!WidgetReferences->StorageScreenRef) return;
+	WidgetReferences->StorageScreenRef->AddToViewport(1);
+	WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
+	OnWindowStateChangedDelegate.Broadcast(false);
 }
 
 
 void UMainScreen::RemoveStorage()
 {
-	if (WidgetReferences->StorageScreenRef)
-	{
-		WidgetReferences->StorageScreenRef->RemoveFromParent();
-		WidgetReferences->StorageScreenRef = nullptr;
-		OnWindowStateChangedDelegate.Broadcast(true);
-	}
+	if (!WidgetReferences->StorageScreenRef) return;
+	WidgetReferences->StorageScreenRef->RemoveFromParent();
+	WidgetReferences->StorageScreenRef = nullptr;
+	OnWindowStateChangedDelegate.Broadcast(true);
 }
 
 
 void UMainScreen::CreateShop()
 {
-	if (WidgetReferences->ShopScreenClass)
-	{
-		WidgetReferences->ShopScreenRef = Cast<UCharacterMenuShop>(CreateWidget(GetWorld(), WidgetReferences->ShopScreenClass));
-		WidgetReferences->ShopScreenRef->AddToViewport(1);
-		WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);
-		OnWindowStateChangedDelegate.Broadcast(false);
-	}
+	if (!WidgetReferences || !WidgetReferences->ShopScreenClass) return;
+	WidgetReferences->ShopScreenRef = Cast<UCharacterMenuShop>(CreateWidget(GetWorld(), WidgetReferences->ShopScreenClass));
+	if (!WidgetReferences->ShopScreenRef) return;
+	WidgetReferences->ShopScreenRef->AddToViewport(1);
+	WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);
+	OnWindowStateChangedDelegate.Broadcast(false);
 }
 
 
 void UMainScreen::RemoveShop()
 {
-	if (WidgetReferences->ShopScreenRef)
-	{
-		WidgetReferences->ShopScreenRef->RemoveFromParent();
-		WidgetReferences->ShopScreenRef = nullptr;
-		OnWindowStateChangedDelegate.Broadcast(true);
-	}
+	if (!WidgetReferences->ShopScreenRef) return;
+	WidgetReferences->ShopScreenRef->RemoveFromParent();
+	WidgetReferences->ShopScreenRef = nullptr;
+	OnWindowStateChangedDelegate.Broadcast(true);
 }
 
 
@@ -112,7 +106,7 @@ void UMainScreen::CreateSlots()
 		UHorizontalBoxSlot* HBSlot = Cast<UHorizontalBoxSlot>(HorizontalBox_CharacterSlots->AddChild(VB));
 		if (HBSlot)
 		{
-			HBSlot->SetSize( FSlateChildSize(ESlateSizeRule::Fill));
+			HBSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 		}
 	}
 	FillSlots();
@@ -122,10 +116,9 @@ void UMainScreen::CreateSlots()
 void UMainScreen::FillSlots()
 {
 	int SlotNumber = 0;
-	for (const auto CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
+	for (const auto& CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
 		bool IsSpawned = GameMode->CharactersManager->GetTakenPositions().FindRef(SlotNumber);
-		UE_LOG(LogTemp, Error, TEXT("is spawned: %i"), IsSpawned);
 		if (!IsSpawned)
 		{
 			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
@@ -154,12 +147,12 @@ UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPositi
 	if (!CharacterCard) return nullptr;
 
 	int CharacterId = NULL;
-	for (const auto Character : GameMode->CharactersManager->GetAvailableCharacters())
+	for (const auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
 	{
 		if (Character.Value.Position == SpawnPosition)
 		{
 			CharacterId = Character.Value.CharacterId;
-			UE_LOG(LogTemp, Error, TEXT("CreateCharacterCard||CharacterId: %i"), CharacterId);
+			//UE_LOG(LogTemp, Error, TEXT("CreateCharacterCard||CharacterId: %i"), CharacterId);
 			break;
 		}
 	}

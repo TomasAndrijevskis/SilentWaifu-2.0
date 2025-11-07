@@ -52,7 +52,6 @@ void UCharactersManager::RemoveCharacter(const int CharacterId)
 		if (IsValid(Actor))
 		{
 			Actor->Destroy();
-			Actor = nullptr;
 		}
 	}
 	TakenPositions.Remove(Data->Position);
@@ -62,10 +61,9 @@ void UCharactersManager::RemoveCharacter(const int CharacterId)
 }
 
 
-
 void UCharactersManager::UpdateCharacterLevel(const int CharacterId)
 {
-	for (auto& Character : GetAvailableCharacters())
+	for (const auto& Character : GetAvailableCharacters())
 	{
 		if (Character.Key == CharacterId && Character.Value.bIsOnScreen == true)
 		{
@@ -88,7 +86,7 @@ TArray<TPair<int, FSavedCharactersData>> UCharactersManager::GetSortedCharacters
 
 bool UCharactersManager::IsCharacterUnlocked(const int CharacterId) const
 {
-	for (auto const Character : AvailableCharacters)
+	for (const auto& Character : AvailableCharacters)
 	{
 		if (Character.Value.CharacterId == CharacterId)
 		{
@@ -108,10 +106,6 @@ void UCharactersManager::AddTakenPosition(const int Key, const bool Value)
 void UCharactersManager::AddAvailableCharacter(int const Key, const FSavedCharactersData& Data)
 {
 	AvailableCharacters.Add(Key, Data);
-	for (auto Element : AvailableCharacters)
-	{
-		UE_LOG(LogTemp, Error, TEXT("element: %i"), Element.Key);
-	}
 }
 
 

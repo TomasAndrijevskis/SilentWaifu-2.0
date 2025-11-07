@@ -12,25 +12,22 @@
 void UCharacterMenuShop::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-	if (WidgetReferences->LimitIncreaseCardClass)
+	if (!WidgetReferences || !WidgetReferences->LimitIncreaseCardClass) return;
+	WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
+	if (!WidgetReferences->LimitIncreaseCardRef) return;
+	HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
+	WidgetReferences->LimitIncreaseCardRef->CreateCard();
+	if (GameMode->CharactersManager->GetShopCharacters().IsEmpty())
 	{
-		WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
-		HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
-		WidgetReferences->LimitIncreaseCardRef->CreateCard();
-		
-		if (GameMode->CharactersManager->GetShopCharacters().IsEmpty())
-		{
-			const TArray<int> CharacterIds = GetRandomCharacters();
-			CreateShop(CharacterIds);
-			GameMode->CharactersManager->SetShopCharacters(CharacterIds);
-		}
-		else
-		{
-			CreateShop(GameMode->CharactersManager->GetShopCharacters());
-		}
+		const TArray<int> CharacterIds = GetRandomCharacters();
+		CreateShop(CharacterIds);
+		GameMode->CharactersManager->SetShopCharacters(CharacterIds);
+	}
+	else
+	{
+		CreateShop(GameMode->CharactersManager->GetShopCharacters());
 	}
 }
-
 
 
 void UCharacterMenuShop::CreateShop(TArray<int> Characters)
@@ -38,7 +35,9 @@ void UCharacterMenuShop::CreateShop(TArray<int> Characters)
 	int i = 1;
 	for (const int CharacterId : Characters)
 	{
+		if (!WidgetReferences || !WidgetReferences->ShopCharacterCardClass) return;
 		WidgetReferences->ShopCharacterCardRef = Cast<UCharacterCardShop>(CreateWidget(GetWorld(), WidgetReferences->ShopCharacterCardClass));
+		if (!WidgetReferences->ShopCharacterCardRef) return;
 		HorizontalBox_Shop->AddChild(WidgetReferences->ShopCharacterCardRef);
 		WidgetReferences->ShopCharacterCardRef->CreateCard(CharacterId);
 		i++;
@@ -58,12 +57,10 @@ TArray<int> UCharacterMenuShop::GetRandomCharacters() const
 	if (!CharacterDataTable) return TArray<int>();
 	const int CharactersCount = GetCharactersCount();
 	TArray<int> Characters;
-
 	while (Characters.Num() != 4)
 	{
 		Characters.AddUnique(FMath::RandRange(2, CharactersCount));
 	}
-	
 	return Characters;
 }
 

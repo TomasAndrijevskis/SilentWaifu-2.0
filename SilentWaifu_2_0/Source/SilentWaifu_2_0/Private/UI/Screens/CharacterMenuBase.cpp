@@ -9,6 +9,7 @@ void UCharacterMenuBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
+	if (!GameMode) return;
 	CreateCharacterMenu();
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterMenuBase::RemoveCharacterMenu);
 }

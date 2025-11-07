@@ -36,12 +36,10 @@ void ASilentWaifuGameMode::HandleGameLoad()
 
 void ASilentWaifuGameMode::CreateMainScreenWidget()
 {
-	if (!WidgetReferences && !WidgetReferences->MainScreenClass) return;
+	if (!WidgetReferences || !WidgetReferences->MainScreenClass) return;
 	WidgetReferences->MainScreenRef = Cast<UMainScreen>(CreateWidget(GetWorld(), WidgetReferences->MainScreenClass));
-	if (WidgetReferences->MainScreenRef)
-	{
-		WidgetReferences->MainScreenRef->AddToViewport(0);
-	}
+	if (!WidgetReferences->MainScreenRef) return;
+	WidgetReferences->MainScreenRef->AddToViewport(0);
 }
 
 
@@ -56,11 +54,13 @@ void ASilentWaifuGameMode::SetInputSettings() const
 
 void ASilentWaifuGameMode::OnCharacterSpawned(const int CurrentSpawnPosition) const
 {
+	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->OnCharacterSpawnedDelegate.Broadcast(CurrentSpawnPosition);
 }
 
 
 void ASilentWaifuGameMode::OnCharacterRemovedDelegate(const int Position) const
 {
+	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Position);
 }

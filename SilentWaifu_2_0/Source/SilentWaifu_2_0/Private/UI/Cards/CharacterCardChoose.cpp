@@ -53,6 +53,7 @@ void UCharacterCardChoose::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardChoose::HandleCardState()
 {
+	if (!GameMode) return;
 	FSavedCharactersData* Data = GameMode->CharactersManager->GetAvailableCharacters().Find(CharacterId);
 	Button_Action->SetIsEnabled(!Data->bIsOnScreen);
 }
@@ -60,6 +61,7 @@ void UCharacterCardChoose::HandleCardState()
 
 void UCharacterCardChoose::Action()
 {
+	if (!GameMode) return;
 	GameMode->CharactersManager->SpawnCharacter(CharacterId);
 }
 

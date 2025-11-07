@@ -14,23 +14,20 @@ void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 	if (!GameMode) return;
 	for (const auto& Character : GameMode->CharactersManager->GetSortedCharacters())
 	{
-		if (WidgetReferences->ChooseCharacterCardClass)
-		{
-			WidgetReferences->ChooseCharacterCardRef = Cast<UCharacterCardChoose>(CreateWidget(GetWorld(), WidgetReferences->ChooseCharacterCardClass));
-			WrapBox->AddChild(WidgetReferences->ChooseCharacterCardRef);
-			WidgetReferences->ChooseCharacterCardRef->CreateCard(Character.Value.CharacterId);
-			WidgetReferences->ChooseCharacterCardRef->Button_Action->OnClicked.AddDynamic(this,&UCharacterMenuBase::RemoveCharacterMenu);
-		}
+		if (!WidgetReferences || !WidgetReferences->ChooseCharacterCardClass) return;
+		WidgetReferences->ChooseCharacterCardRef = Cast<UCharacterCardChoose>(CreateWidget(GetWorld(), WidgetReferences->ChooseCharacterCardClass));
+		if (!WidgetReferences->ChooseCharacterCardRef) return;
+		WrapBox->AddChild(WidgetReferences->ChooseCharacterCardRef);
+		WidgetReferences->ChooseCharacterCardRef->CreateCard(Character.Value.CharacterId);
+		WidgetReferences->ChooseCharacterCardRef->Button_Action->OnClicked.AddDynamic(this,&UCharacterMenuBase::RemoveCharacterMenu);
 	}
 }
 
 
 void UCharacterMenuChooseCharacter::RemoveCharacterMenu()
 {
-	if (WidgetReferences->ChooseScreenRef)
-	{
-		WidgetReferences->ChooseScreenRef->RemoveFromParent();
-		WidgetReferences->ChooseScreenRef = nullptr;
-		WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(true);
-	}
+	if (!WidgetReferences->ChooseScreenRef) return;
+	WidgetReferences->ChooseScreenRef->RemoveFromParent();
+	WidgetReferences->ChooseScreenRef = nullptr;
+	WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(true);
 }

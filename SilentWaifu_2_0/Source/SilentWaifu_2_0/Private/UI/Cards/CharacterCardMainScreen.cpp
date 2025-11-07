@@ -71,5 +71,6 @@ void UCharacterCardMainScreen::DisablePressedTimer()
 
 void UCharacterCardMainScreen::Action()
 {
+	if (!GameMode) return;
 	GameMode->CharactersManager->RemoveCharacter(CharacterId);
 }

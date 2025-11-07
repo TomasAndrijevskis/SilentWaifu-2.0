@@ -45,10 +45,10 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardStorage::Action()
 {
-	if (WidgetReferences && WidgetReferences->CharacterInfoScreenClass)
-	{
-		WidgetReferences->CharacterInfoScreenRef = Cast<UCharacterInfoScreen>(CreateWidget(GetWorld(), WidgetReferences->CharacterInfoScreenClass));
-		WidgetReferences->CharacterInfoScreenRef->AddToViewport(2);
-		WidgetReferences->CharacterInfoScreenRef->SetCharacterId(CharacterId);
-	}
+	if (!WidgetReferences || !WidgetReferences->CharacterInfoScreenClass) return;
+	WidgetReferences->CharacterInfoScreenRef = Cast<UCharacterInfoScreen>(CreateWidget(GetWorld(), WidgetReferences->CharacterInfoScreenClass));
+	if (!WidgetReferences->CharacterInfoScreenClass) return;
+	WidgetReferences->CharacterInfoScreenRef->AddToViewport(2);
+	WidgetReferences->CharacterInfoScreenRef->SetCharacterId(CharacterId);
+	
 }

@@ -20,14 +20,12 @@ void UButtonCreateChooseScreen::NativeConstruct()
 
 void UButtonCreateChooseScreen::CreateChooseScreen()
 {
-	//UE_LOG(LogTemp, Error, TEXT("Creating ChooseScreen: %i"), GetSpawnPosition());
-	if (WidgetReferences->ChooseScreenClass)
-	{
-		WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
-		WidgetReferences->ChooseScreenRef->AddToViewport(1);
-		WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(false);
-		GameMode->CharactersManager->SetCurrentSpawnPosition(GetSpawnPosition());
-	}
+	if (!WidgetReferences || !WidgetReferences->ChooseScreenClass) return;
+	WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
+	if (!WidgetReferences->ChooseScreenRef) return;
+	WidgetReferences->ChooseScreenRef->AddToViewport(1);
+	WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(false);
+	GameMode->CharactersManager->SetCurrentSpawnPosition(GetSpawnPosition());
 }
 
 

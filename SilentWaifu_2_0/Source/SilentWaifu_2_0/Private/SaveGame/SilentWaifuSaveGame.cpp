@@ -46,7 +46,6 @@ TMap<int, bool> USilentWaifuSaveGame::GetTakenPositions() const
 
 void USilentWaifuSaveGame::SaveTakenPositions(const TMap<int, bool>&  Positions)
 {
-	//TakenPositions.Add(Key, Value);
 	TakenPositions = Positions;
 }
 

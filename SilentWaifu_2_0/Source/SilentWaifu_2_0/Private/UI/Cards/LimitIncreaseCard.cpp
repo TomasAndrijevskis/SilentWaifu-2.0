@@ -12,6 +12,7 @@ void ULimitIncreaseCard::NativeConstruct()
 	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::SetPriceText);
 }
 
+
 void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
@@ -37,11 +38,9 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 void ULimitIncreaseCard::Action()
 {
 	if (!GameMode) return;
-	if (GameMode->MoneyManager->HasEnoughMoney(Price))
-	{
-		GameMode->MoneyManager->DecreaseMoney(Price);
-		GameMode->MoneyManager->IncreaseMoneyLimit();
-	}
+	if (!GameMode->MoneyManager->HasEnoughMoney(Price)) return
+	GameMode->MoneyManager->DecreaseMoney(Price);
+	GameMode->MoneyManager->IncreaseMoneyLimit();
 }
 
 

@@ -1,6 +1,5 @@
 
 #include "SaveGame/SilentWaifuGameInstance.h"
-#include "Character/CharacterTemplate.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
@@ -15,6 +14,7 @@ void USilentWaifuGameInstance::Init()
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
 }
 
+
 void USilentWaifuGameInstance::Shutdown()
 {
 	SavePositions();
@@ -27,25 +27,22 @@ void USilentWaifuGameInstance::Shutdown()
 void USilentWaifuGameInstance::HandleSaveGame()
 {
 	SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
-	if (!SaveGameInstance)
-	{
-		SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
-		FSavedCharactersData Data;
-		Data.CharacterClass = DefaultCharacter;
-		Data.bIsOnScreen = false;
-		Data.CharacterId = 1;
-		Data.Level = 1;
-		SaveFirstCharacter(1, Data);
-		SaveMaxMoney(100);
-		UE_LOG(LogTemp, Warning, TEXT("First character saved"));
-	}
+	if (!SaveGameInstance) return;
+	SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
+	FSavedCharactersData Data;
+	Data.CharacterClass = DefaultCharacter;
+	Data.bIsOnScreen = false;
+	Data.CharacterId = 1;
+	Data.Level = 1;
+	SaveFirstCharacter(1, Data);
+	SaveMaxMoney(100);
 }
 
 
 void USilentWaifuGameInstance::LoadCharacters()
 {
 	if (!GameMode) return;
-	for (auto const Character : SaveGameInstance->GetCharacters())
+	for (const auto& Character : SaveGameInstance->GetCharacters())
 	{
 		GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
 	}
@@ -55,6 +52,7 @@ void USilentWaifuGameInstance::LoadCharacters()
 
 void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCharactersData& Data) const
 {
+	if (!SaveGameInstance) return;
 	SaveGameInstance->SaveCharacter(Key, Data);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -62,9 +60,9 @@ void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCha
 
 void USilentWaifuGameInstance::SaveCharacters()
 {
-	for (auto Character : GameMode->CharactersManager->GetAvailableCharacters())
+	if (!SaveGameInstance) return;
+	for (const auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Character saved: %i"), Character.Key);
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
 	}
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
@@ -80,6 +78,7 @@ void USilentWaifuGameInstance::SetGameMode(AGameModeBase* NewGameMode)
 
 void USilentWaifuGameInstance::SaveCurrentMoney(int const CurrentMoney)
 {
+	if (!SaveGameInstance) return;
 	SaveGameInstance->SaveCurrentMoney(CurrentMoney);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -87,6 +86,7 @@ void USilentWaifuGameInstance::SaveCurrentMoney(int const CurrentMoney)
 
 void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
 {
+	if (!SaveGameInstance) return;
 	SaveGameInstance->SaveMaxMoney(MaxMoney);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -94,7 +94,7 @@ void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
 
 void USilentWaifuGameInstance::LoadMoney() const
 {
-	if (!GameMode) return;
+	if (!GameMode || !SaveGameInstance) return;
 	GameMode->MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
 	GameMode->MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
@@ -102,8 +102,8 @@ void USilentWaifuGameInstance::LoadMoney() const
 
 void USilentWaifuGameInstance::LoadPositions() const
 {
-	if (!GameMode) return;
-	for (auto const Position : SaveGameInstance->GetTakenPositions())
+	if (!GameMode || !SaveGameInstance) return;
+	for (const auto& Position : SaveGameInstance->GetTakenPositions())
 	{
 		GameMode->CharactersManager->AddTakenPosition(Position.Key, Position.Value);
 	}
@@ -112,6 +112,7 @@ void USilentWaifuGameInstance::LoadPositions() const
 
 void USilentWaifuGameInstance::SavePositions()
 {
+	if (!SaveGameInstance) return;
 	SaveGameInstance->SaveTakenPositions(GameMode->CharactersManager->GetTakenPositions());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -119,6 +120,7 @@ void USilentWaifuGameInstance::SavePositions()
 
 void USilentWaifuGameInstance::SaveShop()
 {
+	if (!SaveGameInstance) return;
 	SaveGameInstance->SaveShop(GameMode->CharactersManager->GetShopCharacters());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -126,5 +128,6 @@ void USilentWaifuGameInstance::SaveShop()
 
 void USilentWaifuGameInstance::LoadShop() const
 {
+	if (!GameMode || !SaveGameInstance) return;
 	GameMode->CharactersManager->SetShopCharacters(SaveGameInstance->GetShop());
 }

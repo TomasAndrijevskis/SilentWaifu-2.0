@@ -67,20 +67,17 @@ void UCharacterCardShop::UnlockCharacter()
 {
 	if (!GameMode) return;
 	int Price = GetCharacterPrice();
-	if (GameMode->MoneyManager->HasEnoughMoney(Price))
-	{
-		if (!CharacterRow) return;
-		FSavedCharactersData Data;
-		Data.CharacterClass = CharacterRow->CharacterClass;
-		Data.bIsOnScreen = false;
-		Data.CharacterId = CharacterId;
-		Data.Level = 1;
-		GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
-		GameMode->MoneyManager->DecreaseMoney(Price);
-		OnCharacterUnlockedDelegate.Broadcast();
-	}
+	if (!GameMode->MoneyManager->HasEnoughMoney(Price)) return;
+	if (!CharacterRow) return;
+	FSavedCharactersData Data;
+	Data.CharacterClass = CharacterRow->CharacterClass;
+	Data.bIsOnScreen = false;
+	Data.CharacterId = CharacterId;
+	Data.Level = 1;
+	GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
+	GameMode->MoneyManager->DecreaseMoney(Price);
+	OnCharacterUnlockedDelegate.Broadcast();
 }
-
 
 
 void UCharacterCardShop::SetCharacterRow()

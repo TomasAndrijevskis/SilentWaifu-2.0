@@ -10,15 +10,12 @@
 void UCharacterMenuStorage::CreateCharacterMenu()
 {
 	if (!GameMode) return;
-
-	for (const auto Character : GameMode->CharactersManager->GetSortedCharacters())
+	for (const auto& Character : GameMode->CharactersManager->GetSortedCharacters())
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Character %i created"), Character.Key);
-		if (WidgetReferences->StorageCharacterCardClass)
-		{
-			WidgetReferences->StorageCharacterCardRef = Cast<UCharacterCardStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));
-			WrapBox->AddChild(WidgetReferences->StorageCharacterCardRef);
-			WidgetReferences->StorageCharacterCardRef->CreateCard(Character.Value.CharacterId);
-		}
+		if (!WidgetReferences || !WidgetReferences->StorageCharacterCardClass) return;
+		WidgetReferences->StorageCharacterCardRef = Cast<UCharacterCardStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));
+		if (!WidgetReferences->StorageCharacterCardRef) return;
+		WrapBox->AddChild(WidgetReferences->StorageCharacterCardRef);
+		WidgetReferences->StorageCharacterCardRef->CreateCard(Character.Value.CharacterId);
 	}
 }
