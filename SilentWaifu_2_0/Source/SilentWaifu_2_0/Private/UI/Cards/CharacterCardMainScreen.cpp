@@ -2,7 +2,6 @@
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
-#include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 
 

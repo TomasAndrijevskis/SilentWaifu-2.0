@@ -43,7 +43,7 @@ public:
 	void SetShopCharacters(const TArray<int>& NewShopCharacters);
 
 	UFUNCTION()
-	TArray<int> GetShopCharacters() const;
+	TArray<int>& GetShopCharacters();
 
 	bool IsCharacterUnlocked(const int CharacterId) const;
 

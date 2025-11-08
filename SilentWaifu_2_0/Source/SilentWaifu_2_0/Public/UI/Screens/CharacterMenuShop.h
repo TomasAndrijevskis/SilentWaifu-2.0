@@ -11,6 +11,13 @@ class SILENTWAIFU_2_0_API UCharacterMenuShop : public UCharacterMenuBase
 {
 	GENERATED_BODY()
 
+public:
+
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void UpdateShop();
+	
 protected:
 
 	virtual void CreateCharacterMenu() override;
@@ -19,6 +26,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UHorizontalBox* HorizontalBox_Shop;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_UpdateShop;//testing
 	
 	int GetCharactersCount() const;
 

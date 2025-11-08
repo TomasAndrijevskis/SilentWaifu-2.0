@@ -1,7 +1,7 @@
 
 #include "UI/Screens/CharacterMenuShop.h"
+#include "Components/Button.h"
 #include "Components/HorizontalBox.h"
-#include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "UI/WidgetReferenceDataAsset.h"
@@ -9,9 +9,25 @@
 #include "UI/Cards/LimitIncreaseCard.h"
 
 
-void UCharacterMenuShop::CreateCharacterMenu()
+void UCharacterMenuShop::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_UpdateShop->OnClicked.AddDynamic(this,&UCharacterMenuShop::UpdateShop);
+}
+
+
+void UCharacterMenuShop::UpdateShop()
 {
 	if (!CharactersManager) return;
+	HorizontalBox_Shop->ClearChildren();
+	CharactersManager->GetShopCharacters().Empty();
+	CreateCharacterMenu();
+}
+
+
+void UCharacterMenuShop::CreateCharacterMenu()
+{
+	if (!CharactersManager || !GameMode) return;
 	if (!WidgetReferences || !WidgetReferences->LimitIncreaseCardClass) return;
 	WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
 	if (!WidgetReferences->LimitIncreaseCardRef) return;
@@ -22,6 +38,7 @@ void UCharacterMenuShop::CreateCharacterMenu()
 		const TArray<int> CharacterIds = GetRandomCharacters();
 		CreateShop(CharacterIds);
 		CharactersManager->SetShopCharacters(CharacterIds);
+		GameMode->OnShopCreatedDelegate.Broadcast();
 	}
 	else
 	{

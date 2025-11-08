@@ -12,7 +12,6 @@ void USilentWaifuGameInstance::Init()
 	Super::Init();
 	HandleSaveGame();
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
-	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::SetManagers);
 }
 
 
@@ -28,26 +27,25 @@ void USilentWaifuGameInstance::Shutdown()
 void USilentWaifuGameInstance::HandleSaveGame()
 {
 	SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
-	if (!SaveGameInstance) return;
-	SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
-	FSavedCharactersData Data;
-	Data.CharacterClass = DefaultCharacter;
-	Data.bIsOnScreen = false;
-	Data.CharacterId = 1;
-	Data.Level = 1;
-	SaveFirstCharacter(1, Data);
-	SaveMaxMoney(100);
+	if (!SaveGameInstance)
+	{
+		SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
+		FSavedCharactersData Data;
+		Data.CharacterClass = DefaultCharacter;
+		Data.bIsOnScreen = false;
+		Data.CharacterId = 1;
+		Data.Level = 1;
+		SaveFirstCharacter(1, Data);
+		SaveMaxMoney(100);
+	}
 }
 
 
-void USilentWaifuGameInstance::LoadCharacters()
+void USilentWaifuGameInstance::SetGameMode(AGameModeBase* NewGameMode)
 {
-	if (!GameMode) return;
-	for (const auto& Character : SaveGameInstance->GetCharacters())
-	{
-		GameMode->CharactersManager->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
-	}
-	GameMode->OnCharactersLoadedDelegate.Broadcast();
+	GameMode = static_cast<ASilentWaifuGameMode*>(NewGameMode);
+	SetManagers();
+	OnGameModeLoadedDelegate.Broadcast();
 }
 
 
@@ -56,6 +54,17 @@ void USilentWaifuGameInstance::SetManagers()
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
+}
+
+
+void USilentWaifuGameInstance::LoadCharacters()
+{
+	if (!CharactersManager || !SaveGameInstance) return;
+	for (const auto& Character : SaveGameInstance->GetCharacters())
+	{
+		CharactersManager->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
+	}
+	GameMode->OnCharactersLoadedDelegate.Broadcast();
 }
 
 
@@ -75,13 +84,6 @@ void USilentWaifuGameInstance::SaveCharacters()
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
 	}
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
-}
-
-
-void USilentWaifuGameInstance::SetGameMode(AGameModeBase* NewGameMode)
-{
-	GameMode = static_cast<ASilentWaifuGameMode*>(NewGameMode);
-	OnGameModeLoadedDelegate.Broadcast();
 }
 
 

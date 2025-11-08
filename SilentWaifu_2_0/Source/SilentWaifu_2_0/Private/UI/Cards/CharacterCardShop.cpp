@@ -4,7 +4,6 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
-#include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 

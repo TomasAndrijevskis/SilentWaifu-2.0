@@ -14,7 +14,7 @@ class ACharacterTemplate;
 class USilentWaifuGameInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShopCreatedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 {
@@ -36,6 +36,8 @@ public:
 	UWidgetReferenceDataAsset* WidgetReferences;
 	
 	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
+	
+	FOnShopCreatedSignature OnShopCreatedDelegate;
 	
 protected:
 

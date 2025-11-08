@@ -38,7 +38,8 @@ public:
 	void SavePositions();
 	
 	void SetGameMode(AGameModeBase* NewGameMode);
-	
+
+	UFUNCTION()
 	void SaveShop();
 
 	void LoadShop() const;

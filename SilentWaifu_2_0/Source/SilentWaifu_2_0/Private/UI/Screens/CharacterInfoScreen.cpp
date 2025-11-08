@@ -1,6 +1,5 @@
 
 #include "UI/Screens/CharacterInfoScreen.h"
-
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/Image.h"

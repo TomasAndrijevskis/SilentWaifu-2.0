@@ -1,7 +1,6 @@
 
 #include "UI/Screens/CharacterMenuStorage.h"
 #include "Components/WrapBox.h"
-#include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Cards/CharacterCardStorage.h"

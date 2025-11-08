@@ -13,6 +13,7 @@ void ASilentWaifuGameMode::BeginPlay()
 	Super::BeginPlay();
 	MoneyManager = NewObject<UMoneyManager>(this);
 	CharactersManager = NewObject<UCharactersManager>(this);
+	if (!CharactersManager || !MoneyManager) return;
 	CharactersManager->Init();
 	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
@@ -31,6 +32,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadShop();
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
+	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
 }
 
 

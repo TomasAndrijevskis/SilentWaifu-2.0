@@ -133,7 +133,7 @@ void UCharactersManager::SetShopCharacters(const TArray<int>& NewShopCharacters)
 }
 
 
-TArray<int> UCharactersManager::GetShopCharacters() const
+TArray<int>& UCharactersManager::GetShopCharacters()
 {
 	return ShopCharacters;
 }
