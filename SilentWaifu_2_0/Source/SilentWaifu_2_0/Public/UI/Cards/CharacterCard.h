@@ -6,6 +6,8 @@
 #include "CharacterCard.generated.h"
 
 
+class UCharactersManager;
+
 UCLASS()
 class SILENTWAIFU_2_0_API UCharacterCard : public UCardBase
 {
@@ -21,4 +23,12 @@ protected:
 	UDataTable* CharacterDataTable;
 	
 	int CharacterId;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
+
+private:
+
+	void SetCharacterManager();
+
 };

@@ -9,8 +9,8 @@
 
 void UCharacterMenuStorage::CreateCharacterMenu()
 {
-	if (!GameMode) return;
-	for (const auto& Character : GameMode->CharactersManager->GetSortedCharacters())
+	if (!CharactersManager) return;
+	for (const auto& Character : CharactersManager->GetSortedCharacters())
 	{
 		if (!WidgetReferences || !WidgetReferences->StorageCharacterCardClass) return;
 		WidgetReferences->StorageCharacterCardRef = Cast<UCharacterCardStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageCharacterCardClass));

@@ -11,8 +11,8 @@
 
 void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 {
-	if (!GameMode) return;
-	for (const auto& Character : GameMode->CharactersManager->GetSortedCharacters())
+	if (!CharactersManager) return;
+	for (const auto& Character : CharactersManager->GetSortedCharacters())
 	{
 		if (!WidgetReferences || !WidgetReferences->ChooseCharacterCardClass) return;
 		WidgetReferences->ChooseCharacterCardRef = Cast<UCharacterCardChoose>(CreateWidget(GetWorld(), WidgetReferences->ChooseCharacterCardClass));

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CharacterTemplate.generated.h"
 
+class UMoneyManager;
 class ASilentWaifuGameMode;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterLoadedSignature);
@@ -56,6 +57,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	int Id;
 
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+	
 	FCharacterData* CharacterRow;
 	
 	FTimerHandle TimerHandle;

@@ -19,8 +19,16 @@ void UCharacterInfoScreen::NativeConstruct()
 	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
+	CharactersManager = GameMode->CharactersManager;
+	MoneyManager = GameMode->MoneyManager;
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
 	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
+	BindDelegates();
+}
+
+
+void UCharacterInfoScreen::BindDelegates()
+{
 	OnCharacterIdSetDelegate.AddDynamic(this, &UCharacterInfoScreen::SetCharacterInfo);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetLevel);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetMoneyGain);
@@ -79,8 +87,8 @@ void UCharacterInfoScreen::CloseScreen()
 
 void UCharacterInfoScreen::UpgradeCharacter()
 {
-	if (!GameMode || !GameMode->MoneyManager->HasEnoughMoney(CurrentUpgradePrice)) return;
-	for (auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
+	if (!CharactersManager || !MoneyManager || !MoneyManager->HasEnoughMoney(CurrentUpgradePrice)) return;
+	for (auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		if (CharacterId == Character.Key)
 		{
@@ -88,9 +96,9 @@ void UCharacterInfoScreen::UpgradeCharacter()
 			break;
 		}
 	}
-	GameMode->MoneyManager->DecreaseMoney(CurrentUpgradePrice);
+	MoneyManager->DecreaseMoney(CurrentUpgradePrice);
 	OnCharacterUpgradedDelegate.Broadcast();
-	GameMode->CharactersManager->OnCharacterUpgradeDelegate.Broadcast(CharacterId);
+	CharactersManager->OnCharacterUpgradeDelegate.Broadcast(CharacterId);
 	UE_LOG(LogTemp, Display, TEXT("CharacterInfoScreen::UpdateCharacter"));
 }
 
@@ -121,7 +129,8 @@ void UCharacterInfoScreen::SetName()
 
 void UCharacterInfoScreen::SetLevel()
 {
-	for (const auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
+	if (!CharactersManager) return;
+	for (const auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		if (CharacterId == Character.Key)
 		{

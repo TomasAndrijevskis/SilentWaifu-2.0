@@ -12,6 +12,7 @@ void USilentWaifuGameInstance::Init()
 	Super::Init();
 	HandleSaveGame();
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
+	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::SetManagers);
 }
 
 
@@ -50,6 +51,14 @@ void USilentWaifuGameInstance::LoadCharacters()
 }
 
 
+void USilentWaifuGameInstance::SetManagers()
+{
+	if (!GameMode) return;
+	MoneyManager = GameMode->MoneyManager;
+	CharactersManager = GameMode->CharactersManager;
+}
+
+
 void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCharactersData& Data) const
 {
 	if (!SaveGameInstance) return;
@@ -60,8 +69,8 @@ void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCha
 
 void USilentWaifuGameInstance::SaveCharacters()
 {
-	if (!SaveGameInstance) return;
-	for (const auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
+	if (!SaveGameInstance || !CharactersManager) return;
+	for (const auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);
 	}
@@ -94,40 +103,40 @@ void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
 
 void USilentWaifuGameInstance::LoadMoney() const
 {
-	if (!GameMode || !SaveGameInstance) return;
-	GameMode->MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
-	GameMode->MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
+	if (!MoneyManager || !SaveGameInstance) return;
+	MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
+	MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
 
 
 void USilentWaifuGameInstance::LoadPositions() const
 {
-	if (!GameMode || !SaveGameInstance) return;
+	if (!CharactersManager || !SaveGameInstance) return;
 	for (const auto& Position : SaveGameInstance->GetTakenPositions())
 	{
-		GameMode->CharactersManager->AddTakenPosition(Position.Key, Position.Value);
+		CharactersManager->AddTakenPosition(Position.Key, Position.Value);
 	}
 }
 
 
 void USilentWaifuGameInstance::SavePositions()
 {
-	if (!SaveGameInstance) return;
-	SaveGameInstance->SaveTakenPositions(GameMode->CharactersManager->GetTakenPositions());
+	if (!SaveGameInstance || !CharactersManager) return;
+	SaveGameInstance->SaveTakenPositions(CharactersManager->GetTakenPositions());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
 void USilentWaifuGameInstance::SaveShop()
 {
-	if (!SaveGameInstance) return;
-	SaveGameInstance->SaveShop(GameMode->CharactersManager->GetShopCharacters());
+	if (!SaveGameInstance || !CharactersManager) return;
+	SaveGameInstance->SaveShop(CharactersManager->GetShopCharacters());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
 void USilentWaifuGameInstance::LoadShop() const
 {
-	if (!GameMode || !SaveGameInstance) return;
-	GameMode->CharactersManager->SetShopCharacters(SaveGameInstance->GetShop());
+	if (!CharactersManager || !SaveGameInstance) return;
+	CharactersManager->SetShopCharacters(SaveGameInstance->GetShop());
 }

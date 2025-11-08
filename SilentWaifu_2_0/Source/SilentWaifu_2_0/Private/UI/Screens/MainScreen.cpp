@@ -19,16 +19,31 @@
 void UMainScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
+	InitializeReferences();
+	BindDelegates();
+	CreateSlots();
+}
+
+
+void UMainScreen::InitializeReferences()
+{
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	if (!GameMode) return;
-	GameMode->MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
-	GameMode->MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
+	MoneyManager = GameMode->MoneyManager;
+	CharactersManager = GameMode->CharactersManager;
+}
+
+
+void UMainScreen::BindDelegates()
+{
+	if (!MoneyManager) return;
+	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
+	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
-	CreateSlots();
 }
 
 
@@ -115,10 +130,11 @@ void UMainScreen::CreateSlots()
 
 void UMainScreen::FillSlots()
 {
+	if (!CharactersManager) return;
 	int SlotNumber = 0;
 	for (const auto& CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
-		bool IsSpawned = GameMode->CharactersManager->GetTakenPositions().FindRef(SlotNumber);
+		bool IsSpawned = CharactersManager->GetTakenPositions().FindRef(SlotNumber);
 		if (!IsSpawned)
 		{
 			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
@@ -134,6 +150,7 @@ void UMainScreen::FillSlots()
 
 UButtonCreateChooseScreen* UMainScreen::CreateButton(const int SpawnPosition) const
 {
+	if (!WidgetReferences || !WidgetReferences->ButtonCreateChooseScreenClass) return nullptr;
 	UButtonCreateChooseScreen* Button = CreateWidget<UButtonCreateChooseScreen>(GetWorld(), WidgetReferences->ButtonCreateChooseScreenClass);
 	if (!Button) return nullptr;
 	Button->SetSpawnPosition(SpawnPosition);
@@ -143,16 +160,15 @@ UButtonCreateChooseScreen* UMainScreen::CreateButton(const int SpawnPosition) co
 
 UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPosition) const
 {
+	if (!WidgetReferences || !WidgetReferences->CharacterCardMainScreenClass || !CharactersManager) return nullptr;
 	UCharacterCardMainScreen* CharacterCard = CreateWidget<UCharacterCardMainScreen>(GetWorld(), WidgetReferences->CharacterCardMainScreenClass);
 	if (!CharacterCard) return nullptr;
-
 	int CharacterId = NULL;
-	for (const auto& Character : GameMode->CharactersManager->GetAvailableCharacters())
+	for (const auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		if (Character.Value.Position == SpawnPosition)
 		{
 			CharacterId = Character.Value.CharacterId;
-			//UE_LOG(LogTemp, Error, TEXT("CreateCharacterCard||CharacterId: %i"), CharacterId);
 			break;
 		}
 	}

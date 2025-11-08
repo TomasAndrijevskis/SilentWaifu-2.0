@@ -13,6 +13,7 @@ void ACharacterTemplate::BeginPlay()
 	Super::BeginPlay();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
+	MoneyManager = GameMode->MoneyManager;
 	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableTimer);
 	OnValuesUpdatedDelegate.AddDynamic(this, &ACharacterTemplate::SetMoney);
 }
@@ -58,5 +59,6 @@ void ACharacterTemplate::GetCharacterRow()
 
 void ACharacterTemplate::IncreaseMoney() const
 {
-	GameMode->MoneyManager->IncreaseMoney(MoneyPerSecond);
+	if (!MoneyManager) return;
+	MoneyManager->IncreaseMoney(MoneyPerSecond);
 }

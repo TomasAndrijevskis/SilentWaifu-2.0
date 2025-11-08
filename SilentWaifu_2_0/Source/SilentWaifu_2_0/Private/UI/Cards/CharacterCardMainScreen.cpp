@@ -56,7 +56,6 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 }
 
 
-
 void UCharacterCardMainScreen::EnablePressedTimer()
 {
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCharacterCardMainScreen::Action, 1, false);
@@ -71,6 +70,6 @@ void UCharacterCardMainScreen::DisablePressedTimer()
 
 void UCharacterCardMainScreen::Action()
 {
-	if (!GameMode) return;
-	GameMode->CharactersManager->RemoveCharacter(CharacterId);
+	if (!CharactersManager) return;
+	CharactersManager->RemoveCharacter(CharacterId);
 }

@@ -6,6 +6,7 @@
 #include "CardBase.generated.h"
 
 
+class UMoneyManager;
 class ACharacterTemplate;
 class ASilentWaifuGameMode;
 class UBorder;
@@ -43,6 +44,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	ASilentWaifuGameMode* GameMode;
 
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))

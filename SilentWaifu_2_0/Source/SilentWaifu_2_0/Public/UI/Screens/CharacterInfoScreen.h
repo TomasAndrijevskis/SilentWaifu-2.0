@@ -7,6 +7,8 @@
 #include "CharacterInfoScreen.generated.h"
 
 
+class UCharactersManager;
+class UMoneyManager;
 class ASilentWaifuGameMode;
 class UWidgetReferenceDataAsset;
 class UBorder;
@@ -110,6 +112,8 @@ private:
 
 	UFUNCTION()
 	void HandleButtonState();
+
+	void BindDelegates();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
@@ -119,6 +123,12 @@ private:
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
+
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
 	
 	int CharacterId;
 

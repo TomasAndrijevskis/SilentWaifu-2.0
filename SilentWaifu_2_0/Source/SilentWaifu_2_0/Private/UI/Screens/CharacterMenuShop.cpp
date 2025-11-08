@@ -11,21 +11,21 @@
 
 void UCharacterMenuShop::CreateCharacterMenu()
 {
-	if (!GameMode) return;
+	if (!CharactersManager) return;
 	if (!WidgetReferences || !WidgetReferences->LimitIncreaseCardClass) return;
 	WidgetReferences->LimitIncreaseCardRef = Cast<ULimitIncreaseCard>(CreateWidget(GetWorld(), WidgetReferences->LimitIncreaseCardClass));
 	if (!WidgetReferences->LimitIncreaseCardRef) return;
 	HorizontalBox_Shop->AddChild(WidgetReferences->LimitIncreaseCardRef);
 	WidgetReferences->LimitIncreaseCardRef->CreateCard();
-	if (GameMode->CharactersManager->GetShopCharacters().IsEmpty())
+	if (CharactersManager->GetShopCharacters().IsEmpty())
 	{
 		const TArray<int> CharacterIds = GetRandomCharacters();
 		CreateShop(CharacterIds);
-		GameMode->CharactersManager->SetShopCharacters(CharacterIds);
+		CharactersManager->SetShopCharacters(CharacterIds);
 	}
 	else
 	{
-		CreateShop(GameMode->CharactersManager->GetShopCharacters());
+		CreateShop(CharactersManager->GetShopCharacters());
 	}
 }
 

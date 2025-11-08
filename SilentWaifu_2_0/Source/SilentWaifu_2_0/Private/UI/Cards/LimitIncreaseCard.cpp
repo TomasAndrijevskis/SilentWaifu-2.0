@@ -37,10 +37,9 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 
 void ULimitIncreaseCard::Action()
 {
-	if (!GameMode) return;
-	if (!GameMode->MoneyManager->HasEnoughMoney(Price)) return
-	GameMode->MoneyManager->DecreaseMoney(Price);
-	GameMode->MoneyManager->IncreaseMoneyLimit();
+	if (!MoneyManager || !MoneyManager->HasEnoughMoney(Price)) return;
+	MoneyManager->DecreaseMoney(Price);
+	MoneyManager->IncreaseMoneyLimit();
 }
 
 

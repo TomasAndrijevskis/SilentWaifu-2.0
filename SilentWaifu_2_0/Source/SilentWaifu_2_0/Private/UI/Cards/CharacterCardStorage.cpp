@@ -43,6 +43,7 @@ void UCharacterCardStorage::SetImage(UTexture2D* NewImage)
 	Button_Action->SetStyle(CustomStyle);
 }
 
+
 void UCharacterCardStorage::Action()
 {
 	if (!WidgetReferences || !WidgetReferences->CharacterInfoScreenClass) return;
@@ -50,5 +51,4 @@ void UCharacterCardStorage::Action()
 	if (!WidgetReferences->CharacterInfoScreenClass) return;
 	WidgetReferences->CharacterInfoScreenRef->AddToViewport(2);
 	WidgetReferences->CharacterInfoScreenRef->SetCharacterId(CharacterId);
-	
 }

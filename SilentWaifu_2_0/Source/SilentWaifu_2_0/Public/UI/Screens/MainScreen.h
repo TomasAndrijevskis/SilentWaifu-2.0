@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UMoneyManager;
+class UCharactersManager;
 class UVerticalBox;
 class UBackgroundBlur;
 class ASilentWaifuGameMode;
@@ -68,6 +70,10 @@ private:
 	
 	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;
+
+	void InitializeReferences();
+
+	void BindDelegates();
 	
 	UFUNCTION()
 	void CreateStorage();
@@ -103,6 +109,12 @@ private:
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
+
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+	
 	int AmountOfSlots = 5;
 };
 

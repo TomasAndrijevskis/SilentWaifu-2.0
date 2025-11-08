@@ -2,11 +2,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SavedCharactersData.h"
 #include "Engine/GameInstance.h"
 #include "SilentWaifuGameInstance.generated.h"
 
 
-struct FSavedCharactersData;
+class UCharactersManager;
+class UMoneyManager;
 class ACharacterTemplate;
 class USilentWaifuSaveGame;
 class ASilentWaifuGameMode;
@@ -54,6 +56,9 @@ private:
 
 	void SaveFirstCharacter(int const Key, const FSavedCharactersData& Data) const;
 
+	UFUNCTION()
+	void SetManagers();
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;
 	
@@ -65,4 +70,10 @@ private:
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
+
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
 };

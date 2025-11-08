@@ -5,6 +5,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharacterMenuBase.generated.h"
 
+class UCharactersManager;
 class UVerticalBox;
 class USizeBox;
 class UBorder;
@@ -43,6 +44,9 @@ protected:
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
 	
 private:
 
