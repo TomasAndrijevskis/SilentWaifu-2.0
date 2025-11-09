@@ -34,6 +34,12 @@ public:
 	UFUNCTION()
 	void UpdateMaxMoney(int const Money);
 
+	UFUNCTION()
+	void CreateConfirmationWindow();
+
+	UFUNCTION()
+	void RemoveConfirmationWindow();
+	
 	FOnWindowStateChangedSignature OnWindowStateChangedDelegate;
 
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;

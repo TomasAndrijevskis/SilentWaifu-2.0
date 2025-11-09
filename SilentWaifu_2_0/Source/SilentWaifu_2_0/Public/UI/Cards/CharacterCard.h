@@ -14,6 +14,8 @@ class SILENTWAIFU_2_0_API UCharacterCard : public UCardBase
 	GENERATED_BODY()
 
 public:
+
+	virtual void NativeConstruct() override;
 	
 	virtual void CreateCard(const int NewCharacterId) override;
 

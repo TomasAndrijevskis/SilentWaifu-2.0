@@ -12,5 +12,7 @@ struct SILENTWAIFU_2_0_API FCharacterRarities: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	UTexture2D* RarityBorder;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	int DropChance;
 };

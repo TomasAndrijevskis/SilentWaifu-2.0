@@ -14,8 +14,7 @@ class SILENTWAIFU_2_0_API UCharactersManager : public UObject
 	GENERATED_BODY()
 
 public:
-
-	//virtual void BeginPlay() override;
+	
 	void Init();
 	
 	UFUNCTION()

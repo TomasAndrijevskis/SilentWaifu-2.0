@@ -7,9 +7,10 @@
 #include "CharacterCardShop.generated.h"
 
 
-class UTextBlock;
+class UWidgetReferenceDataAsset;
 class USilentWaifuGameInstance;
 class UImage;
+class UTextBlock;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterUnlockedSignature);
 UCLASS()
@@ -28,7 +29,10 @@ protected:
 	virtual void SetImage(UTexture2D* NewImage) override;
 	
 	virtual void Action() override;
-
+	
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))

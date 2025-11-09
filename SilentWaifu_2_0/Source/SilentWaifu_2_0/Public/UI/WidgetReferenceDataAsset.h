@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UConfirmationWindow;
 class UCharacterInfoScreen;
 class ULimitIncreaseCard;
 class UCharacterCardShop;
@@ -102,6 +103,12 @@ public:
 
 	UPROPERTY()
 	UButtonCreateChooseScreen* ButtonCreateChooseScreenRef;
-	
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UConfirmationWindow> ConfirmationWindowClass;
+
+	UPROPERTY()
+	UConfirmationWindow* ConfirmationWindowRef;
 
 };

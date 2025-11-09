@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/Screens/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
+#include "UI/ConfirmationWindow.h"
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "UI/Screens/CharacterMenuShop.h"
 
@@ -59,6 +60,25 @@ void UMainScreen::UpdateMaxMoney(int const Money)
 }
 
 
+void UMainScreen::CreateConfirmationWindow()
+{
+	if (!WidgetReferences || !WidgetReferences->ConfirmationWindowClass) return;
+	WidgetReferences->ConfirmationWindowRef = Cast<UConfirmationWindow>(CreateWidget(GetWorld(), WidgetReferences->ConfirmationWindowClass));
+	if (!WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->AddToViewport(4);
+	WidgetReferences->ConfirmationWindowRef->OnConfirmedDelegate.AddDynamic(this, &UMainScreen::RemoveConfirmationWindow);
+	WidgetReferences->ConfirmationWindowRef->OnCanceledDelegate.AddDynamic(this, &UMainScreen::RemoveConfirmationWindow);
+}
+
+
+void UMainScreen::RemoveConfirmationWindow()
+{
+	if (!WidgetReferences || !WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->RemoveFromParent();
+	WidgetReferences->ConfirmationWindowRef = nullptr;
+}
+
+
 void UMainScreen::CreateStorage()
 {
 	if (!WidgetReferences || !WidgetReferences->StorageScreenClass) return;
@@ -72,7 +92,7 @@ void UMainScreen::CreateStorage()
 
 void UMainScreen::RemoveStorage()
 {
-	if (!WidgetReferences->StorageScreenRef) return;
+	if (!WidgetReferences || !WidgetReferences->StorageScreenRef) return;
 	WidgetReferences->StorageScreenRef->RemoveFromParent();
 	WidgetReferences->StorageScreenRef = nullptr;
 	OnWindowStateChangedDelegate.Broadcast(true);
@@ -92,7 +112,7 @@ void UMainScreen::CreateShop()
 
 void UMainScreen::RemoveShop()
 {
-	if (!WidgetReferences->ShopScreenRef) return;
+	if (!WidgetReferences || !WidgetReferences->ShopScreenRef) return;
 	WidgetReferences->ShopScreenRef->RemoveFromParent();
 	WidgetReferences->ShopScreenRef = nullptr;
 	OnWindowStateChangedDelegate.Broadcast(true);

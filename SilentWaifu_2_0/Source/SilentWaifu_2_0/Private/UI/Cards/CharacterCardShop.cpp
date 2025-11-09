@@ -6,6 +6,9 @@
 #include "DataTables/CharacterData.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
+#include "UI/ConfirmationWindow.h"
+#include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/MainScreen.h"
 
 
 void UCharacterCardShop::NativeConstruct()
@@ -15,6 +18,7 @@ void UCharacterCardShop::NativeConstruct()
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetCharacterRow);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetPriceText);
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
+	
 }
 
 
@@ -50,7 +54,11 @@ void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardShop::Action()
 {
-	UnlockCharacter();
+	//UnlockCharacter();
+	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	if (!WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->OnConfirmedDelegate.AddDynamic(this, &UCharacterCardShop::UnlockCharacter);
 }
 
 
@@ -75,6 +83,7 @@ void UCharacterCardShop::UnlockCharacter()
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 	MoneyManager->DecreaseMoney(Price);
 	OnCharacterUnlockedDelegate.Broadcast();
+	UE_LOG(LogTemp, Warning, TEXT("UnlockCharacter"));
 }
 
 
