@@ -29,15 +29,22 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_UpdateShop;//testing
+
+	TArray<int>& GetRandomCharacters(TArray<int>& OutCharacters);
+
+	int GetCharacterRarity();
+
+	int GetCharacter();
 	
-	int GetCharactersCount() const;
-
-	TArray<int> GetRandomCharacters() const;
-
 	void CreateShop(TArray<int> Characters);
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
-
+	
+	UPROPERTY(EditAnywhere)
+	UDataTable* RarityDataTable;
+	
 	int AmountOfSlots = 5;
+
+	int MaxRandomNumber = 100;
 };

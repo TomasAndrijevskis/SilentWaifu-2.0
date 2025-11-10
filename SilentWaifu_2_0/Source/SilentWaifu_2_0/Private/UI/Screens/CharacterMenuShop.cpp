@@ -2,6 +2,7 @@
 #include "UI/Screens/CharacterMenuShop.h"
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
+#include "DataTables/CharacterRarities.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "UI/WidgetReferenceDataAsset.h"
@@ -35,7 +36,8 @@ void UCharacterMenuShop::CreateCharacterMenu()
 	WidgetReferences->LimitIncreaseCardRef->CreateCard();
 	if (CharactersManager->GetShopCharacters().IsEmpty())
 	{
-		const TArray<int> CharacterIds = GetRandomCharacters();
+		TArray<int> CharacterIds;
+		GetRandomCharacters(CharacterIds);
 		CreateShop(CharacterIds);
 		CharactersManager->SetShopCharacters(CharacterIds);
 		GameMode->OnShopCreatedDelegate.Broadcast();
@@ -49,7 +51,6 @@ void UCharacterMenuShop::CreateCharacterMenu()
 
 void UCharacterMenuShop::CreateShop(TArray<int> Characters)
 {
-	int i = 1;
 	for (const int CharacterId : Characters)
 	{
 		if (!WidgetReferences || !WidgetReferences->ShopCharacterCardClass) return;
@@ -57,31 +58,81 @@ void UCharacterMenuShop::CreateShop(TArray<int> Characters)
 		if (!WidgetReferences->ShopCharacterCardRef) return;
 		HorizontalBox_Shop->AddChild(WidgetReferences->ShopCharacterCardRef);
 		WidgetReferences->ShopCharacterCardRef->CreateCard(CharacterId);
-		i++;
 	}
 }
 
 
-int UCharacterMenuShop::GetCharactersCount() const
+TArray<int>& UCharacterMenuShop::GetRandomCharacters(TArray<int>& OutCharacters)
+{
+	OutCharacters.Empty();
+	if (!CharacterDataTable) return OutCharacters;
+	int OriginalMaxNumber = MaxRandomNumber;
+	while (OutCharacters.Num() != 4)
+	{
+		int NewShopCharacterID = GetCharacter();
+		if (!OutCharacters.Contains(NewShopCharacterID))
+		{
+			MaxRandomNumber = OriginalMaxNumber;
+			OutCharacters.Add(NewShopCharacterID);
+			UE_LOG(LogTemp, Warning, TEXT("Added to shop: %i"), NewShopCharacterID);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Already in shop: %i"), NewShopCharacterID);
+			MaxRandomNumber -= 5;	
+		}
+	}
+	return OutCharacters;
+}
+
+
+int UCharacterMenuShop::GetCharacterRarity()
+{
+	if (!CharacterDataTable || !RarityDataTable) return 0;
+	TArray<FCharacterRarities*> Rarities;
+	RarityDataTable->GetAllRows(TEXT("Find Rarity Rows"), Rarities);
+	if (Rarities.Num() == 0) return 0;
+	TArray<int> DropChances;
+	for (const auto RowArray : Rarities)
+	{
+		DropChances.Add(RowArray->DropChance);
+	}
+	int RandomNumber = FMath::RandRange(1, MaxRandomNumber);
+	//UE_LOG(LogTemp, Warning, TEXT("Random Number: %i"), RandomNumber);
+	for (int RarityId = DropChances.Num() - 1; RarityId >= 0; RarityId--)
+	{
+		if (RandomNumber <= DropChances[RarityId])
+		{
+			return RarityId;
+		}
+	}
+	return 0;
+}
+
+
+int UCharacterMenuShop::GetCharacter()
 {
 	if (!CharacterDataTable) return 0;
-	return CharacterDataTable->GetRowMap().Num();
-}
-
-
-TArray<int> UCharacterMenuShop::GetRandomCharacters() const
-{
-	if (!CharacterDataTable) return TArray<int>();
-	const int CharactersCount = GetCharactersCount();
-	TArray<int> Characters;
-	while (Characters.Num() != 4)
+	TArray<FCharacterData*> Characters;
+	CharacterDataTable->GetAllRows(TEXT("Find Characters"), Characters);
+	if (Characters.Num() == 0) return 0;
+	TArray<int> CharacterIds;
+	for (const auto Character : Characters)
 	{
-		Characters.AddUnique(FMath::RandRange(2, CharactersCount));
+		if (Character->Rarity == GetCharacterRarity() && Character->CharacterId != 1)
+		{
+			CharacterIds.AddUnique(Character->CharacterId);
+		}
 	}
-	return Characters;
+
+	int NumberOfPossibleCharacters = CharacterIds.Num();
+	if (NumberOfPossibleCharacters == 0) return GetCharacter(); // try again
+	if (NumberOfPossibleCharacters == 1) return CharacterIds[0];
+	int CharacterIndex = FMath::RandRange(0, NumberOfPossibleCharacters - 1);
+	//UE_LOG(LogTemp, Warning, TEXT("Chosen Character index: %i"), CharacterIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("Chosen Character: %i"), CharacterIds[CharacterIndex]);
+	return CharacterIds[CharacterIndex];
 }
-
-
 
 
 
