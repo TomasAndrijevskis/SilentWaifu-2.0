@@ -12,6 +12,13 @@ void ULimitIncreaseCard::NativeConstruct()
 }
 
 
+void ULimitIncreaseCard::CreateCard()
+{
+	SetImage(Image_LimitIncreaseImage);
+	OnCardCreatedDelegate.Broadcast();
+}
+
+
 void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
@@ -44,5 +51,6 @@ void ULimitIncreaseCard::Action()
 
 void ULimitIncreaseCard::SetPriceText()
 {
+	Price = 100;
 	Text_Price->SetText(FText::FromString(FString::FromInt(Price)));
 }

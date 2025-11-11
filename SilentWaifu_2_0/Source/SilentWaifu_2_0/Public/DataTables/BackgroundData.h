@@ -9,6 +9,9 @@ USTRUCT(BlueprintType)
 struct SILENTWAIFU_2_0_API FBackgroundData: public FTableRowBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	int ID;
 	
 	UPROPERTY(EditDefaultsOnly)
 	int Price;

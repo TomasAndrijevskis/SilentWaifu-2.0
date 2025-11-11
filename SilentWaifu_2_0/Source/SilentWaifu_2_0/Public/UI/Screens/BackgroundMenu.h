@@ -3,12 +3,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "DataTables/BackgroundData.h"
 #include "BackgroundMenu.generated.h"
 
 
+class UHorizontalBox;
+class UBackgroundCard;
 class UBackgroundBlur;
 class UBorder;
-class UVerticalBox;
 class UScrollBox;
 class ASilentWaifuGameMode;
 class UWidgetReferenceDataAsset;
@@ -45,7 +47,7 @@ private:
 	UScrollBox* ScrollBox;
 
 	UPROPERTY(meta = (BindWidget))
-	UVerticalBox* VerticalBox_Content;
+	UHorizontalBox* HorizontalBox_Content;
 
 	UPROPERTY(meta=(BindWidget))
 	UBorder* Border_ScreenBorder;
@@ -58,4 +60,13 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	UBackgroundBlur* Blur;
+	
+	UPROPERTY(EditAnywhere)
+	UDataTable* BackgroundsDataTable;
+
+	void CreateCards();
+
+	UBackgroundCard* CreateBackgroundCard(UTexture2D* Image);
+
+	TArray<FBackgroundData*> GetBackgroundData() const;
 };

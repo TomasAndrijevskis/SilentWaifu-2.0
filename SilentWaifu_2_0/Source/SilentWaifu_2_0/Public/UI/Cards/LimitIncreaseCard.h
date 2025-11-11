@@ -2,37 +2,42 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NonCharacterCard.h"
+#include "CardBase.h"
 #include "LimitIncreaseCard.generated.h"
 
 
 class UTextBlock;
 
 UCLASS()
-class SILENTWAIFU_2_0_API ULimitIncreaseCard : public UNonCharacterCard
+class SILENTWAIFU_2_0_API ULimitIncreaseCard : public UCardBase
 {
 	GENERATED_BODY()
 
 public:
 
 	virtual void NativeConstruct() override;
+
+	virtual void CreateCard() override;
 	
 protected:
 
 	virtual void SetImage(UTexture2D* NewImage) override;
 	
 	virtual void Action() override;
+
+	UFUNCTION()
+	virtual void SetPriceText();
 	
 private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Image;
-
+	
+	UPROPERTY(EditAnywhere)
+	UTexture2D* Image_LimitIncreaseImage;
+	
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_Price;
 
-	UFUNCTION()
-	void SetPriceText();
-	
-	int Price = 100;
+	int Price;
 };

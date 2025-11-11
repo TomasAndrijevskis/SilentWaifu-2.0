@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UBackgroundCard;
 class UBackgroundMenu;
 class UConfirmationWindow;
 class UCharacterInfoScreen;
@@ -104,7 +105,13 @@ public:
 
 	UPROPERTY()
 	ULimitIncreaseCard* LimitIncreaseCardRef;
-	
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UBackgroundCard> BackgroundCardClass;
+
+	UPROPERTY()
+	UBackgroundCard* BackgroundCardRef;
 
 
 	
