@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UImage;
 class UMoneyManager;
 class UCharactersManager;
 class UVerticalBox;
@@ -39,6 +40,9 @@ public:
 
 	UFUNCTION()
 	void RemoveConfirmationWindow();
+
+	UFUNCTION()
+	void SetBackground(UTexture2D* NewBackground);
 	
 	FOnWindowStateChangedSignature OnWindowStateChangedDelegate;
 
@@ -73,6 +77,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Shop;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_Background;
 	
 	UPROPERTY(meta = (BindWidget))
 	UBackgroundBlur* BackgroundBlur;

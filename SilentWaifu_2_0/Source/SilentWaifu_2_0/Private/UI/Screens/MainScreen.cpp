@@ -4,6 +4,7 @@
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
@@ -218,4 +219,11 @@ void UMainScreen::RemoveCharacter(const int Position)
 void UMainScreen::HandleBlur(const float BlurStrength)
 {
 	BackgroundBlur->SetBlurStrength(BlurStrength);
+}
+
+
+void UMainScreen::SetBackground(UTexture2D* NewBackground)
+{
+	if (!NewBackground) return;
+	Image_Background->SetBrushFromTexture(NewBackground);
 }
