@@ -38,6 +38,9 @@ public:
 	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
 	
 	FOnShopCreatedSignature OnShopCreatedDelegate;
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* CharacterDataTable;
 	
 protected:
 

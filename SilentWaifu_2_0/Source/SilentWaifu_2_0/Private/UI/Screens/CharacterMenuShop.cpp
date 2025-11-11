@@ -99,7 +99,7 @@ int UCharacterMenuShop::GetCharacterRarity()
 	}
 	int RandomNumber = FMath::RandRange(1, MaxRandomNumber);
 	//UE_LOG(LogTemp, Warning, TEXT("Random Number: %i"), RandomNumber);
-	for (int RarityId = DropChances.Num() - 1; RarityId >= 0; RarityId--)
+	for (int RarityId = DropChances.Num() - 1; RarityId > 0; RarityId--)
 	{
 		if (RandomNumber <= DropChances[RarityId])
 		{

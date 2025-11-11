@@ -14,7 +14,7 @@ void ASilentWaifuGameMode::BeginPlay()
 	MoneyManager = NewObject<UMoneyManager>(this);
 	CharactersManager = NewObject<UCharactersManager>(this);
 	if (!CharactersManager || !MoneyManager) return;
-	CharactersManager->Init();
+	CharactersManager->Init(CharacterDataTable);
 	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	HandleGameLoad();

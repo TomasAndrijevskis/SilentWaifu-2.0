@@ -15,7 +15,7 @@ class SILENTWAIFU_2_0_API UCharactersManager : public UObject
 
 public:
 	
-	void Init();
+	void Init(UDataTable* DataTable);
 	
 	UFUNCTION()
 	void SpawnCharacters();
@@ -66,6 +66,9 @@ private:
 
 	UPROPERTY()
 	TArray<int> ShopCharacters;
+
+	UPROPERTY()
+	UDataTable* CharacterDataTable;
 	
 	int CurrentSpawnPosition = -1;
 	

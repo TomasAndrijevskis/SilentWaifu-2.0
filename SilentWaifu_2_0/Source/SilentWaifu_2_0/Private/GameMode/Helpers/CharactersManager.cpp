@@ -6,11 +6,12 @@
 #include "SaveGame/SavedCharactersData.h"
 
 
-void UCharactersManager::Init()
+void UCharactersManager::Init(UDataTable* DataTable)
 {
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	OnCharacterUpgradeDelegate.AddDynamic(this, &UCharactersManager::UpdateCharacterLevel);
 	OnCharacterAddedDelegate.AddDynamic(this, &UCharactersManager::AddAvailableCharacter);
+	CharacterDataTable = DataTable;
 }
 
 
@@ -75,12 +76,36 @@ void UCharactersManager::UpdateCharacterLevel(const int CharacterId)
 
 TArray<TPair<int, FSavedCharactersData>> UCharactersManager::GetSortedCharacters() const
 {
-	TArray<TPair<int, FSavedCharactersData>> SortedCharacters = AvailableCharacters.Array();
-	SortedCharacters.Sort([](const auto& A, const auto& B)
+	TArray<TPair<int, FSavedCharactersData>> UnlockedCharacters = AvailableCharacters.Array();
+	if (!CharacterDataTable) return UnlockedCharacters;
+	TMap<int, int> CharactersRarities;
+	for (const auto& Character : UnlockedCharacters)
 	{
-		return A.Value.CharacterId < B.Value.CharacterId;
+		const FName RowName = FName(*FString::FromInt(Character.Value.CharacterId));
+		const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
+		if (!CharacterRow) continue;
+		CharactersRarities.Add(Character.Value.CharacterId, CharacterRow->Rarity);
+	}
+	TArray<TPair<int, int>> SortedCharactersByRarity = CharactersRarities.Array();
+	SortedCharactersByRarity.Sort([](const auto& A, const auto& B)
+	{
+		if (A.Value == B.Value)
+		{
+			return A.Key < B.Key;
+		}
+		return A.Value < B.Value;
 	});
-	return SortedCharacters;
+	TArray<TPair<int, FSavedCharactersData>> FinalSorted;
+	for (const auto& Pair : SortedCharactersByRarity)
+	{
+		const int CharacterId = Pair.Key;
+		const FSavedCharactersData* FoundData = AvailableCharacters.Find(CharacterId);
+		if (FoundData)
+		{
+			FinalSorted.Add(TPair<int, FSavedCharactersData>(CharacterId, *FoundData));
+		}
+	}
+	return FinalSorted;
 }
 
 
