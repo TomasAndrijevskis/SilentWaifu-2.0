@@ -24,7 +24,6 @@ void UButtonCreateChooseScreen::CreateChooseScreen()
 	WidgetReferences->ChooseScreenRef = Cast<UCharacterMenuChooseCharacter>(CreateWidget(GetWorld(), WidgetReferences->ChooseScreenClass));
 	if (!WidgetReferences->ChooseScreenRef) return;
 	WidgetReferences->ChooseScreenRef->AddToViewport(1);
-	WidgetReferences->MainScreenRef->OnWindowStateChangedDelegate.Broadcast(false);
 	GameMode->CharactersManager->SetCurrentSpawnPosition(GetSpawnPosition());
 }
 

@@ -15,6 +15,7 @@
 #include "UI/ButtonCreateChooseScreen.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/Cards/CharacterCardMainScreen.h"
+#include "UI/Screens/BackgroundMenu.h"
 #include "UI/Screens/CharacterMenuShop.h"
 
 
@@ -43,7 +44,6 @@ void UMainScreen::BindDelegates()
 	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
-	OnWindowStateChangedDelegate.AddDynamic(this, &UMainScreen::HandleWindowState);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
 }
@@ -87,7 +87,6 @@ void UMainScreen::CreateStorage()
 	if (!WidgetReferences->StorageScreenRef) return;
 	WidgetReferences->StorageScreenRef->AddToViewport(1);
 	WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
-	OnWindowStateChangedDelegate.Broadcast(false);
 }
 
 
@@ -96,7 +95,6 @@ void UMainScreen::RemoveStorage()
 	if (!WidgetReferences || !WidgetReferences->StorageScreenRef) return;
 	WidgetReferences->StorageScreenRef->RemoveFromParent();
 	WidgetReferences->StorageScreenRef = nullptr;
-	OnWindowStateChangedDelegate.Broadcast(true);
 }
 
 
@@ -107,7 +105,6 @@ void UMainScreen::CreateShop()
 	if (!WidgetReferences->ShopScreenRef) return;
 	WidgetReferences->ShopScreenRef->AddToViewport(1);
 	WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);
-	OnWindowStateChangedDelegate.Broadcast(false);
 }
 
 
@@ -116,21 +113,24 @@ void UMainScreen::RemoveShop()
 	if (!WidgetReferences || !WidgetReferences->ShopScreenRef) return;
 	WidgetReferences->ShopScreenRef->RemoveFromParent();
 	WidgetReferences->ShopScreenRef = nullptr;
-	OnWindowStateChangedDelegate.Broadcast(true);
 }
 
 
-void UMainScreen::HandleWindowState(const bool NewState)
+void UMainScreen::CreateBgMenu()
 {
-	Button_Storage->SetIsEnabled(NewState);
-	if (!NewState)
-	{
-		HandleBlur(20.f);
-	}
-	else
-	{
-		HandleBlur(0.f);
-	}
+	if (!WidgetReferences || !WidgetReferences->BackgroundMenuClass) return;
+	WidgetReferences->BackgroundMenuRef = Cast<UBackgroundMenu>(CreateWidget(GetWorld(), WidgetReferences->BackgroundMenuClass));
+	if (!WidgetReferences->BackgroundMenuRef) return;
+	WidgetReferences->BackgroundMenuRef->AddToViewport(1);
+	WidgetReferences->BackgroundMenuRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveBgMenu);
+}
+
+
+void UMainScreen::RemoveBgMenu()
+{
+	if (!WidgetReferences || !WidgetReferences->BackgroundMenuRef) return;
+	WidgetReferences->BackgroundMenuRef->RemoveFromParent();
+	WidgetReferences->BackgroundMenuRef = nullptr;
 }
 
 
@@ -213,12 +213,6 @@ void UMainScreen::RemoveCharacter(const int Position)
 	if (!VB_Slot) return;
 	VB_Slot->RemoveChildAt(0);
 	VB_Slot->AddChild(CreateButton(Position));
-}
-
-
-void UMainScreen::HandleBlur(const float BlurStrength)
-{
-	BackgroundBlur->SetBlurStrength(BlurStrength);
 }
 
 

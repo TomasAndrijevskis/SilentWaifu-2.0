@@ -7,6 +7,7 @@
 #include "CharacterInfoScreen.generated.h"
 
 
+class UBackgroundBlur;
 class UCharactersManager;
 class UMoneyManager;
 class ASilentWaifuGameMode;
@@ -81,6 +82,12 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Upgrade;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_InputBlocker;
+
+	UPROPERTY(meta=(BindWidget))
+	UBackgroundBlur* Blur;
 	
 	UFUNCTION()
 	void CloseScreen();

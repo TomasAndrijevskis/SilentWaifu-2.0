@@ -18,7 +18,6 @@ class UHorizontalBox;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterRemovedSignature, const int, Position);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterSpawnedSignature, const int, Position);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWindowStateChangedSignature, bool, State);
 
 UCLASS()
 class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
@@ -43,8 +42,6 @@ public:
 
 	UFUNCTION()
 	void SetBackground(UTexture2D* NewBackground);
-	
-	FOnWindowStateChangedSignature OnWindowStateChangedDelegate;
 
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
@@ -77,7 +74,10 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Shop;
-
+	
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_BackgroundsMenu;
+	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Background;
 	
@@ -99,11 +99,12 @@ private:
 
 	UFUNCTION()
 	void RemoveShop();
-	
-	void HandleBlur(const float BlurStrength);
 
 	UFUNCTION()
-	void HandleWindowState(const bool NewState);
+	void CreateBgMenu();
+
+	UFUNCTION()
+	void RemoveBgMenu();
 
 	void CreateSlots();
 

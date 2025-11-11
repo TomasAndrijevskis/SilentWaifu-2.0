@@ -3,26 +3,24 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CharacterMenuBase.generated.h"
+#include "BackgroundMenu.generated.h"
+
 
 class UBackgroundBlur;
-class UCharactersManager;
-class UVerticalBox;
-class USizeBox;
 class UBorder;
-class UTextBlock;
-class UHorizontalBox;
-class UWidgetReferenceDataAsset;
-class ASilentWaifuGameMode;
-class UButton;
-class UWrapBox;
+class UVerticalBox;
 class UScrollBox;
+class ASilentWaifuGameMode;
+class UWidgetReferenceDataAsset;
+class UWrapBox;
+class UButton;
 
 UCLASS()
-class SILENTWAIFU_2_0_API UCharacterMenuBase : public UUserWidget
+class SILENTWAIFU_2_0_API UBackgroundMenu : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+
 public:
 	
 	UPROPERTY(meta = (BindWidget))
@@ -30,24 +28,16 @@ public:
 	
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
-	virtual void RemoveCharacterMenu(){};
-	
 protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* WrapBox;
-
-	virtual void CreateCharacterMenu(){};
 	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
-
-	UPROPERTY()
-	UCharactersManager* CharactersManager;
 	
 private:
 
