@@ -14,10 +14,10 @@ class SILENTWAIFU_2_0_API ULimitIncreaseCard : public UCardBase
 	GENERATED_BODY()
 
 public:
-
-	virtual void NativeConstruct() override;
-
+	
 	virtual void CreateCard() override;
+
+	virtual void Init() override;
 	
 protected:
 

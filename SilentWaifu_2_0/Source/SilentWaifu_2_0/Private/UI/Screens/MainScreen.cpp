@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -34,14 +35,16 @@ void UMainScreen::InitializeReferences()
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
+	BackgroundManager = GameMode->BackgroundManager;
 }
 
 
 void UMainScreen::BindDelegates()
 {
-	if (!MoneyManager) return;
+	if (!MoneyManager || !BackgroundManager) return;
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
 	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
+	BackgroundManager->OnCurrentBackgroundSetDelegate.AddDynamic(this, &UMainScreen::SetBackground);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
@@ -119,7 +122,7 @@ void UMainScreen::RemoveShop()
 
 void UMainScreen::CreateBgMenu()
 {
-	if (!WidgetReferences || !WidgetReferences->BackgroundMenuClass) return;
+	if (!WidgetReferences || !WidgetReferences->BackgroundMenuClass || !BackgroundManager) return;
 	WidgetReferences->BackgroundMenuRef = Cast<UBackgroundMenu>(CreateWidget(GetWorld(), WidgetReferences->BackgroundMenuClass));
 	if (!WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->AddToViewport(1);
@@ -132,6 +135,13 @@ void UMainScreen::RemoveBgMenu()
 	if (!WidgetReferences || !WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->RemoveFromParent();
 	WidgetReferences->BackgroundMenuRef = nullptr;
+}
+
+
+void UMainScreen::SetBackground(UTexture2D* CurrentBackground)
+{
+	if (!CurrentBackground) return;
+	Image_Background->SetBrushFromTexture(CurrentBackground);
 }
 
 
@@ -214,11 +224,4 @@ void UMainScreen::RemoveCharacter(const int Position)
 	if (!VB_Slot) return;
 	VB_Slot->RemoveChildAt(0);
 	VB_Slot->AddChild(CreateButton(Position));
-}
-
-
-void UMainScreen::SetBackground(UTexture2D* NewBackground)
-{
-	if (!NewBackground) return;
-	Image_Background->SetBrushFromTexture(NewBackground);
 }

@@ -18,17 +18,17 @@ void UBackgroundMenu::CreateCards()
 	TArray<FBackgroundData*> BackgroundData = GetBackgroundData();
 	for (const auto& Data : BackgroundData)
 	{
-		WrapBox->AddChild(CreateBackgroundCard(Data->Image));
+		WrapBox->AddChild(CreateBackgroundCard(Data->Image, Data->ID));
 	}
 }
 
 
-UBackgroundCard* UBackgroundMenu::CreateBackgroundCard(UTexture2D* Image)
+UBackgroundCard* UBackgroundMenu::CreateBackgroundCard(UTexture2D* Image, int Id) const
 {
 	if (!WidgetReferences || !WidgetReferences->BackgroundCardClass) return nullptr;
 	UBackgroundCard* BgCard = Cast<UBackgroundCard>(CreateWidget(GetWorld(), WidgetReferences->BackgroundCardClass));
 	if (!BgCard) return nullptr;
-	BgCard->CreateCard(Image);
+	BgCard->CreateCard(Image, Id);
 	return BgCard;
 }
 
@@ -36,8 +36,7 @@ UBackgroundCard* UBackgroundMenu::CreateBackgroundCard(UTexture2D* Image)
 TArray<FBackgroundData*> UBackgroundMenu::GetBackgroundData() const
 {
 	if (!BackgroundsDataTable) return {};
-	TArray<FBackgroundData*> Data {};
+	TArray<FBackgroundData*> Data;
 	BackgroundsDataTable->GetAllRows(TEXT("Get All Backgrounds"), Data);
-	if (Data.Num() == 0) return {};
 	return Data;
 }

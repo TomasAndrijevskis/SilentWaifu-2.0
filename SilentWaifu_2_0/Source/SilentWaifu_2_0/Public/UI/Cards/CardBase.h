@@ -23,7 +23,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Action;
 	
-	virtual void NativeConstruct() override;
+	virtual void Init();
 	
 	virtual void CreateCard(const int NewCharacterId) {};
 

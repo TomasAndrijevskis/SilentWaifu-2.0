@@ -6,6 +6,7 @@
 #include "SilentWaifuGameMode.generated.h"
 
 
+class UBackgroundManager;
 class UCharactersManager;
 class UMoneyManager;
 class UWidgetReferenceDataAsset;
@@ -31,6 +32,9 @@ public:
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
+
+	UPROPERTY()
+	UBackgroundManager* BackgroundManager;
 	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
@@ -41,6 +45,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* BackgroundDataTable;
 	
 protected:
 
@@ -53,6 +60,8 @@ private:
 	void CreateMainScreenWidget();
 
 	void SetInputSettings() const;
+
+	void HandleManagers();
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;

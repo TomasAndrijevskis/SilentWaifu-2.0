@@ -4,14 +4,9 @@
 #include "GameMode/SilentWaifuGameMode.h"
 
 
-void UCharacterCard::NativeConstruct()
-{
-	Super::NativeConstruct();
-	SetCharacterManager();
-}
-
 void UCharacterCard::CreateCard(const int NewCharacterId)
 {
+	Init();
 	if (!CharacterDataTable) return;
 	const FName RowName = FName(*FString::FromInt(NewCharacterId));
 	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
@@ -19,6 +14,13 @@ void UCharacterCard::CreateCard(const int NewCharacterId)
 	CharacterId = CharacterRow->CharacterId;
 	SetImage(CharacterRow->Images.CardImage);
 	OnCardCreatedDelegate.Broadcast();
+}
+
+
+void UCharacterCard::Init()
+{
+	Super::Init();
+	SetCharacterManager();
 }
 
 

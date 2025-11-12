@@ -1,6 +1,7 @@
 
 #include "GameMode/SilentWaifuGameMode.h"
 #include "Blueprint/UserWidget.h"
+#include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -11,13 +12,22 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	MoneyManager = NewObject<UMoneyManager>(this);
-	CharactersManager = NewObject<UCharactersManager>(this);
-	if (!CharactersManager || !MoneyManager) return;
-	CharactersManager->Init(CharacterDataTable);
+	HandleManagers();
 	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	HandleGameLoad();
+}
+
+
+void ASilentWaifuGameMode::HandleManagers()
+{
+	MoneyManager = NewObject<UMoneyManager>(this);
+	CharactersManager = NewObject<UCharactersManager>(this);
+	BackgroundManager = NewObject<UBackgroundManager>(this);
+	if (!CharactersManager || !MoneyManager || !BackgroundManager) return;
+	if (!CharacterDataTable || !BackgroundDataTable) return;
+	CharactersManager->Init(CharacterDataTable);
+	BackgroundManager->Init(BackgroundDataTable);
 }
 
 
@@ -30,6 +40,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	SetInputSettings();
 	GameInstance->LoadMoney();
 	GameInstance->LoadShop();
+	GameInstance->LoadBackgrounds();
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
 	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);

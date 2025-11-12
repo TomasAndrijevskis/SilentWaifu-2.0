@@ -5,9 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 
 
-void UCardBase::NativeConstruct()
+void UCardBase::Init()
 {
-	Super::NativeConstruct();
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;

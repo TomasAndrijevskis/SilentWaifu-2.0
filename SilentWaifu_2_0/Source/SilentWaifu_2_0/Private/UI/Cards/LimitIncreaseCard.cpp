@@ -5,15 +5,16 @@
 #include "GameMode/Helpers/MoneyManager.h"
 
 
-void ULimitIncreaseCard::NativeConstruct()
+void ULimitIncreaseCard::Init()
 {
-	Super::NativeConstruct();
+	Super::Init();
 	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::SetPriceText);
 }
 
 
 void ULimitIncreaseCard::CreateCard()
 {
+	Init();
 	SetImage(Image_LimitIncreaseImage);
 	OnCardCreatedDelegate.Broadcast();
 }

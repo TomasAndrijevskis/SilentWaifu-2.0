@@ -7,6 +7,7 @@
 #include "SilentWaifuGameInstance.generated.h"
 
 
+class UBackgroundManager;
 class UCharactersManager;
 class UMoneyManager;
 class ACharacterTemplate;
@@ -43,6 +44,10 @@ public:
 	void SaveShop();
 
 	void LoadShop() const;
+
+	void SaveBackgrounds();
+
+	void LoadBackgrounds();
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	
@@ -77,4 +82,7 @@ private:
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
+	
+	UPROPERTY()
+	UBackgroundManager* BackgroundManager;
 };

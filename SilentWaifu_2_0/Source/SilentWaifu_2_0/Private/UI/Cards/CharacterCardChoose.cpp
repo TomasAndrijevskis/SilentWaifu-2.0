@@ -4,9 +4,9 @@
 #include "GameMode/Helpers/CharactersManager.h"
 
 
-void UCharacterCardChoose::NativeConstruct()
+void UCharacterCardChoose::Init()
 {
-	Super::NativeConstruct();
+	Super::Init();
 	Button_Action->OnClicked.AddUniqueDynamic(this,&UCharacterCardChoose::HandleCardState);
 }
 

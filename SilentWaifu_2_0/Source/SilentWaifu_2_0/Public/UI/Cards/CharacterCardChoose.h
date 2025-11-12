@@ -12,9 +12,9 @@ class SILENTWAIFU_2_0_API UCharacterCardChoose : public UCharacterCard
 	GENERATED_BODY()
 
 public:
-
-	virtual void NativeConstruct() override;
-
+	
+	virtual void Init() override;
+	
 protected:
 
 	virtual void SetImage(UTexture2D* NewImage) override;

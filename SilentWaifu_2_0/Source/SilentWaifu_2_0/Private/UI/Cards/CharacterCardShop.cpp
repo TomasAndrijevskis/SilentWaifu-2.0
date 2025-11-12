@@ -11,14 +11,13 @@
 #include "UI/Screens/MainScreen.h"
 
 
-void UCharacterCardShop::NativeConstruct()
+void UCharacterCardShop::Init()
 {
-	Super::NativeConstruct();
+	Super::Init();
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetCharacterRow);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetPriceText);
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
-	
 }
 
 

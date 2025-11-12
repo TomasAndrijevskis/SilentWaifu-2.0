@@ -5,23 +5,24 @@
 #include "GameMode/Helpers/CharactersManager.h"
 
 
-void UCharacterCardMainScreen::NativeConstruct()
-{
-	Super::NativeConstruct();
-	Button_Action->OnClicked.Clear();
-	Button_Action->OnPressed.AddDynamic(this, &UCharacterCardMainScreen::EnablePressedTimer);
-	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
-}
-
-
 void UCharacterCardMainScreen::CreateCard(const int Id)
 {
+	Init();
 	if (!CharacterDataTable) return;
 	const FName RowName = FName(*FString::FromInt(Id));
 	const FCharacterData* CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
 	if (!CharacterRow)	return;
 	CharacterId = CharacterRow->CharacterId;
 	SetImage(CharacterRow->Images.MainScreenImage);
+}
+
+
+void UCharacterCardMainScreen::Init()
+{
+	Super::Init();
+	Button_Action->OnClicked.Clear();
+	Button_Action->OnPressed.AddDynamic(this, &UCharacterCardMainScreen::EnablePressedTimer);
+	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
 }
 
 

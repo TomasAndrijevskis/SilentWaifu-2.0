@@ -60,3 +60,19 @@ TArray<int> USilentWaifuSaveGame::GetShop() const
 {
 	return ShopCharacters;
 }
+
+
+TArray<FSavedBackgroundsData> USilentWaifuSaveGame::GetUnlockedBackgrounds() const
+{
+	return UnlockedBackgrounds;
+}
+
+
+void USilentWaifuSaveGame::SaveUnlockedBackgrounds(const TArray<FSavedBackgroundsData>& NewUnlockedBackgrounds)
+{
+	for (const auto& Element : NewUnlockedBackgrounds)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SaveUnlockedBackgrounds %i, %i"), Element.Id, Element.IsActive);
+	}
+	UnlockedBackgrounds = NewUnlockedBackgrounds;
+}

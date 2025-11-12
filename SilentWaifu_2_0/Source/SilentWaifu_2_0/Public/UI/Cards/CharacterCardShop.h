@@ -19,8 +19,8 @@ class SILENTWAIFU_2_0_API UCharacterCardShop : public UCharacterCard
 	GENERATED_BODY()
 
 public:
-
-	virtual void NativeConstruct() override;
+	
+	virtual void Init() override;
 	
 	FOnCharacterUnlockedSignature OnCharacterUnlockedDelegate;
 	

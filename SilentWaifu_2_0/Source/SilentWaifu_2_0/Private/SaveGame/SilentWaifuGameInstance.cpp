@@ -1,6 +1,7 @@
 
 #include "SaveGame/SilentWaifuGameInstance.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -20,6 +21,7 @@ void USilentWaifuGameInstance::Shutdown()
 	SavePositions();
 	SaveCharacters();
 	SaveShop();
+	SaveBackgrounds();
 	Super::Shutdown();
 }
 
@@ -54,12 +56,13 @@ void USilentWaifuGameInstance::SetManagers()
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
+	BackgroundManager = GameMode->BackgroundManager;
 }
 
 
 void USilentWaifuGameInstance::LoadCharacters()
 {
-	if (!CharactersManager || !SaveGameInstance) return;
+	if (!SaveGameInstance || !CharactersManager) return;
 	for (const auto& Character : SaveGameInstance->GetCharacters())
 	{
 		CharactersManager->OnCharacterAddedDelegate.Broadcast(Character.Key, Character.Value);
@@ -105,7 +108,7 @@ void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
 
 void USilentWaifuGameInstance::LoadMoney() const
 {
-	if (!MoneyManager || !SaveGameInstance) return;
+	if (!SaveGameInstance || !MoneyManager) return;
 	MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
 	MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
@@ -113,7 +116,7 @@ void USilentWaifuGameInstance::LoadMoney() const
 
 void USilentWaifuGameInstance::LoadPositions() const
 {
-	if (!CharactersManager || !SaveGameInstance) return;
+	if (!SaveGameInstance || !CharactersManager) return;
 	for (const auto& Position : SaveGameInstance->GetTakenPositions())
 	{
 		CharactersManager->AddTakenPosition(Position.Key, Position.Value);
@@ -139,6 +142,21 @@ void USilentWaifuGameInstance::SaveShop()
 
 void USilentWaifuGameInstance::LoadShop() const
 {
-	if (!CharactersManager || !SaveGameInstance) return;
+	if (!SaveGameInstance || !CharactersManager) return;
 	CharactersManager->SetShopCharacters(SaveGameInstance->GetShop());
+}
+
+
+void USilentWaifuGameInstance::SaveBackgrounds()
+{
+	if (!SaveGameInstance || !BackgroundManager) return;
+	SaveGameInstance->SaveUnlockedBackgrounds(BackgroundManager->GetUnlockedBackgrounds());
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::LoadBackgrounds()
+{
+	if (!SaveGameInstance || !BackgroundManager) return;
+	BackgroundManager->SetUnlockedBackgrounds(SaveGameInstance->GetUnlockedBackgrounds());
 }

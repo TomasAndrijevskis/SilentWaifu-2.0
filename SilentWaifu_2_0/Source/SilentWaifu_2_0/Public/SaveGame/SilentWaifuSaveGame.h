@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SavedBackgroundsData.h"
 #include "SavedCharactersData.h"
 #include "GameFramework/SaveGame.h"
 #include "SilentWaifuSaveGame.generated.h"
@@ -43,6 +44,12 @@ public:
 
 	UFUNCTION()
 	TArray<int> GetShop() const;
+
+	UFUNCTION()
+	TArray<FSavedBackgroundsData> GetUnlockedBackgrounds() const;
+
+	UFUNCTION()
+	void SaveUnlockedBackgrounds(const TArray<FSavedBackgroundsData>& NewUnlockedBackgrounds);
 	
 private:
 	
@@ -60,4 +67,7 @@ private:
 
 	UPROPERTY()
 	TArray<int> ShopCharacters;
+
+	UPROPERTY()
+	TArray<FSavedBackgroundsData> UnlockedBackgrounds;
 };

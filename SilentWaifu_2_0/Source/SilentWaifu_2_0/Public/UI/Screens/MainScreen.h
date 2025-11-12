@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UBackgroundManager;
 class UImage;
 class UMoneyManager;
 class UCharactersManager;
@@ -39,9 +40,6 @@ public:
 
 	UFUNCTION()
 	void RemoveConfirmationWindow();
-
-	UFUNCTION()
-	void SetBackground(UTexture2D* NewBackground);
 
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
@@ -80,9 +78,6 @@ private:
 	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Background;
-	
-	UPROPERTY(meta = (BindWidget))
-	UBackgroundBlur* BackgroundBlur;
 
 	void InitializeReferences();
 
@@ -100,15 +95,18 @@ private:
 	UFUNCTION()
 	void RemoveShop();
 
+	void CreateSlots();
+
+	void FillSlots();
+	
 	UFUNCTION()
 	void CreateBgMenu();
 
 	UFUNCTION()
 	void RemoveBgMenu();
 
-	void CreateSlots();
-
-	void FillSlots();
+	UFUNCTION()
+	void SetBackground(UTexture2D* CurrentBackground);
 	
 	UButtonCreateChooseScreen* CreateButton(const int SpawnPosition) const;
 
@@ -128,6 +126,9 @@ private:
 
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	UBackgroundManager* BackgroundManager;
 	
 	int AmountOfSlots = 5;
 };
