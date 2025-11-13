@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UBackgroundOverviewWindow;
 class UBackgroundCard;
 class UBackgroundMenu;
 class UConfirmationWindow;
@@ -114,6 +115,7 @@ public:
 	UBackgroundCard* BackgroundCardRef;
 
 
+
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UButtonCreateChooseScreen> ButtonCreateChooseScreenClass;
@@ -127,5 +129,12 @@ public:
 
 	UPROPERTY()
 	UConfirmationWindow* ConfirmationWindowRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UBackgroundOverviewWindow> BackgroundOverviewWindowClass;
+
+	UPROPERTY()
+	UBackgroundOverviewWindow* BackgroundOverviewWindowRef;
 
 };

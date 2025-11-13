@@ -3,6 +3,8 @@
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/BackgroundManager.h"
+#include "UI/BackgroundOverviewWindow.h"
+#include "UI/WidgetReferenceDataAsset.h"
 
 
 void UBackgroundCard::Init()
@@ -21,7 +23,7 @@ void UBackgroundCard::CreateCard(UTexture2D* NewImage, int BackgroundId)
 }
 
 
-bool UBackgroundCard::HandleState()
+bool UBackgroundCard::IsBackgroundUnlocked()
 {
 	if (!BackgroundManager) return false;
 	TArray<FSavedBackgroundsData> SavedBackgrounds = BackgroundManager->GetUnlockedBackgrounds();
@@ -37,6 +39,7 @@ bool UBackgroundCard::HandleState()
 void UBackgroundCard::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
+	Image = NewImage;
 	FButtonStyle CustomStyle;
 
 	FSlateBrush NormalBrush;
@@ -51,7 +54,7 @@ void UBackgroundCard::SetImage(UTexture2D* NewImage)
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
 
-	HandleState() ?
+	IsBackgroundUnlocked() ?
 		(NormalBrush.TintColor = FSlateColor(FLinearColor(0.f, 1.f, 0, 1.f)),
 		HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f)))
 	:
@@ -69,10 +72,18 @@ void UBackgroundCard::SetImage(UTexture2D* NewImage)
 
 void UBackgroundCard::Action()
 {
-	if (!BackgroundManager) return;
-	FSavedBackgroundsData Data;
-	Data.Id = Id;
-	Data.IsActive = true;
-	BackgroundManager->AddUnlockedBackground(Data);
+	if (!BackgroundManager || !WidgetReferences || !WidgetReferences->BackgroundOverviewWindowClass) return;
+	WidgetReferences->BackgroundOverviewWindowRef = Cast<UBackgroundOverviewWindow>(CreateWidget(GetWorld(), WidgetReferences->BackgroundOverviewWindowClass));
+	if (!WidgetReferences->BackgroundOverviewWindowRef) return;
+	WidgetReferences->BackgroundOverviewWindowRef->AddToViewport(2);
+	WidgetReferences->BackgroundOverviewWindowRef->Button_Close->OnClicked.AddDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
+	WidgetReferences->BackgroundOverviewWindowRef->Init(Image, 100, Id, IsBackgroundUnlocked(), BackgroundManager);
 }
 
+
+void UBackgroundCard::RemoveOverviewWindow()
+{
+	if (!WidgetReferences->BackgroundOverviewWindowRef) return;
+	WidgetReferences->BackgroundOverviewWindowRef->RemoveFromParent();
+	WidgetReferences->BackgroundOverviewWindowRef = nullptr;
+}

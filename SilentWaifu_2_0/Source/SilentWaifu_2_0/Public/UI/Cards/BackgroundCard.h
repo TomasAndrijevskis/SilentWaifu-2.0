@@ -6,6 +6,7 @@
 #include "BackgroundCard.generated.h"
 
 
+class UWidgetReferenceDataAsset;
 class UBackgroundManager;
 class UTextBlock;
 
@@ -26,12 +27,21 @@ protected:
 	
 	virtual void Action() override;
 
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
 private:
 
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
 
-	bool HandleState();
+	bool IsBackgroundUnlocked();
+
+	UFUNCTION()
+	void RemoveOverviewWindow();
+
+	UPROPERTY()
+	UTexture2D* Image;
 	
 	int Id;
 };

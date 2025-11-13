@@ -31,6 +31,7 @@ void UBackgroundManager::HandleCurrentBackground()
 void UBackgroundManager::SetCurrentBackground(UTexture2D* NewBackground)
 {
 	CurrentBackground = NewBackground;
+	OnCurrentBackgroundSetDelegate.Broadcast(CurrentBackground);
 }
 
 
