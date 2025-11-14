@@ -19,7 +19,7 @@ class UHorizontalBox;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterRemovedSignature, const int, Position);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterSpawnedSignature, const int, Position);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBackgroundSetSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
 {
@@ -40,10 +40,15 @@ public:
 
 	UFUNCTION()
 	void RemoveConfirmationWindow();
-
+	
+	UFUNCTION()
+	void RemoveBgMenu();
+	
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
 	FOnCharacterSpawnedSignature OnCharacterSpawnedDelegate;;
+
+	FOnBackgroundSetSignature OnBackgroundSetDelegate;
 	
 protected:
 	
@@ -101,9 +106,6 @@ private:
 	
 	UFUNCTION()
 	void CreateBgMenu();
-
-	UFUNCTION()
-	void RemoveBgMenu();
 
 	UFUNCTION()
 	void SetBackground(UTexture2D* CurrentBackground);

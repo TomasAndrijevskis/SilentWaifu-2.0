@@ -22,8 +22,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Close;
 
-	void Init(UTexture2D* NewImage, int Price, int NewId, const bool IsUnlocked, UBackgroundManager* NewBackgroundManager);
-	
+	void Init(UTexture2D* NewImage, int NewPrice, int NewId, const bool IsUnlocked, UBackgroundManager* NewBackgroundManager);
+
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -42,21 +42,27 @@ private:
 	UTextBlock* Text_ActionText;
 
 	UFUNCTION()
-	void Unlock();
+	void UnlockBackground();
 
 	UFUNCTION()
-	void Set();
+	void SetBackground();
 	
 	void SetImage(UTexture2D* NewImage);
 
 	void SetButtonText(const FString& Text);
 
+	void SetInitialValues(int NewId, int NewPrice, UBackgroundManager* NewBackgroundManager);
+
+	void HandleActionButton(const bool IsUnlocked);
+	
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
 	
 	UPROPERTY()
 	UTexture2D* Image;
 
-	UPROPERTY()
 	int Id;
+	
+	int Price;
 };
+

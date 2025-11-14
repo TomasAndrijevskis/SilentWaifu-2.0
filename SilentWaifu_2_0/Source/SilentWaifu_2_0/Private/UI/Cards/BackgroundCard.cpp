@@ -5,6 +5,7 @@
 #include "GameMode/Helpers/BackgroundManager.h"
 #include "UI/BackgroundOverviewWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/MainScreen.h"
 
 
 void UBackgroundCard::Init()
@@ -76,8 +77,9 @@ void UBackgroundCard::Action()
 	WidgetReferences->BackgroundOverviewWindowRef = Cast<UBackgroundOverviewWindow>(CreateWidget(GetWorld(), WidgetReferences->BackgroundOverviewWindowClass));
 	if (!WidgetReferences->BackgroundOverviewWindowRef) return;
 	WidgetReferences->BackgroundOverviewWindowRef->AddToViewport(2);
-	WidgetReferences->BackgroundOverviewWindowRef->Button_Close->OnClicked.AddDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
+	WidgetReferences->BackgroundOverviewWindowRef->Button_Close->OnClicked.AddUniqueDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
 	WidgetReferences->BackgroundOverviewWindowRef->Init(Image, 100, Id, IsBackgroundUnlocked(), BackgroundManager);
+	WidgetReferences->MainScreenRef->OnBackgroundSetDelegate.AddUniqueDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
 }
 
 

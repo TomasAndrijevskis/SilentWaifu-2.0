@@ -39,7 +39,7 @@ private:
 
 	UFUNCTION()
 	void RemoveOverviewWindow();
-
+	
 	UPROPERTY()
 	UTexture2D* Image;
 	

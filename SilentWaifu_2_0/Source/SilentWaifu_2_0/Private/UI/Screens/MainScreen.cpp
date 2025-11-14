@@ -50,6 +50,7 @@ void UMainScreen::BindDelegates()
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
+	OnBackgroundSetDelegate.AddDynamic(this, &UMainScreen::RemoveBgMenu);
 }
 
 
@@ -142,6 +143,7 @@ void UMainScreen::SetBackground(UTexture2D* CurrentBackground)
 {
 	if (!CurrentBackground) return;
 	Image_Background->SetBrushFromTexture(CurrentBackground);
+	OnBackgroundSetDelegate.Broadcast();
 }
 
 

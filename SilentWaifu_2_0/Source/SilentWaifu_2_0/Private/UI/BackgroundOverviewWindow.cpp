@@ -6,18 +6,31 @@
 #include "GameMode/Helpers/BackgroundManager.h"
 
 
-void UBackgroundOverviewWindow::Init(UTexture2D* NewImage, int Price, int NewId, const bool IsUnlocked, UBackgroundManager* NewBackgroundManager)
+void UBackgroundOverviewWindow::Init(UTexture2D* NewImage, int NewPrice, int NewId, const bool IsUnlocked, UBackgroundManager* NewBackgroundManager)
 {
 	if (!NewImage || !NewBackgroundManager) return;
+	SetInitialValues(NewId, NewPrice, NewBackgroundManager);
+	SetImage(NewImage);
+	HandleActionButton(IsUnlocked);
+}
+
+
+void UBackgroundOverviewWindow::SetInitialValues(int NewId, int NewPrice, UBackgroundManager* NewBackgroundManager)
+{
 	BackgroundManager = NewBackgroundManager;
 	Id = NewId;
-	SetImage(NewImage);
+	Price = NewPrice;
+}
+
+
+void UBackgroundOverviewWindow::HandleActionButton(const bool IsUnlocked)
+{
 	Button_Action->OnClicked.Clear();
 	IsUnlocked ?
-		(Button_Action->OnClicked.AddDynamic(this, &UBackgroundOverviewWindow::Set),
+		(Button_Action->OnClicked.AddDynamic(this, &UBackgroundOverviewWindow::SetBackground),
 		SetButtonText("Set"))
 	:
-		(Button_Action->OnClicked.AddDynamic(this, &UBackgroundOverviewWindow::Unlock),
+		(Button_Action->OnClicked.AddDynamic(this, &UBackgroundOverviewWindow::UnlockBackground),
 		SetButtonText(FString::FromInt(Price)));
 }
 
@@ -35,9 +48,9 @@ void UBackgroundOverviewWindow::SetButtonText(const FString& Text)
 }
 
 
-void UBackgroundOverviewWindow::Unlock()
+void UBackgroundOverviewWindow::UnlockBackground()
 {
-	UE_LOG(LogTemp, Warning, TEXT("overview action - Unlock"))
+	UE_LOG(LogTemp, Warning, TEXT("overview action - UnlockBackground"))
 	FSavedBackgroundsData Data;
 	Data.Id = Id;
 	Data.IsActive = true;
@@ -45,9 +58,8 @@ void UBackgroundOverviewWindow::Unlock()
 }
 
 
-void UBackgroundOverviewWindow::Set()
+void UBackgroundOverviewWindow::SetBackground()
 {
-	UE_LOG(LogTemp, Warning, TEXT("overview action - Set"))
 	BackgroundManager->SetCurrentBackground(Image);
 }
 
