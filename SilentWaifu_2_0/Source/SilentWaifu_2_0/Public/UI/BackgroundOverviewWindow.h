@@ -6,12 +6,16 @@
 #include "BackgroundOverviewWindow.generated.h"
 
 
+class ASilentWaifuGameMode;
+class UMoneyManager;
+class UWidgetReferenceDataAsset;
 class UBackgroundManager;
 class UTextBlock;
 class UBackgroundBlur;
 class UImage;
 class UButton;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBackgroundUnlockedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UBackgroundOverviewWindow : public UUserWidget
 {
@@ -19,6 +23,8 @@ class SILENTWAIFU_2_0_API UBackgroundOverviewWindow : public UUserWidget
 
 public:
 
+	virtual void NativeConstruct() override;
+	
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Close;
 
@@ -54,13 +60,25 @@ private:
 	void SetInitialValues(int NewId, int NewPrice, UBackgroundManager* NewBackgroundManager);
 
 	void HandleActionButton(const bool IsUnlocked);
+
+	UFUNCTION()
+	void CreateConfirmationWindow();
 	
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
+
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
 	
 	UPROPERTY()
 	UTexture2D* Image;
 
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
 	int Id;
 	
 	int Price;

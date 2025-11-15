@@ -50,7 +50,7 @@ void UMainScreen::BindDelegates()
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
-	OnBackgroundSetDelegate.AddDynamic(this, &UMainScreen::RemoveBgMenu);
+	OnBackgroundSetDelegate.AddDynamic(this, &UMainScreen::RemoveBackgroundMenu);
 }
 
 
@@ -127,11 +127,11 @@ void UMainScreen::CreateBgMenu()
 	WidgetReferences->BackgroundMenuRef = Cast<UBackgroundMenu>(CreateWidget(GetWorld(), WidgetReferences->BackgroundMenuClass));
 	if (!WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->AddToViewport(1);
-	WidgetReferences->BackgroundMenuRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveBgMenu);
+	WidgetReferences->BackgroundMenuRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveBackgroundMenu);
 }
 
 
-void UMainScreen::RemoveBgMenu()
+void UMainScreen::RemoveBackgroundMenu()
 {
 	if (!WidgetReferences || !WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->RemoveFromParent();

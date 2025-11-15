@@ -42,7 +42,7 @@ public:
 	void RemoveConfirmationWindow();
 	
 	UFUNCTION()
-	void RemoveBgMenu();
+	void RemoveBackgroundMenu();
 	
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 

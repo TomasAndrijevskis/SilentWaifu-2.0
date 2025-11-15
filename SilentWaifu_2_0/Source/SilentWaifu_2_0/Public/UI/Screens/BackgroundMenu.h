@@ -66,7 +66,7 @@ private:
 
 	void CreateCards();
 
-	UBackgroundCard* CreateBackgroundCard(UTexture2D* Image, int Id) const;
+	UBackgroundCard* CreateBackgroundCard(UTexture2D* Image, int Id, int Price) const;
 
 	TArray<FBackgroundData*> GetBackgroundData() const;
 };

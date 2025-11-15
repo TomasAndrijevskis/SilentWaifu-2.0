@@ -5,22 +5,21 @@
 void UBackgroundManager::Init(UDataTable* DataTable)
 {
 	BackgroundDataTable = DataTable;
-	OnBackgroundsLoadedDelegate.AddDynamic(this, &UBackgroundManager::HandleCurrentBackground);
-	UE_LOG(LogTemp, Warning, TEXT("Background Manager Initialized"));
+	OnBackgroundsLoadedDelegate.AddDynamic(this, &UBackgroundManager::HandleSetBackground);
 }
 
 
-void UBackgroundManager::HandleCurrentBackground()
+void UBackgroundManager::HandleSetBackground()
 {
 	if (!BackgroundDataTable) return;
-	for (const auto& BG : UnlockedBackgrounds)
+	for (const auto& Bg : UnlockedBackgrounds)
 	{
-		if (BG.IsActive)
+		if (Bg.IsActive)
 		{
-			const FName RowName = FName(*FString::FromInt(BG.Id));
+			const FName RowName = FName(*FString::FromInt(Bg.Id));
 			const FBackgroundData* Row = BackgroundDataTable->FindRow<FBackgroundData>(RowName, TEXT("Find BG By Id"));
 			if (!Row) continue;
-			SetCurrentBackground(Row->Image);
+			SetCurrentBackgroundImage(Row->Image);
 			OnCurrentBackgroundSetDelegate.Broadcast(GetCurrentBackground());
 			break;
 		}
@@ -28,10 +27,20 @@ void UBackgroundManager::HandleCurrentBackground()
 }
 
 
-void UBackgroundManager::SetCurrentBackground(UTexture2D* NewBackground)
+void UBackgroundManager::SetCurrentBackgroundImage(UTexture2D* NewBackground)
 {
 	CurrentBackground = NewBackground;
 	OnCurrentBackgroundSetDelegate.Broadcast(CurrentBackground);
+}
+
+
+void UBackgroundManager::SetCurrentBackgroundId(int Id)
+{
+	for (auto& Bg : UnlockedBackgrounds)
+	{
+		if (Bg.Id == Id) Bg.IsActive = true;
+		else Bg.IsActive = false;
+	}
 }
 
 
@@ -57,5 +66,5 @@ TArray<FSavedBackgroundsData> UBackgroundManager::GetUnlockedBackgrounds() const
 void UBackgroundManager::AddUnlockedBackground(const FSavedBackgroundsData& Background)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Id: %i"), Background.Id);
-	UnlockedBackgrounds.Push(Background);
+	UnlockedBackgrounds.Add(Background);
 }

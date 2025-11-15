@@ -64,6 +64,8 @@ private:
 
 	UFUNCTION()
 	void SetManagers();
+
+	void SetDefaultValues();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;

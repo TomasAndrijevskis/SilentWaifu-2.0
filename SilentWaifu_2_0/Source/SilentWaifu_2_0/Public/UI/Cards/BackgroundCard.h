@@ -17,7 +17,7 @@ class SILENTWAIFU_2_0_API UBackgroundCard : public UCardBase
 	
 public:
 	
-	void CreateCard(UTexture2D* NewImage, int BackgroundId);
+	void CreateCard(UTexture2D* NewImage, int BackgroundId, int NewPrice);
 
 	virtual void Init() override;
 	
@@ -32,9 +32,13 @@ protected:
 	
 private:
 
+	
+	UPROPERTY(meta=(BindWidget))
+	UBorder* Border;
+	
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
-
+	
 	bool IsBackgroundUnlocked();
 
 	UFUNCTION()
@@ -44,4 +48,6 @@ private:
 	UTexture2D* Image;
 	
 	int Id;
+
+	int Price;
 };

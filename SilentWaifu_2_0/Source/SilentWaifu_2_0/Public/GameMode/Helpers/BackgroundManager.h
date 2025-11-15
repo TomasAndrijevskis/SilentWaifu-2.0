@@ -18,8 +18,10 @@ public:
 
 	void Init(UDataTable* DataTable);
 	
-	void SetCurrentBackground(UTexture2D* NewBackground);
+	void SetCurrentBackgroundImage(UTexture2D* NewBackground);
 
+	void SetCurrentBackgroundId(int Id);
+	
 	UFUNCTION()
 	UTexture2D* GetCurrentBackground() const;
 	
@@ -36,7 +38,7 @@ public:
 private:
 
 	UFUNCTION()
-	void HandleCurrentBackground();
+	void HandleSetBackground();
 	
 	UPROPERTY()
 	UTexture2D* CurrentBackground;

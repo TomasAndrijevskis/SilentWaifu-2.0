@@ -32,14 +32,27 @@ void USilentWaifuGameInstance::HandleSaveGame()
 	if (!SaveGameInstance)
 	{
 		SaveGameInstance = Cast<USilentWaifuSaveGame>(UGameplayStatics::CreateSaveGameObject(USilentWaifuSaveGame::StaticClass()));
-		FSavedCharactersData Data;
-		Data.CharacterClass = DefaultCharacter;
-		Data.bIsOnScreen = false;
-		Data.CharacterId = 1;
-		Data.Level = 1;
-		SaveFirstCharacter(1, Data);
-		SaveMaxMoney(100);
+		SetDefaultValues();
 	}
+}
+
+
+void USilentWaifuGameInstance::SetDefaultValues()
+{
+	FSavedCharactersData Data;
+	Data.CharacterClass = DefaultCharacter;
+	Data.bIsOnScreen = false;
+	Data.CharacterId = 1;
+	Data.Level = 1;
+	SaveFirstCharacter(1, Data);
+	SaveMaxMoney(100);
+
+	FSavedBackgroundsData BackgroundData;
+	BackgroundData.Id = 1;
+	BackgroundData.IsActive = true;
+	TArray<FSavedBackgroundsData> Backgrounds;
+	Backgrounds.Add(BackgroundData);
+	SaveGameInstance->SaveUnlockedBackgrounds(Backgrounds);
 }
 
 

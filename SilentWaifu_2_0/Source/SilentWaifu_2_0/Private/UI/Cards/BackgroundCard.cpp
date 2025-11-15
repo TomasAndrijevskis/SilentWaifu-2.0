@@ -1,5 +1,7 @@
 
 #include "UI/Cards/BackgroundCard.h"
+
+#include "Components/Border.h"
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/BackgroundManager.h"
@@ -16,10 +18,11 @@ void UBackgroundCard::Init()
 }
 
 
-void UBackgroundCard::CreateCard(UTexture2D* NewImage, int BackgroundId)
+void UBackgroundCard::CreateCard(UTexture2D* NewImage, int BackgroundId, int NewPrice)
 {
 	Init();
 	Id = BackgroundId;
+	Price = NewPrice;
 	SetImage(NewImage);
 }
 
@@ -48,24 +51,30 @@ void UBackgroundCard::SetImage(UTexture2D* NewImage)
 	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
 	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
 	NormalBrush.ImageSize = ImageSize;
-	
+	NormalBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
+		
 	FSlateBrush HoveredBrush;
 	HoveredBrush.SetResourceObject(NewImage);
 	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
 	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
 	HoveredBrush.ImageSize = ImageSize;
-
-	IsBackgroundUnlocked() ?
-		(NormalBrush.TintColor = FSlateColor(FLinearColor(0.f, 1.f, 0, 1.f)),
-		HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f)))
-	:
-		(NormalBrush.TintColor = FSlateColor(FLinearColor(1.f, 0.f, 0.f, 1.f)),
-		HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f)));
-
+	HoveredBrush.TintColor = FSlateColor(FLinearColor(.5f, .5f, .5f, 1.f));
+	
+	if (IsBackgroundUnlocked())
+	{
+		Border->SetBrushColor(FLinearColor(0.f, 1.f, 0, 1.f));
+	}
+	else
+	{
+		Border->SetBrushColor(FLinearColor(1.f, 0.f, 0, 1.f)),
+		NormalBrush.TintColor = FSlateColor(FLinearColor(.3f, .3f, .3f, 1.f));
+		HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
+	}
+	
 	CustomStyle.SetNormal(NormalBrush);
 	CustomStyle.SetHovered(HoveredBrush);
 	CustomStyle.SetDisabled(NormalBrush);
-	CustomStyle.SetPressed(HoveredBrush);
+	CustomStyle.SetPressed(NormalBrush);
 	
 	Button_Action->SetStyle(CustomStyle);
 }
@@ -78,7 +87,7 @@ void UBackgroundCard::Action()
 	if (!WidgetReferences->BackgroundOverviewWindowRef) return;
 	WidgetReferences->BackgroundOverviewWindowRef->AddToViewport(2);
 	WidgetReferences->BackgroundOverviewWindowRef->Button_Close->OnClicked.AddUniqueDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
-	WidgetReferences->BackgroundOverviewWindowRef->Init(Image, 100, Id, IsBackgroundUnlocked(), BackgroundManager);
+	WidgetReferences->BackgroundOverviewWindowRef->Init(Image, Price, Id, IsBackgroundUnlocked(), BackgroundManager);
 	WidgetReferences->MainScreenRef->OnBackgroundSetDelegate.AddUniqueDynamic(this, &UBackgroundCard::RemoveOverviewWindow);
 }
 

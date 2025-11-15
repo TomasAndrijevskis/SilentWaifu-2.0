@@ -53,7 +53,6 @@ void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 
 void UCharacterCardShop::Action()
 {
-	//UnlockCharacter();
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
 	if (!WidgetReferences->ConfirmationWindowRef) return;
@@ -82,7 +81,6 @@ void UCharacterCardShop::UnlockCharacter()
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 	MoneyManager->DecreaseMoney(Price);
 	OnCharacterUnlockedDelegate.Broadcast();
-	UE_LOG(LogTemp, Warning, TEXT("UnlockCharacter"));
 }
 
 
