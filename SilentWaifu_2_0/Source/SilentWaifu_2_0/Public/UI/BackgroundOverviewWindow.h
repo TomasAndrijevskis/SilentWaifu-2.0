@@ -22,8 +22,6 @@ class SILENTWAIFU_2_0_API UBackgroundOverviewWindow : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
-	virtual void NativeConstruct() override;
 	
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Close;
@@ -66,12 +64,6 @@ private:
 	
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
-
-	UPROPERTY()
-	UMoneyManager* MoneyManager;
-
-	UPROPERTY()
-	ASilentWaifuGameMode* GameMode;
 	
 	UPROPERTY()
 	UTexture2D* Image;

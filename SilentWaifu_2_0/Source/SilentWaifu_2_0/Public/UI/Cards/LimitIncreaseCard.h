@@ -6,6 +6,7 @@
 #include "LimitIncreaseCard.generated.h"
 
 
+class UWidgetReferenceDataAsset;
 class UTextBlock;
 
 UCLASS()
@@ -27,6 +28,9 @@ protected:
 
 	UFUNCTION()
 	virtual void SetPriceText();
+
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
 	
 private:
 
@@ -39,5 +43,8 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_Price;
 
+	UFUNCTION()
+	void IncreaseLimit();
+	
 	int Price;
 };

@@ -120,6 +120,9 @@ private:
 	UFUNCTION()
 	void HandleButtonState();
 
+	UFUNCTION()
+	void CreateConfirmationWindow();
+	
 	void BindDelegates();
 	
 	UPROPERTY(EditAnywhere)

@@ -3,22 +3,10 @@
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/BackgroundManager.h"
-#include "GameMode/Helpers/MoneyManager.h"
-#include "Kismet/GameplayStatics.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Screens/MainScreen.h"
-
-
-void UBackgroundOverviewWindow::NativeConstruct()
-{
-	Super::NativeConstruct();
-	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!GameMode) return;
-	MoneyManager = GameMode->MoneyManager;
-}
 
 
 void UBackgroundOverviewWindow::Init(UTexture2D* NewImage, int NewPrice, int NewId, const bool IsUnlocked, UBackgroundManager* NewBackgroundManager)
@@ -54,7 +42,8 @@ void UBackgroundOverviewWindow::CreateConfirmationWindow()
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
 	if (!WidgetReferences->ConfirmationWindowRef) return;
-	WidgetReferences->ConfirmationWindowRef->OnConfirmedDelegate.AddDynamic(this, &UBackgroundOverviewWindow::UnlockBackground);
+	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UBackgroundOverviewWindow::UnlockBackground);
+	WidgetReferences->ConfirmationWindowRef->SetPrice(Price);
 }
 
 
@@ -73,11 +62,9 @@ void UBackgroundOverviewWindow::SetButtonText(const FString& Text)
 
 void UBackgroundOverviewWindow::UnlockBackground()
 {
-	if (!MoneyManager || !MoneyManager->HasEnoughMoney(Price)) return;
 	FSavedBackgroundsData Data;
 	Data.Id = Id;
 	Data.IsActive = true;
-	MoneyManager->DecreaseMoney(Price);
 	BackgroundManager->AddUnlockedBackground(Data);
 	SetBackground();
 }

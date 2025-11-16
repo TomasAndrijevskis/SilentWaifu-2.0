@@ -10,7 +10,9 @@
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/MainScreen.h"
 
 
 void UCharacterInfoScreen::NativeConstruct()
@@ -21,7 +23,7 @@ void UCharacterInfoScreen::NativeConstruct()
 	CharactersManager = GameMode->CharactersManager;
 	MoneyManager = GameMode->MoneyManager;
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
-	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
+	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateConfirmationWindow);
 	BindDelegates();
 }
 
@@ -75,6 +77,15 @@ void UCharacterInfoScreen::HandleButtonState()
 	}
 }
 
+void UCharacterInfoScreen::CreateConfirmationWindow()
+{
+	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	if (!WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
+	WidgetReferences->ConfirmationWindowRef->SetPrice(CurrentUpgradePrice);
+}
+
 
 void UCharacterInfoScreen::CloseScreen()
 {
@@ -86,7 +97,7 @@ void UCharacterInfoScreen::CloseScreen()
 
 void UCharacterInfoScreen::UpgradeCharacter()
 {
-	if (!CharactersManager || !MoneyManager || !MoneyManager->HasEnoughMoney(CurrentUpgradePrice)) return;
+	if (!CharactersManager) return;
 	for (auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		if (CharacterId == Character.Key)
@@ -95,10 +106,9 @@ void UCharacterInfoScreen::UpgradeCharacter()
 			break;
 		}
 	}
-	MoneyManager->DecreaseMoney(CurrentUpgradePrice);
 	OnCharacterUpgradedDelegate.Broadcast();
 	CharactersManager->OnCharacterUpgradeDelegate.Broadcast(CharacterId);
-	UE_LOG(LogTemp, Display, TEXT("CharacterInfoScreen::UpdateCharacter"));
+	//UE_LOG(LogTemp, Display, TEXT("CharacterInfoScreen::UpdateCharacter"));
 }
 
 

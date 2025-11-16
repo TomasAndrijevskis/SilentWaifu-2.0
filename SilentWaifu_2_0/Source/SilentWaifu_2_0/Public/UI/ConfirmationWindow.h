@@ -6,10 +6,15 @@
 #include "ConfirmationWindow.generated.h"
 
 
+class UWidgetReferenceDataAsset;
+class UMoneyManager;
+class ASilentWaifuGameMode;
 class UButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnConfirmedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCanceledSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSuccessSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFailSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UConfirmationWindow : public UUserWidget
 {
@@ -18,10 +23,16 @@ class SILENTWAIFU_2_0_API UConfirmationWindow : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
+
+	void SetPrice(int NewPrice);
 	
 	FOnConfirmedSignature OnConfirmedDelegate;
 
 	FOnCanceledSignature OnCanceledDelegate;
+
+	FOnSuccessSignature OnSuccessDelegate;
+
+	FOnFailSignature OnFailDelegate;
 	
 private:
 
@@ -36,4 +47,29 @@ private:
 
 	UFUNCTION()
 	void OnCanceled();
+
+	UFUNCTION()
+	void OnFail();
+
+	UFUNCTION()
+	void OnSuccess();
+	
+	UFUNCTION()
+	void CheckMoney();
+
+	void CreateNotification(const FText& Message);
+
+	UFUNCTION()
+	void RemoveNotificationReference();
+	
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
+
+	UPROPERTY()
+	UMoneyManager* MoneyManager;
+
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
+	int Price;
 };

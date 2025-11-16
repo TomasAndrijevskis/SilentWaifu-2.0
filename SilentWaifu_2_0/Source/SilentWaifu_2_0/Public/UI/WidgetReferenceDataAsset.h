@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UNotificationWindow;
 class UBackgroundOverviewWindow;
 class UBackgroundCard;
 class UBackgroundMenu;
@@ -136,5 +137,12 @@ public:
 
 	UPROPERTY()
 	UBackgroundOverviewWindow* BackgroundOverviewWindowRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UNotificationWindow> NotificationWindowClass;
+
+	UPROPERTY()
+	UNotificationWindow* NotificationWindowRef;
 
 };

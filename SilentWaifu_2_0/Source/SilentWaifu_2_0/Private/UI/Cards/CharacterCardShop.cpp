@@ -56,7 +56,8 @@ void UCharacterCardShop::Action()
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
 	if (!WidgetReferences->ConfirmationWindowRef) return;
-	WidgetReferences->ConfirmationWindowRef->OnConfirmedDelegate.AddDynamic(this, &UCharacterCardShop::UnlockCharacter);
+	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UCharacterCardShop::UnlockCharacter);
+	WidgetReferences->ConfirmationWindowRef->SetPrice(GetCharacterPrice());
 }
 
 
@@ -70,16 +71,13 @@ void UCharacterCardShop::HandleState()
 
 void UCharacterCardShop::UnlockCharacter()
 {
-	if (!MoneyManager || !CharacterRow || !CharactersManager) return;
-	int Price = GetCharacterPrice();
-	if (!MoneyManager->HasEnoughMoney(Price)) return;
+	if (!CharacterRow || !CharactersManager) return;
 	FSavedCharactersData Data;
 	Data.CharacterClass = CharacterRow->CharacterClass;
 	Data.bIsOnScreen = false;
 	Data.CharacterId = CharacterId;
 	Data.Level = 1;
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
-	MoneyManager->DecreaseMoney(Price);
 	OnCharacterUnlockedDelegate.Broadcast();
 }
 

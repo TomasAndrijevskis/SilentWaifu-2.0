@@ -3,6 +3,9 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "GameMode/Helpers/MoneyManager.h"
+#include "UI/ConfirmationWindow.h"
+#include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/MainScreen.h"
 
 
 void ULimitIncreaseCard::Init()
@@ -44,8 +47,17 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 
 void ULimitIncreaseCard::Action()
 {
-	if (!MoneyManager || !MoneyManager->HasEnoughMoney(Price)) return;
-	MoneyManager->DecreaseMoney(Price);
+	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	if (!WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &ULimitIncreaseCard::IncreaseLimit);
+	WidgetReferences->ConfirmationWindowRef->SetPrice(Price);
+}
+
+
+void ULimitIncreaseCard::IncreaseLimit()
+{
+	if (!MoneyManager) return;
 	MoneyManager->IncreaseMoneyLimit();
 }
 
@@ -55,3 +67,6 @@ void ULimitIncreaseCard::SetPriceText()
 	Price = 100;
 	Text_Price->SetText(FText::FromString(FString::FromInt(Price)));
 }
+
+
+
