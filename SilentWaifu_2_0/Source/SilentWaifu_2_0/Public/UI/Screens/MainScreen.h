@@ -28,13 +28,7 @@ class SILENTWAIFU_2_0_API UMainScreen : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
-
-	UFUNCTION()
-	void UpdateCurrentMoney(int const Money);
-
-	UFUNCTION()
-	void UpdateMaxMoney(int const Money);
-
+	
 	UFUNCTION()
 	void CreateConfirmationWindow();
 
@@ -56,21 +50,13 @@ protected:
 	UWidgetReferenceDataAsset* WidgetReferences;
 
 private:
-
-	UPROPERTY(meta = (BindWidget))
-	UHorizontalBox* HorizontalBox_MoneyPanel;
-
+	
 	UPROPERTY(meta = (BindWidget))
 	UHorizontalBox* HorizontalBox_CharacterSlots;
 
 	UPROPERTY(meta = (BindWidget))
 	UVerticalBox* VerticalBox_Characters;
 	
-	UPROPERTY(meta = (BindWidget))
-	UTextBlock* Text_CurrentMoney;
-
-	UPROPERTY(meta = (BindWidget))
-	UTextBlock* Text_MaxMoney;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Storage;
@@ -119,6 +105,8 @@ private:
 
 	UFUNCTION()
 	void RemoveCharacter(const int Position);
+
+	void CreateMoneyPanel();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

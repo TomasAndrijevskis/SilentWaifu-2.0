@@ -15,6 +15,7 @@
 #include "UI/Screens/CharacterMenuStorage.h"
 #include "UI/ButtonCreateChooseScreen.h"
 #include "UI/ConfirmationWindow.h"
+#include "UI/MoneyPanel.h"
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "UI/Screens/BackgroundMenu.h"
 #include "UI/Screens/CharacterMenuShop.h"
@@ -26,6 +27,7 @@ void UMainScreen::NativeConstruct()
 	InitializeReferences();
 	BindDelegates();
 	CreateSlots();
+	CreateMoneyPanel();
 }
 
 
@@ -42,8 +44,6 @@ void UMainScreen::InitializeReferences()
 void UMainScreen::BindDelegates()
 {
 	if (!MoneyManager || !BackgroundManager) return;
-	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateCurrentMoney);
-	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMainScreen::UpdateMaxMoney);
 	BackgroundManager->OnCurrentBackgroundSetDelegate.AddDynamic(this, &UMainScreen::SetBackground);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
@@ -51,18 +51,6 @@ void UMainScreen::BindDelegates()
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
 	OnBackgroundSetDelegate.AddDynamic(this, &UMainScreen::RemoveBackgroundMenu);
-}
-
-
-void UMainScreen::UpdateCurrentMoney(int const Money)
-{
-	Text_CurrentMoney->SetText(FText::FromString(FString::FromInt(Money)));
-}
-
-
-void UMainScreen::UpdateMaxMoney(int const Money)
-{
-	Text_MaxMoney->SetText(FText::FromString(FString::FromInt(Money)));
 }
 
 
@@ -226,4 +214,13 @@ void UMainScreen::RemoveCharacter(const int Position)
 	if (!VB_Slot) return;
 	VB_Slot->RemoveChildAt(0);
 	VB_Slot->AddChild(CreateButton(Position));
+}
+
+
+void UMainScreen::CreateMoneyPanel()
+{
+	if (!WidgetReferences || !WidgetReferences->MoneyPanelClass) return;
+	WidgetReferences->MoneyPanelRef = Cast<UMoneyPanel>(CreateWidget(GetWorld(), WidgetReferences->MoneyPanelClass));
+	if (!WidgetReferences->MoneyPanelRef) return;
+	WidgetReferences->MoneyPanelRef->AddToViewport(1);
 }
