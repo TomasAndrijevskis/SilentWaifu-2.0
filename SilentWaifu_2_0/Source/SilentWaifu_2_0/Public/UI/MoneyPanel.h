@@ -6,6 +6,9 @@
 #include "MoneyPanel.generated.h"
 
 
+class UHorizontalBox;
+class UWidgetReferenceDataAsset;
+class UButton;
 class UMoneyManager;
 class ASilentWaifuGameMode;
 class UTextBlock;
@@ -27,6 +30,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_MaxMoney;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Action;
+
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* HorizontalBox_AdditionalInfo;
+	
 	void BindDelegates();
 
 	UFUNCTION()
@@ -34,10 +43,21 @@ private:
 
 	UFUNCTION()
 	void UpdateMaxMoney(int const Money);
+
+	UFUNCTION()
+	void CreateAdditionPanel();
+
+	UFUNCTION()
+	void RemoveAdditionalPanel();
+
+	void RebindButtonAction(const bool DoesPanelExists);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 	
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
+
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
 };

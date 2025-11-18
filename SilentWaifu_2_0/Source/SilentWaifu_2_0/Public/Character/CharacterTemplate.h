@@ -21,6 +21,8 @@ public:
 	void SetValues(const int NewLevel, const int NewId);
 
 	void UpdateLevel(const int NewLevel);
+
+	int GetMoneyPerSecond() const;
 	
 	FOnCharacterLoadedSignature OnCharacterLoadedDelegate;
 

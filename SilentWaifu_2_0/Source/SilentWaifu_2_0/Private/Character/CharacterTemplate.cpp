@@ -62,3 +62,9 @@ void ACharacterTemplate::IncreaseMoney() const
 	if (!MoneyManager) return;
 	MoneyManager->IncreaseMoney(MoneyPerSecond);
 }
+
+
+int ACharacterTemplate::GetMoneyPerSecond() const
+{
+	return MoneyPerSecond;
+}

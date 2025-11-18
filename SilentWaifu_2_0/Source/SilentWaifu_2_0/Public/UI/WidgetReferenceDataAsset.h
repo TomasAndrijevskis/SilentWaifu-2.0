@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UMoneyPanelAdditionInfo;
 class UMoneyPanel;
 class UNotificationWindow;
 class UBackgroundOverviewWindow;
@@ -152,4 +153,11 @@ public:
 
 	UPROPERTY()
 	UMoneyPanel* MoneyPanelRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UMoneyPanelAdditionInfo> MoneyPanelAdditionInfoClass;
+
+	UPROPERTY()
+	UMoneyPanelAdditionInfo* MoneyPanelAdditionInfoRef;
 };
