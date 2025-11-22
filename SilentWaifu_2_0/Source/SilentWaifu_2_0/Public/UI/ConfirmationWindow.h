@@ -24,7 +24,7 @@ public:
 
 	virtual void NativeConstruct() override;
 
-	void SetPrice(int NewPrice);
+	void SetPrice(const int NewPrice);
 	
 	FOnConfirmedSignature OnConfirmedDelegate;
 

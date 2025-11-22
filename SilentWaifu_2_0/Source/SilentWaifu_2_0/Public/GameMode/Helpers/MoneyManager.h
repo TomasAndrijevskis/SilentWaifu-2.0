@@ -14,6 +14,8 @@ class SILENTWAIFU_2_0_API UMoneyManager : public UObject
 
 public:
 
+	void Init(UDataTable* DataTable);
+	
 	UFUNCTION()
 	void IncreaseMoney(const int Money);
 
@@ -37,4 +39,7 @@ private:
 
 	UPROPERTY()
 	int MaxMoney;
+
+	UPROPERTY()
+	UDataTable* MoneyLimitDataTable;
 };

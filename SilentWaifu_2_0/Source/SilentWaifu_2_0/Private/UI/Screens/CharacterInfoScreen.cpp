@@ -108,7 +108,6 @@ void UCharacterInfoScreen::UpgradeCharacter()
 	}
 	OnCharacterUpgradedDelegate.Broadcast();
 	CharactersManager->OnCharacterUpgradeDelegate.Broadcast(CharacterId);
-	//UE_LOG(LogTemp, Display, TEXT("CharacterInfoScreen::UpdateCharacter"));
 }
 
 
@@ -127,6 +126,7 @@ void UCharacterInfoScreen::SetRarityBorder()
 	const FCharacterRarities* RarityRow = RarityDataTable->FindRow<FCharacterRarities>(RowName, TEXT("Find Character By rarity"));
 	if (!RarityRow) return;
 	Border_Rarity->SetBrushFromTexture(RarityRow->RarityBorder);
+	Border_Rarity->SetBrushColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
 }
 
 
@@ -154,7 +154,6 @@ void UCharacterInfoScreen::SetLevel()
 void UCharacterInfoScreen::SetMaxLevel()
 {
 	MaxLevel = CharacterRow->Numbers.UpgradeCost.Num();
-	UE_LOG(LogTemp, Error, TEXT("MaxLevel: %i"), MaxLevel);
 }
 
 

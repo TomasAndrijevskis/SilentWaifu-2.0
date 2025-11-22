@@ -22,7 +22,7 @@ class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-
+	
 	void OnCharacterSpawned(const int CurrentSpawnPosition) const;
 
 	void OnCharacterRemovedDelegate(const int Position) const;
@@ -43,11 +43,6 @@ public:
 	
 	FOnShopCreatedSignature OnShopCreatedDelegate;
 
-	UPROPERTY(EditAnywhere)
-	UDataTable* CharacterDataTable;
-
-	UPROPERTY(EditAnywhere)
-	UDataTable* BackgroundDataTable;
 	
 protected:
 
@@ -65,5 +60,14 @@ private:
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
-	
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* CharacterDataTable;
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* BackgroundDataTable;
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* MoneyLimitsDataTable;
 };
+

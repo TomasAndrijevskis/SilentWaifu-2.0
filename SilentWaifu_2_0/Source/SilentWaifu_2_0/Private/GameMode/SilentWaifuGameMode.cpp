@@ -28,6 +28,7 @@ void ASilentWaifuGameMode::HandleManagers()
 	if (!CharacterDataTable || !BackgroundDataTable) return;
 	CharactersManager->Init(CharacterDataTable);
 	BackgroundManager->Init(BackgroundDataTable);
+	MoneyManager->Init(MoneyLimitsDataTable);
 }
 
 

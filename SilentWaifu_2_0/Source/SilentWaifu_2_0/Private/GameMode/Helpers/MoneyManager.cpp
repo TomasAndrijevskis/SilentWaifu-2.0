@@ -2,16 +2,17 @@
 #include "GameMode/Helpers/MoneyManager.h"
 
 
+void UMoneyManager::Init(UDataTable* DataTable)
+{
+	if (!DataTable) return;
+	MoneyLimitDataTable = DataTable;
+}
+
+
 void UMoneyManager::IncreaseMoney(const int Money)
 {
-	if (CurrentMoney + Money < MaxMoney)
-	{
-		CurrentMoney += Money;
-	}
-	else
-	{
-		CurrentMoney = MaxMoney;
-	}
+	if (CurrentMoney + Money < MaxMoney)CurrentMoney += Money;
+	else CurrentMoney = MaxMoney;
 	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
 
@@ -25,10 +26,7 @@ void UMoneyManager::DecreaseMoney(const int Money)
 
 bool UMoneyManager::HasEnoughMoney(const int Money) const
 {
-	if (CurrentMoney >= Money)
-	{
-		return true;
-	}
+	if (CurrentMoney >= Money) return true;
 	return false;
 }
 

@@ -9,11 +9,11 @@ void UMoneyPanelAdditionInfo::NativeConstruct()
 {
 	Super::NativeConstruct();
 	SetOverallMoney();
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyPanelAdditionInfo::Countdown, 1, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyPanelAdditionInfo::SetCountdown, 1, true);
 }
 
 
-void UMoneyPanelAdditionInfo::Countdown()
+void UMoneyPanelAdditionInfo::SetCountdown()
 {
 	if (AliveTime > 0) AliveTime--;
 	else OnTimerFinishedDelegate.Broadcast();

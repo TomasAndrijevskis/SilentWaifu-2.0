@@ -65,6 +65,5 @@ TArray<FSavedBackgroundsData> UBackgroundManager::GetUnlockedBackgrounds() const
 
 void UBackgroundManager::AddUnlockedBackground(const FSavedBackgroundsData& Background)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Id: %i"), Background.Id);
 	UnlockedBackgrounds.Add(Background);
 }

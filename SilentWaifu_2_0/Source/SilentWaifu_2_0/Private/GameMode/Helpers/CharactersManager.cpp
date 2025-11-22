@@ -17,6 +17,7 @@ void UCharactersManager::Init(UDataTable* DataTable)
 
 void UCharactersManager::SpawnCharacters()
 {
+	UE_LOG(LogTemp, Error, TEXT("SpawnCharacters"));
 	for (const auto& Character : GetAvailableCharacters())
 	{
 		if (Character.Value.bIsOnScreen == true)
@@ -39,7 +40,6 @@ void UCharactersManager::SpawnCharacter(const int CharacterId)
 	Data->Position = CurrentSpawnPosition;
 	AddTakenPosition(CurrentSpawnPosition, true);
 	GameMode->OnCharacterSpawned(CurrentSpawnPosition);
-	//UE_LOG(LogTemp, Error, TEXT("Position: %i"), CurrentSpawnPosition);
 }
 
 
@@ -50,10 +50,7 @@ void UCharactersManager::RemoveCharacter(const int CharacterId)
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->CharacterClass,ActorsToRemove);
 	for (auto Actor : ActorsToRemove)
 	{
-		if (IsValid(Actor))
-		{
-			Actor->Destroy();
-		}
+		if (IsValid(Actor)) Actor->Destroy();
 	}
 	TakenPositions.Remove(Data->Position);
 	Data->bIsOnScreen = false;
@@ -89,10 +86,7 @@ TArray<TPair<int, FSavedCharactersData>> UCharactersManager::GetSortedCharacters
 	TArray<TPair<int, int>> SortedCharactersByRarity = CharactersRarities.Array();
 	SortedCharactersByRarity.Sort([](const auto& A, const auto& B)
 	{
-		if (A.Value == B.Value)
-		{
-			return A.Key < B.Key;
-		}
+		if (A.Value == B.Value) return A.Key < B.Key;
 		return A.Value < B.Value;
 	});
 	TArray<TPair<int, FSavedCharactersData>> FinalSorted;
@@ -113,10 +107,7 @@ bool UCharactersManager::IsCharacterUnlocked(const int CharacterId) const
 {
 	for (const auto& Character : AvailableCharacters)
 	{
-		if (Character.Value.CharacterId == CharacterId)
-		{
-			return true;
-		}
+		if (Character.Value.CharacterId == CharacterId) return true;
 	}
 	return false;
 }

@@ -70,9 +70,5 @@ TArray<FSavedBackgroundsData> USilentWaifuSaveGame::GetUnlockedBackgrounds() con
 
 void USilentWaifuSaveGame::SaveUnlockedBackgrounds(const TArray<FSavedBackgroundsData>& NewUnlockedBackgrounds)
 {
-	for (const auto& Element : NewUnlockedBackgrounds)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SaveUnlockedBackgrounds %i, %i"), Element.Id, Element.IsActive);
-	}
 	UnlockedBackgrounds = NewUnlockedBackgrounds;
 }

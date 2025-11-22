@@ -66,8 +66,8 @@ void UMoneyPanel::RebindButtonAction(const bool DoesPanelExists)
 {
 	DoesPanelExists ?
 		(Button_Action->OnClicked.Clear(),
-		Button_Action->OnClicked.AddDynamic(this, &UMoneyPanel::RemoveAdditionalPanel))
+		Button_Action->OnClicked.AddUniqueDynamic(this, &UMoneyPanel::RemoveAdditionalPanel))
 	:
 		(Button_Action->OnClicked.Clear(),
-		Button_Action->OnClicked.AddDynamic(this, &UMoneyPanel::CreateAdditionPanel));
+		Button_Action->OnClicked.AddUniqueDynamic(this, &UMoneyPanel::CreateAdditionPanel));
 }

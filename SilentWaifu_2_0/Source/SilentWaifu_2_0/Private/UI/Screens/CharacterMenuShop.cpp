@@ -129,8 +129,6 @@ int UCharacterMenuShop::GetCharacter()
 	if (NumberOfPossibleCharacters == 0) return GetCharacter(); // try again
 	if (NumberOfPossibleCharacters == 1) return CharacterIds[0];
 	int CharacterIndex = FMath::RandRange(0, NumberOfPossibleCharacters - 1);
-	//UE_LOG(LogTemp, Warning, TEXT("Chosen Character index: %i"), CharacterIndex);
-	//UE_LOG(LogTemp, Warning, TEXT("Chosen Character: %i"), CharacterIds[CharacterIndex]);
 	return CharacterIds[CharacterIndex];
 }
 

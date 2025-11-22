@@ -20,7 +20,7 @@ void UConfirmationWindow::NativeConstruct()
 }
 
 
-void UConfirmationWindow::SetPrice(int NewPrice)
+void UConfirmationWindow::SetPrice(const int NewPrice)
 {
 	Price = NewPrice;
 }
@@ -39,21 +39,18 @@ void UConfirmationWindow::CheckMoney()
 
 void UConfirmationWindow::OnConfirmed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnConfirmed"));
 	OnConfirmedDelegate.Broadcast();
 }
 
 
 void UConfirmationWindow::OnCanceled()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnCanceled"));
 	OnCanceledDelegate.Broadcast();
 }
 
 
 void UConfirmationWindow::OnFail()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnFail"));
 	CreateNotification(FText::FromString(TEXT("Fail")));
 }
 
@@ -61,7 +58,6 @@ void UConfirmationWindow::OnFail()
 void UConfirmationWindow::OnSuccess()
 {
 	MoneyManager->DecreaseMoney(Price);
-	UE_LOG(LogTemp, Warning, TEXT("OnSuccess"));
 	CreateNotification(FText::FromString(TEXT("Success")));
 	OnSuccessDelegate.Broadcast();
 }
