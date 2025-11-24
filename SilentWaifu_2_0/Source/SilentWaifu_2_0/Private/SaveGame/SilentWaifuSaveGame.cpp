@@ -2,27 +2,15 @@
 #include "SaveGame/SilentWaifuSaveGame.h"
 
 
-void USilentWaifuSaveGame::SaveCurrentMoney(int const NewCurrentMoney)
+void USilentWaifuSaveGame::SaveCurrentMoney(const int NewCurrentMoney)
 {
 	CurrentMoney = NewCurrentMoney;
-}
-
-
-void USilentWaifuSaveGame::SaveMaxMoney(int const NewMaxMoney)
-{
-	MaxMoney = NewMaxMoney;
 }
 
 
 int USilentWaifuSaveGame::GetCurrentMoney() const
 {
 	return CurrentMoney;
-}
-
-
-int USilentWaifuSaveGame::GetMaxMoney() const
-{
-	return MaxMoney;
 }
 
 
@@ -71,4 +59,16 @@ TArray<FSavedBackgroundsData> USilentWaifuSaveGame::GetUnlockedBackgrounds() con
 void USilentWaifuSaveGame::SaveUnlockedBackgrounds(const TArray<FSavedBackgroundsData>& NewUnlockedBackgrounds)
 {
 	UnlockedBackgrounds = NewUnlockedBackgrounds;
+}
+
+
+void USilentWaifuSaveGame::SaveLimitLevel(const int Level)
+{
+	MoneyLimitLevel = Level;
+}
+
+
+int USilentWaifuSaveGame::GetLimitLevel() const
+{
+	return MoneyLimitLevel;
 }

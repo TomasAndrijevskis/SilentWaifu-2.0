@@ -38,6 +38,8 @@ private:
 	
 	void BindDelegates();
 
+	void SetInitialValues();
+	
 	UFUNCTION()
 	void UpdateCurrentMoney(int const Money);
 

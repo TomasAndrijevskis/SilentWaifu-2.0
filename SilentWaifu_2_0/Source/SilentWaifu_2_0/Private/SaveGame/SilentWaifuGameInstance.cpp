@@ -12,6 +12,7 @@ void USilentWaifuGameInstance::Init()
 {
 	Super::Init();
 	HandleSaveGame();
+	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadLimitLevel);
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
 }
 
@@ -45,8 +46,8 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	Data.CharacterId = 1;
 	Data.Level = 1;
 	SaveFirstCharacter(1, Data);
-	SaveMaxMoney(100);
-
+	SaveLimitLevel(1);
+	
 	FSavedBackgroundsData BackgroundData;
 	BackgroundData.Id = 1;
 	BackgroundData.IsActive = true;
@@ -111,18 +112,9 @@ void USilentWaifuGameInstance::SaveCurrentMoney(int const CurrentMoney)
 }
 
 
-void USilentWaifuGameInstance::SaveMaxMoney(int const MaxMoney)
-{
-	if (!SaveGameInstance) return;
-	SaveGameInstance->SaveMaxMoney(MaxMoney);
-	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
-}
-
-
 void USilentWaifuGameInstance::LoadMoney() const
 {
 	if (!SaveGameInstance || !MoneyManager) return;
-	MoneyManager->SetMaxMoney(SaveGameInstance->GetMaxMoney());
 	MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
 }
 
@@ -172,4 +164,19 @@ void USilentWaifuGameInstance::LoadBackgrounds()
 {
 	if (!SaveGameInstance || !BackgroundManager) return;
 	BackgroundManager->SetUnlockedBackgrounds(SaveGameInstance->GetUnlockedBackgrounds());
+}
+
+
+void USilentWaifuGameInstance::SaveLimitLevel(const int Level)
+{
+	if (!SaveGameInstance) return;
+	SaveGameInstance->SaveLimitLevel(Level);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::LoadLimitLevel()
+{
+	if (!SaveGameInstance || !MoneyManager) return;
+	MoneyManager->SetMoneyLimitLevel(SaveGameInstance->GetLimitLevel());
 }

@@ -43,7 +43,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadShop();
 	GameInstance->LoadBackgrounds();
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
-	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveMaxMoney);
+	MoneyManager->OnLevelIncreasedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
 	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
 }
 

@@ -29,9 +29,6 @@ public:
 	UFUNCTION()
 	void SaveCurrentMoney(int const CurrentMoney);
 
-	UFUNCTION()
-	void SaveMaxMoney(int const MaxMoney);
-
 	void LoadMoney() const;
 
 	void LoadPositions() const;
@@ -48,6 +45,9 @@ public:
 	void SaveBackgrounds();
 
 	void LoadBackgrounds();
+
+	UFUNCTION()
+	void SaveLimitLevel(const int Level);
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	
@@ -66,6 +66,9 @@ private:
 	void SetManagers();
 
 	void SetDefaultValues();
+
+	UFUNCTION()
+	void LoadLimitLevel();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;

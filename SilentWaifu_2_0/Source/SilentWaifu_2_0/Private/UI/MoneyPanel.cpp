@@ -17,6 +17,7 @@ void UMoneyPanel::NativeConstruct()
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
 	BindDelegates();
+	SetInitialValues();
 }
 
 
@@ -26,6 +27,14 @@ void UMoneyPanel::BindDelegates()
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(this, &UMoneyPanel::UpdateCurrentMoney);
 	MoneyManager->OnMaxMoneyChangedDelegate.AddDynamic(this, &UMoneyPanel::UpdateMaxMoney);
 	Button_Action->OnClicked.AddUniqueDynamic(this, &UMoneyPanel::CreateAdditionPanel);
+}
+
+
+void UMoneyPanel::SetInitialValues()
+{
+	if (!MoneyManager) return;
+	UpdateCurrentMoney(MoneyManager->GetCurrentMoney());
+	UpdateMaxMoney(MoneyManager->GetMaxMoney());
 }
 
 
