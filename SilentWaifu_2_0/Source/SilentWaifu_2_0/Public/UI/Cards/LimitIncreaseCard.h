@@ -27,7 +27,7 @@ protected:
 	virtual void Action() override;
 
 	UFUNCTION()
-	virtual void SetPriceText();
+	virtual void SetPriceText(const FString& NewPriceText);
 
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
@@ -45,6 +45,9 @@ private:
 
 	UFUNCTION()
 	void IncreaseLimit();
+
+	UFUNCTION()
+	void HandleCardState();
 	
 	int Price;
 };

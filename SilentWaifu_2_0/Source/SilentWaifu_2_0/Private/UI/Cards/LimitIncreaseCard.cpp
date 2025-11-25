@@ -11,7 +11,9 @@
 void ULimitIncreaseCard::Init()
 {
 	Super::Init();
-	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::SetPriceText);
+	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::HandleCardState);
+	if (!MoneyManager) return;
+	MoneyManager->OnLimitLevelUpgradedDelegate.AddUniqueDynamic(this, &ULimitIncreaseCard::HandleCardState);
 }
 
 
@@ -62,10 +64,26 @@ void ULimitIncreaseCard::IncreaseLimit()
 }
 
 
-void ULimitIncreaseCard::SetPriceText()
+void ULimitIncreaseCard::HandleCardState()
 {
-	Price = 100;
-	Text_Price->SetText(FText::FromString(FString::FromInt(Price)));
+	if (!MoneyManager) return;
+	UE_LOG(LogTemp, Warning, TEXT("Is level maxed: %i"), (MoneyManager->IsLimitLevelMaxed() ? 1 : 0));
+	if (MoneyManager->IsLimitLevelMaxed())
+	{
+		SetPriceText("Maxed");
+		Button_Action->SetIsEnabled(false);
+	}
+	else
+	{
+		Price = MoneyManager->GetLimitLevelUpgradePrice();
+		SetPriceText(FString::FromInt(Price));
+	}
+}
+
+
+void ULimitIncreaseCard::SetPriceText(const FString& NewPriceText)
+{
+	Text_Price->SetText(FText::FromString(NewPriceText));
 }
 
 

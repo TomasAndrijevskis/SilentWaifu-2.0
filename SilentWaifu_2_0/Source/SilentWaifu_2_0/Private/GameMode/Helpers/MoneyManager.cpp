@@ -49,6 +49,9 @@ void UMoneyManager::SetMaxMoney(const int NewMaxMoney)
 {
 	MaxMoney = NewMaxMoney;
 	UE_LOG(LogTemp, Error, TEXT("MaxMoney: %i"), MaxMoney);
+	UE_LOG(LogTemp, Error, TEXT("Level: %i"), MoneyLimitLevel);
+	UE_LOG(LogTemp, Error, TEXT("upgrade price: %i"), GetLimitLevelUpgradePrice());
+	OnLimitLevelUpgradedDelegate.Broadcast();
 	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
 }
 
@@ -71,20 +74,31 @@ void UMoneyManager::CalculateMaxMoney()
 	int LevelGroupIndex = 0;
 	int NewMaxMoney = 0;
 	int PreviousGroupLevel = 0;
-	for (const auto Level : Levels)
+	int MaxLevel = Levels.Last()->Level;
+	int tempLevel = 1;
+	for (const auto LevelData : Levels)
 	{
+		CurrentLimitLevelPrice = LevelData->UpgradePrice;
 		if (LevelGroupIndex != 0)
 		{
 			PreviousGroupLevel = Levels[LevelGroupIndex-1]->Level;
 		}
-		for (int j = 0; j < Level->Level - PreviousGroupLevel; j++)
+		for (int j = 1; j <= LevelData->Level - PreviousGroupLevel; j++)
 		{
-			if (MoneyLimitLevel > Level->Level)
+			if (MoneyLimitLevel > LevelData->Level)
 			{
 				//UE_LOG(LogTemp, Warning, TEXT("Higher"));
 				//UE_LOG(LogTemp, Warning, TEXT("Current level: %i | Level: %i "), MoneyLimitLevel, Level->Level);
-				NewMaxMoney += Level->AddToLimit;
+				NewMaxMoney += LevelData->AddToLimit;
 				//UE_LOG(LogTemp, Warning, TEXT("NewMaxMoney: %i"), NewMaxMoney);
+			}
+			else if (tempLevel == MaxLevel)
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("Level Maxed"));
+				NewMaxMoney += LevelData->AddToLimit;
+				bIsLimitLevelMaxed = true;
+				SetMaxMoney(NewMaxMoney);
+				return;
 			}
 			else
 			{
@@ -92,16 +106,17 @@ void UMoneyManager::CalculateMaxMoney()
 				//UE_LOG(LogTemp, Warning, TEXT("Current level: %i | Level: %i "), MoneyLimitLevel, Level->Level);
 				if (j == MoneyLimitLevel - PreviousGroupLevel)
 				{
+					NewMaxMoney += LevelData->AddToLimit;
 					//UE_LOG(LogTemp, Warning, TEXT("Break"));
 					SetMaxMoney(NewMaxMoney);
 					return;
 				}
-				NewMaxMoney += Level->AddToLimit;
+				NewMaxMoney += LevelData->AddToLimit;
 			}
+			tempLevel++;
 		}
 		LevelGroupIndex++;
 	}
-	SetMaxMoney(NewMaxMoney);
 }
 
 
@@ -113,4 +128,16 @@ int UMoneyManager::GetCurrentMoney() const
 int UMoneyManager::GetMaxMoney() const
 {
 	return MaxMoney;
+}
+
+
+bool UMoneyManager::IsLimitLevelMaxed() const
+{
+	return bIsLimitLevelMaxed;
+}
+
+
+int UMoneyManager::GetLimitLevelUpgradePrice() const
+{
+	return CurrentLimitLevelPrice;
 }

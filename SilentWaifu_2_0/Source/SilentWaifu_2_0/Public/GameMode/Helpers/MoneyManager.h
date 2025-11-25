@@ -8,6 +8,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMoneyChangedSignature, const int, Money);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelIncreasedSignature, const int, Money);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLimitLevelUpgradedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UMoneyManager : public UObject
 {
@@ -35,12 +36,18 @@ public:
 	int GetCurrentMoney() const;
 
 	int GetMaxMoney() const;
+
+	bool IsLimitLevelMaxed() const;
+
+	int GetLimitLevelUpgradePrice() const;
 	
 	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
 	FOnMaxMoneyChangedSignature OnMaxMoneyChangedDelegate;
 
 	FOnLevelIncreasedSignature OnLevelIncreasedDelegate;
+
+	FOnLimitLevelUpgradedSignature OnLimitLevelUpgradedDelegate;
 
 private:
 
@@ -57,4 +64,8 @@ private:
 
 	UPROPERTY()
 	int MoneyLimitLevel;
+
+	int CurrentLimitLevelPrice;
+
+	bool bIsLimitLevelMaxed = false;
 };
