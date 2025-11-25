@@ -130,6 +130,12 @@ private:
 	void CreateConfirmationWindow();
 	
 	void BindDelegates();
+
+	UFUNCTION()
+	void CreateStorylineScreen();
+
+	UFUNCTION()
+	void RemoveStorylineScreen();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;

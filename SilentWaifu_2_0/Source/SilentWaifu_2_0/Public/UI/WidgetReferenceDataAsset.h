@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterStoryLine;
 class ULimitCardAdditionalInfo;
 class UMoneyPanelAdditionInfo;
 class UMoneyPanel;
@@ -82,8 +83,15 @@ public:
 	UBackgroundMenu* BackgroundMenuRef;
 
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterStoryLine> CharacterStoryLineClass;
+
+	UPROPERTY()
+	UCharacterStoryLine* CharacterStoryLineRef;
+
 	
 
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UCharacterCardChoose> ChooseCharacterCardClass;
 

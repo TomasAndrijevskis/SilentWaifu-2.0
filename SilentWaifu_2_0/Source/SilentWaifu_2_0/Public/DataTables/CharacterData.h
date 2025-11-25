@@ -31,4 +31,7 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	FCharacterImages Images;
+
+	UPROPERTY(EditDefaultsOnly)
+	FString StoryLine;
 };

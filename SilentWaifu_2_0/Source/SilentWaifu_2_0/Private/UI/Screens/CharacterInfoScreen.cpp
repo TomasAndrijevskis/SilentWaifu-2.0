@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/CharacterStoryLine.h"
 #include "UI/Screens/MainScreen.h"
 
 
@@ -24,6 +25,7 @@ void UCharacterInfoScreen::NativeConstruct()
 	MoneyManager = GameMode->MoneyManager;
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
 	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateConfirmationWindow);
+	Button_CharacterInfo->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateStorylineScreen);
 	BindDelegates();
 }
 
@@ -35,6 +37,25 @@ void UCharacterInfoScreen::BindDelegates()
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetMoneyGain);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetUpgradePrice);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::HandleButtonState);
+}
+
+
+void UCharacterInfoScreen::CreateStorylineScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStoryLineClass || !CharactersManager) return;
+	WidgetReferences->CharacterStoryLineRef = Cast<UCharacterStoryLine>(CreateWidget(GetWorld(), WidgetReferences->CharacterStoryLineClass));
+	if (!WidgetReferences->CharacterStoryLineRef) return;
+	WidgetReferences->CharacterStoryLineRef->AddToViewport(5);
+	WidgetReferences->CharacterStoryLineRef->Init(CharacterRow->Images.CardImage, CharacterRow->Name, CharacterRow->StoryLine);
+	WidgetReferences->CharacterStoryLineRef->Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::RemoveStorylineScreen);
+}
+
+
+void UCharacterInfoScreen::RemoveStorylineScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStoryLineRef) return;
+	WidgetReferences->CharacterStoryLineRef->RemoveFromParent();
+	WidgetReferences->CharacterStoryLineRef = nullptr;
 }
 
 
