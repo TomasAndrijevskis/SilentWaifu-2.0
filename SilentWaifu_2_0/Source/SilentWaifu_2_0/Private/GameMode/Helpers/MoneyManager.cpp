@@ -125,6 +125,7 @@ int UMoneyManager::GetCurrentMoney() const
 	return CurrentMoney;
 }
 
+
 int UMoneyManager::GetMaxMoney() const
 {
 	return MaxMoney;

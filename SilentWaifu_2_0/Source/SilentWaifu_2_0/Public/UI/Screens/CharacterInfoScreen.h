@@ -88,6 +88,12 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	UBackgroundBlur* Blur;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_StatsInfo;
+	
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_CharacterInfo;
 	
 	UFUNCTION()
 	void CloseScreen();

@@ -43,6 +43,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_Price;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_AdditionalInfo;
+	
 	UFUNCTION()
 	void IncreaseLimit();
 
