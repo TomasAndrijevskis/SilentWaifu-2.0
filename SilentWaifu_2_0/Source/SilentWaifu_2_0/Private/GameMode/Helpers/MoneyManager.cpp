@@ -75,7 +75,7 @@ void UMoneyManager::CalculateMaxMoney()
 	int NewMaxMoney = 0;
 	int PreviousGroupLevel = 0;
 	int MaxLevel = Levels.Last()->Level;
-	int tempLevel = 1;
+	int TempLevel = 1;
 	for (const auto LevelData : Levels)
 	{
 		CurrentLimitLevelPrice = LevelData->UpgradePrice;
@@ -87,14 +87,10 @@ void UMoneyManager::CalculateMaxMoney()
 		{
 			if (MoneyLimitLevel > LevelData->Level)
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("Higher"));
-				//UE_LOG(LogTemp, Warning, TEXT("Current level: %i | Level: %i "), MoneyLimitLevel, Level->Level);
 				NewMaxMoney += LevelData->AddToLimit;
-				//UE_LOG(LogTemp, Warning, TEXT("NewMaxMoney: %i"), NewMaxMoney);
 			}
-			else if (tempLevel == MaxLevel)
+			else if (TempLevel == MaxLevel)
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("Level Maxed"));
 				NewMaxMoney += LevelData->AddToLimit;
 				bIsLimitLevelMaxed = true;
 				SetMaxMoney(NewMaxMoney);
@@ -102,18 +98,15 @@ void UMoneyManager::CalculateMaxMoney()
 			}
 			else
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("Lower"));
-				//UE_LOG(LogTemp, Warning, TEXT("Current level: %i | Level: %i "), MoneyLimitLevel, Level->Level);
 				if (j == MoneyLimitLevel - PreviousGroupLevel)
 				{
 					NewMaxMoney += LevelData->AddToLimit;
-					//UE_LOG(LogTemp, Warning, TEXT("Break"));
 					SetMaxMoney(NewMaxMoney);
 					return;
 				}
 				NewMaxMoney += LevelData->AddToLimit;
 			}
-			tempLevel++;
+			TempLevel++;
 		}
 		LevelGroupIndex++;
 	}
@@ -142,3 +135,32 @@ int UMoneyManager::GetLimitLevelUpgradePrice() const
 {
 	return CurrentLimitLevelPrice;
 }
+
+
+int UMoneyManager::GetNextAdditionToLimit()
+{
+	if (!MoneyLimitDataTable) return 0;
+	TArray<FMoneyLimitUpgradeData*> Levels;
+	MoneyLimitDataTable->GetAllRows(TEXT("Find Levels"), Levels);
+	if (Levels.Num() == 0) return 0;
+	int LevelGroupIndex = 0;
+	int PreviousGroupLevel = 0;
+	for (const auto LevelData : Levels)
+	{
+		if (LevelGroupIndex != 0)
+		{
+			PreviousGroupLevel = Levels[LevelGroupIndex-1]->Level;
+		}
+		for (int j = 1; j <= LevelData->Level - PreviousGroupLevel; j++)
+		{
+			if (j == 1 + MoneyLimitLevel - PreviousGroupLevel)
+			{
+				return LevelData->AddToLimit;
+			}
+		}
+		LevelGroupIndex++;
+	}
+	return 0;
+}
+	
+

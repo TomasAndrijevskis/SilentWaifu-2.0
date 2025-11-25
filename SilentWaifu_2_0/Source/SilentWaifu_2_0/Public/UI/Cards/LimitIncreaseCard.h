@@ -51,6 +51,12 @@ private:
 
 	UFUNCTION()
 	void HandleCardState();
+
+	UFUNCTION()
+	void OpenAdditionalInfo();
+
+	UFUNCTION()
+	void CloseAdditionalInfo();
 	
 	int Price;
 };

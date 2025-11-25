@@ -64,6 +64,7 @@ void UCharacterCardShop::Action()
 void UCharacterCardShop::HandleState()
 {
 	if (!CharactersManager) return;
+	Button_AdditionalInfo->SetIsEnabled(!CharactersManager->IsCharacterUnlocked(CharacterId));
 	Button_Action->SetIsEnabled(!CharactersManager->IsCharacterUnlocked(CharacterId));
 	Button_CharacterImage->SetIsEnabled(!CharactersManager->IsCharacterUnlocked(CharacterId));
 }

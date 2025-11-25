@@ -40,6 +40,8 @@ public:
 	bool IsLimitLevelMaxed() const;
 
 	int GetLimitLevelUpgradePrice() const;
+
+	int GetNextAdditionToLimit();
 	
 	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
@@ -48,7 +50,7 @@ public:
 	FOnLevelIncreasedSignature OnLevelIncreasedDelegate;
 
 	FOnLimitLevelUpgradedSignature OnLimitLevelUpgradedDelegate;
-
+	
 private:
 
 	void CalculateMaxMoney();

@@ -4,6 +4,7 @@
 #include "Components/TextBlock.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "UI/ConfirmationWindow.h"
+#include "UI/LimitCardAdditionalInfo.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Screens/MainScreen.h"
 
@@ -12,6 +13,7 @@ void ULimitIncreaseCard::Init()
 {
 	Super::Init();
 	OnCardCreatedDelegate.AddDynamic(this, &ULimitIncreaseCard::HandleCardState);
+	Button_AdditionalInfo->OnClicked.AddUniqueDynamic(this, &ULimitIncreaseCard::OpenAdditionalInfo);
 	if (!MoneyManager) return;
 	MoneyManager->OnLimitLevelUpgradedDelegate.AddUniqueDynamic(this, &ULimitIncreaseCard::HandleCardState);
 }
@@ -72,12 +74,32 @@ void ULimitIncreaseCard::HandleCardState()
 	{
 		SetPriceText("Maxed");
 		Button_Action->SetIsEnabled(false);
+		Button_AdditionalInfo->SetIsEnabled(false);
 	}
 	else
 	{
 		Price = MoneyManager->GetLimitLevelUpgradePrice();
 		SetPriceText(FString::FromInt(Price));
 	}
+}
+
+
+void ULimitIncreaseCard::OpenAdditionalInfo()
+{
+	if (!WidgetReferences || !WidgetReferences->LimitCardAdditionalInfoClass || !MoneyManager) return;
+	WidgetReferences->LimitCardAdditionalInfoRef = Cast<ULimitCardAdditionalInfo>(CreateWidget(GetWorld(), WidgetReferences->LimitCardAdditionalInfoClass));
+	if (!WidgetReferences->LimitCardAdditionalInfoRef) return;
+	WidgetReferences->LimitCardAdditionalInfoRef->AddToViewport(5);
+	WidgetReferences->LimitCardAdditionalInfoRef->SetText(MoneyManager->GetNextAdditionToLimit());
+	WidgetReferences->LimitCardAdditionalInfoRef->Button_Close->OnClicked.AddDynamic(this, &ULimitIncreaseCard::CloseAdditionalInfo);
+}
+
+
+void ULimitIncreaseCard::CloseAdditionalInfo()
+{
+	if (!WidgetReferences || !WidgetReferences->LimitCardAdditionalInfoRef) return;
+	WidgetReferences->LimitCardAdditionalInfoRef->RemoveFromParent();
+	WidgetReferences->LimitCardAdditionalInfoRef = nullptr;
 }
 
 

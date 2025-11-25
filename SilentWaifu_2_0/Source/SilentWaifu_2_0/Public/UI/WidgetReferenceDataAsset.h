@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class ULimitCardAdditionalInfo;
 class UMoneyPanelAdditionInfo;
 class UMoneyPanel;
 class UNotificationWindow;
@@ -160,4 +161,11 @@ public:
 
 	UPROPERTY()
 	UMoneyPanelAdditionInfo* MoneyPanelAdditionInfoRef;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ULimitCardAdditionalInfo> LimitCardAdditionalInfoClass;
+
+	UPROPERTY()
+	ULimitCardAdditionalInfo* LimitCardAdditionalInfoRef;
 };
