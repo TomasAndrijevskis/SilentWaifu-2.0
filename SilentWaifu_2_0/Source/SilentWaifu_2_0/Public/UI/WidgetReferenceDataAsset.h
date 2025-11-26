@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UCharacterStatsScreen;
 class UCharacterStoryLine;
 class ULimitCardAdditionalInfo;
 class UMoneyPanelAdditionInfo;
@@ -89,6 +90,13 @@ public:
 	UPROPERTY()
 	UCharacterStoryLine* CharacterStoryLineRef;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterStatsScreen> CharacterStatsScreenClass;
+
+	UPROPERTY()
+	UCharacterStatsScreen* CharacterStatsScreenRef;
+	
 	
 
 	

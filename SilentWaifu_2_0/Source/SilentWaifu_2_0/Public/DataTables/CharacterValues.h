@@ -11,6 +11,9 @@ struct SILENTWAIFU_2_0_API FCharacterValues: public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
+	int MaxLevel;
+	
+	UPROPERTY(EditDefaultsOnly)
 	int Price;
 	
 	UPROPERTY(EditDefaultsOnly)

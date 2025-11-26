@@ -109,8 +109,6 @@ private:
 
 	UFUNCTION()
 	void SetLevel();
-
-	void SetMaxLevel();
 	
 	UFUNCTION()
 	void SetMoneyGain();
@@ -131,11 +129,19 @@ private:
 	
 	void BindDelegates();
 
+	void BindButtons();
+	
 	UFUNCTION()
 	void CreateStorylineScreen();
 
 	UFUNCTION()
 	void RemoveStorylineScreen();
+
+	UFUNCTION()
+	void CreateStatsScreen();
+
+	UFUNCTION()
+	void RemoveStatsScreen();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
@@ -155,8 +161,6 @@ private:
 	int CharacterId;
 
 	int CurrentLevel;
-
-	int MaxLevel;
 
 	int CurrentUpgradePrice;
 

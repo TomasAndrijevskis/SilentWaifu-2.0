@@ -8,10 +8,10 @@
 #include "DataTables/CharacterRarities.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
-#include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/CharacterStatsScreen.h"
 #include "UI/Screens/CharacterStoryLine.h"
 #include "UI/Screens/MainScreen.h"
 
@@ -23,10 +23,17 @@ void UCharacterInfoScreen::NativeConstruct()
 	if (!GameMode) return;
 	CharactersManager = GameMode->CharactersManager;
 	MoneyManager = GameMode->MoneyManager;
+	BindButtons();
+	BindDelegates();
+}
+
+
+void UCharacterInfoScreen::BindButtons()
+{
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CloseScreen);
 	Button_Upgrade->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateConfirmationWindow);
 	Button_CharacterInfo->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateStorylineScreen);
-	BindDelegates();
+	Button_StatsInfo->OnClicked.AddDynamic(this, &UCharacterInfoScreen::CreateStatsScreen);
 }
 
 
@@ -59,6 +66,25 @@ void UCharacterInfoScreen::RemoveStorylineScreen()
 }
 
 
+void UCharacterInfoScreen::CreateStatsScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStatsScreenClass) return;
+	WidgetReferences->CharacterStatsScreenRef = Cast<UCharacterStatsScreen>(CreateWidget(GetWorld(), WidgetReferences->CharacterStatsScreenClass));
+	if (!WidgetReferences->CharacterStatsScreenRef) return;
+	WidgetReferences->CharacterStatsScreenRef->Init(CharacterRow);
+	WidgetReferences->CharacterStatsScreenRef->AddToViewport(5);
+	WidgetReferences->CharacterStatsScreenRef->Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::RemoveStatsScreen);
+}
+
+
+void UCharacterInfoScreen::RemoveStatsScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStatsScreenRef) return;
+	WidgetReferences->CharacterStatsScreenRef->RemoveFromParent();
+	WidgetReferences->CharacterStatsScreenRef = nullptr;
+}
+
+
 void UCharacterInfoScreen::SetCharacterId(const int NewCharacterId)
 {
 	CharacterId = NewCharacterId;
@@ -76,7 +102,6 @@ void UCharacterInfoScreen::SetCharacterInfo()
 	SetLevel();
 	SetMoneyGain();
 	SetUpgradePrice();
-	SetMaxLevel();
 	HandleButtonState();
 }
 
@@ -91,7 +116,7 @@ void UCharacterInfoScreen::GetCharacterInfo()
 
 void UCharacterInfoScreen::HandleButtonState()
 {
-	if (CurrentLevel == MaxLevel)
+	if (CurrentLevel == CharacterRow->Numbers.MaxLevel)
 	{
 		Button_Upgrade->SetIsEnabled(false);
 		Text_Upgrade->SetText(FText::FromString("Maxed"));
@@ -169,12 +194,6 @@ void UCharacterInfoScreen::SetLevel()
 		}
 	}
 	Text_LevelValue->SetText(FText::FromString(FString::FromInt(CurrentLevel)));
-}
-
-
-void UCharacterInfoScreen::SetMaxLevel()
-{
-	MaxLevel = CharacterRow->Numbers.UpgradeCost.Num();
 }
 
 
