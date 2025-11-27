@@ -35,9 +35,6 @@ public:
 	UFUNCTION()
 	void RemoveConfirmationWindow();
 	
-	UFUNCTION()
-	void RemoveBackgroundMenu();
-	
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
 	FOnCharacterSpawnedSignature OnCharacterSpawnedDelegate;;
@@ -78,13 +75,7 @@ private:
 	void CreateStorage();
 
 	UFUNCTION()
-	void RemoveStorage();
-
-	UFUNCTION()
 	void CreateShop();
-
-	UFUNCTION()
-	void RemoveShop();
 
 	void CreateSlots();
 

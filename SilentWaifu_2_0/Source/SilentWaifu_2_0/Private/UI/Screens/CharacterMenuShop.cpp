@@ -2,6 +2,7 @@
 #include "UI/Screens/CharacterMenuShop.h"
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
+#include "Components/TextBlock.h"
 #include "DataTables/CharacterRarities.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
@@ -14,6 +15,7 @@ void UCharacterMenuShop::NativeConstruct()
 {
 	Super::NativeConstruct();
 	Button_UpdateShop->OnClicked.AddDynamic(this,&UCharacterMenuShop::UpdateShop);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCharacterMenuShop::CreateTimeCountdown,1, true, 0.f);
 }
 
 
@@ -23,6 +25,15 @@ void UCharacterMenuShop::UpdateShop()
 	HorizontalBox_Shop->ClearChildren();
 	CharactersManager->GetShopCharacters().Empty();
 	CreateCharacterMenu();
+}
+
+
+void UCharacterMenuShop::RemoveCharacterMenu()
+{
+	if (!WidgetReferences || !WidgetReferences->ShopScreenRef) return;
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+	WidgetReferences->ShopScreenRef->RemoveFromParent();
+	WidgetReferences->ShopScreenRef = nullptr;
 }
 
 
@@ -119,10 +130,7 @@ int UCharacterMenuShop::GetCharacter()
 	TArray<int> CharacterIds;
 	for (const auto Character : Characters)
 	{
-		if (Character->Rarity == GetCharacterRarity() && Character->CharacterId != 1)
-		{
-			CharacterIds.AddUnique(Character->CharacterId);
-		}
+		if (Character->Rarity == GetCharacterRarity() && Character->CharacterId != 1) CharacterIds.AddUnique(Character->CharacterId);
 	}
 
 	int NumberOfPossibleCharacters = CharacterIds.Num();
@@ -133,4 +141,15 @@ int UCharacterMenuShop::GetCharacter()
 }
 
 
+void UCharacterMenuShop::CreateTimeCountdown()
+{
+	FTimespan CurrentTime = FDateTime().Now().GetTimeOfDay();
+	if (CurrentTime > FTimespan(11, 59, 59)) UpdateTime = FTimespan(23, 59, 59);
+	else UpdateTime = FTimespan(11, 59, 59);
+	
+	FTimespan TimeLeft = UpdateTime - CurrentTime;
+	FString FormatedTime = TimeLeft.GetDuration().ToString(TEXT("%h:%m:%s"));
+	if (FormatedTime.StartsWith(TEXT("+"))) FormatedTime.RemoveAt(0);
+	Text_RemainingTime->SetText(FText::FromString(FormatedTime));
+}
 

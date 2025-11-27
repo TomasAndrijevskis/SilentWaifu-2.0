@@ -11,12 +11,9 @@ class SILENTWAIFU_2_0_API UCharacterMenuChooseCharacter : public UCharacterMenuB
 {
 	GENERATED_BODY()
 
-public:
-
-	virtual void RemoveCharacterMenu() override;
-	
 protected:
 
 	virtual void CreateCharacterMenu() override;
 	
+	virtual void RemoveCharacterMenu() override;
 };

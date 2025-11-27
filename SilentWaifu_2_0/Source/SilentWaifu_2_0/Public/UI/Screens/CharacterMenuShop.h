@@ -17,11 +17,13 @@ public:
 
 	UFUNCTION()
 	void UpdateShop();
-	
+
 protected:
 
 	virtual void CreateCharacterMenu() override;
-
+	
+	virtual void RemoveCharacterMenu() override;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -30,6 +32,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_UpdateShop;//testing
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Text_RemainingTime;
+	
 	TArray<int>& GetRandomCharacters(TArray<int>& OutCharacters);
 
 	int GetCharacterRarity();
@@ -37,6 +42,8 @@ private:
 	int GetCharacter();
 	
 	void CreateShop(TArray<int> Characters);
+
+	void CreateTimeCountdown();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
@@ -47,4 +54,8 @@ private:
 	int AmountOfSlots = 5;
 
 	int MaxRandomNumber = 100;
+
+	FTimespan UpdateTime;
+
+	FTimerHandle TimerHandle;
 };

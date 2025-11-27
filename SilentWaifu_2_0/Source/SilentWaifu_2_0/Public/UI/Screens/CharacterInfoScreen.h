@@ -51,31 +51,16 @@ private:
 	UButton* Button_Close;
 
 	UPROPERTY(meta=(BindWidget))
-	UBorder* Border_Background;
-
-	UPROPERTY(meta=(BindWidget))
 	UBorder* Border_Rarity;
 	
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_CharacterName;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_LevelText;
-
-	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_LevelValue;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_MoneyGainText;
-
-	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_MoneyGainValue;
-
-	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_MoneyGainDetails;
-
-	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_UpgradePriceText;
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_UpgradePriceValue;

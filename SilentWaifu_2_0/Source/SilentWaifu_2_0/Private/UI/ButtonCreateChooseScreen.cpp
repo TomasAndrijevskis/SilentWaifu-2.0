@@ -28,7 +28,6 @@ void UButtonCreateChooseScreen::CreateChooseScreen()
 }
 
 
-
 void UButtonCreateChooseScreen::SetSpawnPosition(const int NewSpawnPosition)
 {
 	SpawnPosition = NewSpawnPosition;

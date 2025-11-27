@@ -18,3 +18,11 @@ void UCharacterMenuStorage::CreateCharacterMenu()
 		WidgetReferences->StorageCharacterCardRef->CreateCard(Character.Value.CharacterId);
 	}
 }
+
+
+void UCharacterMenuStorage::RemoveCharacterMenu()
+{
+	if (!WidgetReferences || !WidgetReferences->StorageScreenRef) return;
+	WidgetReferences->StorageScreenRef->RemoveFromParent();
+	WidgetReferences->StorageScreenRef = nullptr;
+}

@@ -72,3 +72,15 @@ int USilentWaifuSaveGame::GetLimitLevel() const
 {
 	return MoneyLimitLevel;
 }
+
+
+FDateTime USilentWaifuSaveGame::GetLastJoinTime() const
+{
+	return LastJoinTime;
+}
+
+
+void USilentWaifuSaveGame::SaveLastJoinTime(const FDateTime& NewLastJoinTime)
+{
+	LastJoinTime = NewLastJoinTime;
+}

@@ -25,9 +25,6 @@ class SILENTWAIFU_2_0_API UBackgroundMenu : public UUserWidget
 
 public:
 	
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Close;
-	
 	virtual void NativeConstruct() override;
 
 protected:
@@ -61,9 +58,15 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	UBackgroundBlur* Blur;
 	
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Close;
+	
 	UPROPERTY(EditAnywhere)
 	UDataTable* BackgroundsDataTable;
 
+	UFUNCTION()
+	void RemoveMenu();
+	
 	void CreateCards();
 
 	UBackgroundCard* CreateBackgroundCard(UTexture2D* Image, int Id, int Price) const;

@@ -50,7 +50,6 @@ void UMainScreen::BindDelegates()
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
-	OnBackgroundSetDelegate.AddDynamic(this, &UMainScreen::RemoveBackgroundMenu);
 }
 
 
@@ -79,15 +78,6 @@ void UMainScreen::CreateStorage()
 	WidgetReferences->StorageScreenRef = Cast<UCharacterMenuStorage>(CreateWidget(GetWorld(), WidgetReferences->StorageScreenClass));
 	if (!WidgetReferences->StorageScreenRef) return;
 	WidgetReferences->StorageScreenRef->AddToViewport(1);
-	WidgetReferences->StorageScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveStorage);
-}
-
-
-void UMainScreen::RemoveStorage()
-{
-	if (!WidgetReferences || !WidgetReferences->StorageScreenRef) return;
-	WidgetReferences->StorageScreenRef->RemoveFromParent();
-	WidgetReferences->StorageScreenRef = nullptr;
 }
 
 
@@ -97,15 +87,6 @@ void UMainScreen::CreateShop()
 	WidgetReferences->ShopScreenRef = Cast<UCharacterMenuShop>(CreateWidget(GetWorld(), WidgetReferences->ShopScreenClass));
 	if (!WidgetReferences->ShopScreenRef) return;
 	WidgetReferences->ShopScreenRef->AddToViewport(1);
-	WidgetReferences->ShopScreenRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveShop);
-}
-
-
-void UMainScreen::RemoveShop()
-{
-	if (!WidgetReferences || !WidgetReferences->ShopScreenRef) return;
-	WidgetReferences->ShopScreenRef->RemoveFromParent();
-	WidgetReferences->ShopScreenRef = nullptr;
 }
 
 
@@ -115,15 +96,6 @@ void UMainScreen::CreateBgMenu()
 	WidgetReferences->BackgroundMenuRef = Cast<UBackgroundMenu>(CreateWidget(GetWorld(), WidgetReferences->BackgroundMenuClass));
 	if (!WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->AddToViewport(1);
-	WidgetReferences->BackgroundMenuRef->Button_Close->OnClicked.AddDynamic(this, &UMainScreen::RemoveBackgroundMenu);
-}
-
-
-void UMainScreen::RemoveBackgroundMenu()
-{
-	if (!WidgetReferences || !WidgetReferences->BackgroundMenuRef) return;
-	WidgetReferences->BackgroundMenuRef->RemoveFromParent();
-	WidgetReferences->BackgroundMenuRef = nullptr;
 }
 
 

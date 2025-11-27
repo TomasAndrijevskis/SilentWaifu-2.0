@@ -18,7 +18,7 @@ void UCharacterMenuChooseCharacter::CreateCharacterMenu()
 		if (!WidgetReferences->ChooseCharacterCardRef) return;
 		WrapBox->AddChild(WidgetReferences->ChooseCharacterCardRef);
 		WidgetReferences->ChooseCharacterCardRef->CreateCard(Character.Value.CharacterId);
-		WidgetReferences->ChooseCharacterCardRef->Button_Action->OnClicked.AddDynamic(this,&UCharacterMenuBase::RemoveCharacterMenu);
+		WidgetReferences->ChooseCharacterCardRef->Button_Action->OnClicked.AddDynamic(this,&UCharacterMenuChooseCharacter::RemoveCharacterMenu);
 	}
 }
 

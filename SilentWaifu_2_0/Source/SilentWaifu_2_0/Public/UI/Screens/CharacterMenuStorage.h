@@ -14,4 +14,5 @@ protected:
 
 	virtual void CreateCharacterMenu() override;
 	
+	virtual void RemoveCharacterMenu() override;
 };

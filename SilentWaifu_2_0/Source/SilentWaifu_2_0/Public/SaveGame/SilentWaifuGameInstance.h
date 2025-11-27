@@ -69,6 +69,10 @@ private:
 
 	UFUNCTION()
 	void LoadLimitLevel();
+
+	void SaveLastJoinTime();
+
+	void LoadLastJoinTime();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;
