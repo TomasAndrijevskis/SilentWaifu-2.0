@@ -1,10 +1,12 @@
 
 #include "UI/Screens/CharacterStatsScreen.h"
+#include "Components/Button.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
 #include "Components/ScaleBox.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "UI/WidgetReferenceDataAsset.h"
 
 
 void UCharacterStatsScreen::Init(FCharacterData* CharacterData)
@@ -12,6 +14,7 @@ void UCharacterStatsScreen::Init(FCharacterData* CharacterData)
 	if (!CharacterData) return;
 	CharacterRow = CharacterData;
 	CreateSlots(CharacterRow->Numbers.MaxLevel);
+	Button_Close->OnClicked.AddDynamic(this, &UCharacterStatsScreen::RemoveStatsScreen);
 }
 
 
@@ -82,5 +85,13 @@ void UCharacterStatsScreen::SetAlignment(UHorizontalBoxSlot* HBSlot, const EHori
 	if (!HBSlot) return;
 	HBSlot->SetHorizontalAlignment(HAlign);
 	HBSlot->SetVerticalAlignment(VAlign);
+}
+
+
+void UCharacterStatsScreen::RemoveStatsScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStatsScreenRef) return;
+	WidgetReferences->CharacterStatsScreenRef->RemoveFromParent();
+	WidgetReferences->CharacterStatsScreenRef = nullptr;
 }
 

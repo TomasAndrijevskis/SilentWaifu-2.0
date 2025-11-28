@@ -125,8 +125,7 @@ private:
 	UFUNCTION()
 	void CreateStatsScreen();
 
-	UFUNCTION()
-	void RemoveStatsScreen();
+
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;

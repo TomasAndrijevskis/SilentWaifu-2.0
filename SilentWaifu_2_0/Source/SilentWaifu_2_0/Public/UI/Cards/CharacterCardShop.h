@@ -57,7 +57,9 @@ private:
 
 	UFUNCTION()
 	void SetPriceText();
-	
-	const FCharacterData* CharacterRow;
 
+	UFUNCTION()
+	void CreateAdditionalInfoScreen();
+	
+	FCharacterData* CharacterRow;
 };

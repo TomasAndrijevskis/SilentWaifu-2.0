@@ -8,6 +8,7 @@
 #include "GameMode/Helpers/MoneyManager.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
+#include "UI/Screens/CharacterStatsScreen.h"
 #include "UI/Screens/MainScreen.h"
 
 
@@ -18,6 +19,7 @@ void UCharacterCardShop::Init()
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetCharacterRow);
 	OnCardCreatedDelegate.AddDynamic(this, &UCharacterCardShop::SetPriceText);
 	OnCharacterUnlockedDelegate.AddDynamic(this, &UCharacterCardShop::HandleState);
+	Button_AdditionalInfo->OnClicked.AddUniqueDynamic(this, &UCharacterCardShop::CreateAdditionalInfoScreen);
 }
 
 
@@ -94,6 +96,16 @@ void UCharacterCardShop::SetCharacterRow()
 void UCharacterCardShop::SetPriceText()
 {
 	Text_Price->SetText(FText::FromString(FString::FromInt(GetCharacterPrice())));
+}
+
+
+void UCharacterCardShop::CreateAdditionalInfoScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->CharacterStatsScreenClass) return;
+	WidgetReferences->CharacterStatsScreenRef = Cast<UCharacterStatsScreen>(CreateWidget(GetWorld(), WidgetReferences->CharacterStatsScreenClass));
+	if (!WidgetReferences->CharacterStatsScreenRef) return;
+	WidgetReferences->CharacterStatsScreenRef->AddToViewport(5);
+	WidgetReferences->CharacterStatsScreenRef->Init(CharacterRow);
 }
 
 

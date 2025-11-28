@@ -7,6 +7,7 @@
 #include "CharacterStatsScreen.generated.h"
 
 
+class UWidgetReferenceDataAsset;
 class UHorizontalBoxSlot;
 class UScaleBox;
 class UTextBlock;
@@ -20,11 +21,14 @@ class SILENTWAIFU_2_0_API UCharacterStatsScreen : public UUserWidget
 
 public:
 
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Close;
-
 	void Init(FCharacterData* CharacterData);
 
+		
+protected:
+
+	UPROPERTY(EditAnywhere)
+	UWidgetReferenceDataAsset* WidgetReferences;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -35,6 +39,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_CoolDown;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Close;
 	
 	void CreateSlots(int MaxLevel);
 
@@ -45,6 +52,9 @@ private:
 	UTextBlock* CreateTextBlock(const FString& Text, int FontSize);
 
 	void SetAlignment(UHorizontalBoxSlot* HBSlot, const EHorizontalAlignment& HAlign,  const EVerticalAlignment& VAlign) const;
+
+	UFUNCTION()
+	void RemoveStatsScreen();
 	
 	FCharacterData* CharacterRow;
 

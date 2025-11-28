@@ -73,15 +73,6 @@ void UCharacterInfoScreen::CreateStatsScreen()
 	if (!WidgetReferences->CharacterStatsScreenRef) return;
 	WidgetReferences->CharacterStatsScreenRef->Init(CharacterRow);
 	WidgetReferences->CharacterStatsScreenRef->AddToViewport(5);
-	WidgetReferences->CharacterStatsScreenRef->Button_Close->OnClicked.AddDynamic(this, &UCharacterInfoScreen::RemoveStatsScreen);
-}
-
-
-void UCharacterInfoScreen::RemoveStatsScreen()
-{
-	if (!WidgetReferences || !WidgetReferences->CharacterStatsScreenRef) return;
-	WidgetReferences->CharacterStatsScreenRef->RemoveFromParent();
-	WidgetReferences->CharacterStatsScreenRef = nullptr;
 }
 
 
