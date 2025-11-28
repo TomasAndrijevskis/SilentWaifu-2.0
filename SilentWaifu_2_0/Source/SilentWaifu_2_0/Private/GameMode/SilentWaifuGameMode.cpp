@@ -42,6 +42,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadMoney();
 	GameInstance->LoadShop();
 	GameInstance->LoadBackgrounds();
+	GameInstance->LoadShutdownTime();
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	MoneyManager->OnLevelIncreasedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
 	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
@@ -77,4 +78,16 @@ void ASilentWaifuGameMode::OnCharacterRemovedDelegate(const int Position) const
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Position);
+}
+
+
+FDateTime ASilentWaifuGameMode::GetShutdownTime() const
+{
+	return ShutdownTime;
+}
+
+
+void ASilentWaifuGameMode::SetShutdownTime(const FDateTime& NewLastJoinTime)
+{
+	ShutdownTime = NewLastJoinTime;	
 }

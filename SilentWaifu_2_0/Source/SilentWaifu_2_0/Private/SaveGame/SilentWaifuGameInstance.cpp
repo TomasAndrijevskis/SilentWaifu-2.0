@@ -23,7 +23,7 @@ void USilentWaifuGameInstance::Shutdown()
 	SaveCharacters();
 	SaveShop();
 	SaveBackgrounds();
-	SaveLastJoinTime();
+	SaveShutdownTime();
 	Super::Shutdown();
 }
 
@@ -183,17 +183,18 @@ void USilentWaifuGameInstance::LoadLimitLevel()
 }
 
 
-void USilentWaifuGameInstance::SaveLastJoinTime()
+void USilentWaifuGameInstance::SaveShutdownTime()
 {
 	if (!SaveGameInstance) return;
 	FDateTime CurrentTime = FDateTime::Now();
-	SaveGameInstance->SaveLastJoinTime(CurrentTime);
+	SaveGameInstance->SaveShutdownTime(CurrentTime);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
-void USilentWaifuGameInstance::LoadLastJoinTime()
+void USilentWaifuGameInstance::LoadShutdownTime()
 {
 	if (!SaveGameInstance) return;
-	UE_LOG(LogTemp, Warning, TEXT("Loading time: %s"), *SaveGameInstance->GetLastJoinTime().ToString());
+	GameMode->SetShutdownTime(SaveGameInstance->GetShutdownTime());
+	UE_LOG(LogTemp, Warning, TEXT("Loading time: %s"), *SaveGameInstance->GetShutdownTime().ToString());
 }

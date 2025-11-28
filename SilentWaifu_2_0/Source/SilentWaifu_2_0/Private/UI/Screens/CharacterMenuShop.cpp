@@ -15,7 +15,9 @@ void UCharacterMenuShop::NativeConstruct()
 {
 	Super::NativeConstruct();
 	Button_UpdateShop->OnClicked.AddDynamic(this,&UCharacterMenuShop::UpdateShop);
+	OnShopUpdatedDelegate.AddUniqueDynamic(this,&UCharacterMenuShop::UpdateShop);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCharacterMenuShop::CreateTimeCountdown,1, true, 0.f);
+	CheckLastTime();
 }
 
 
@@ -25,6 +27,7 @@ void UCharacterMenuShop::UpdateShop()
 	HorizontalBox_Shop->ClearChildren();
 	CharactersManager->GetShopCharacters().Empty();
 	CreateCharacterMenu();
+	CanUpdateShop = false;
 }
 
 
@@ -148,8 +151,43 @@ void UCharacterMenuShop::CreateTimeCountdown()
 	else UpdateTime = FTimespan(11, 59, 59);
 	
 	FTimespan TimeLeft = UpdateTime - CurrentTime;
+	FString TimeLeftString = TimeLeft.GetDuration().ToString();
 	FString FormatedTime = TimeLeft.GetDuration().ToString(TEXT("%h:%m:%s"));
 	if (FormatedTime.StartsWith(TEXT("+"))) FormatedTime.RemoveAt(0);
 	Text_RemainingTime->SetText(FText::FromString(FormatedTime));
+	CheckShopUpdate(FormatedTime);
+}
+
+
+void UCharacterMenuShop::CheckShopUpdate(const FString& TimeLeft)
+{
+	FString ZeroTime = TEXT("00:00:00");
+	if (ZeroTime == TimeLeft && !CanUpdateShop)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Time is zero"));
+		OnShopUpdatedDelegate.Broadcast();
+		CanUpdateShop = true;
+	}
+}
+
+
+void UCharacterMenuShop::CheckLastTime()
+{
+	if (!GameMode) return;
+	FDateTime ShutdownTime = GameMode->GetShutdownTime();
+	FDateTime CurrentTime = FDateTime::Now();
+	if (ShutdownTime.GetDayOfYear() != CurrentTime.GetDayOfYear())
+	{
+		OnShopUpdatedDelegate.Broadcast();
+		CanUpdateShop = true;
+		GameMode->SetShutdownTime(CurrentTime);
+		return;
+	}
+	if (ShutdownTime.GetHour() < 12 && CurrentTime.GetHour() >= 12)
+	{
+		OnShopUpdatedDelegate.Broadcast();
+		CanUpdateShop = true;
+		GameMode->SetShutdownTime(CurrentTime);
+	}
 }
 

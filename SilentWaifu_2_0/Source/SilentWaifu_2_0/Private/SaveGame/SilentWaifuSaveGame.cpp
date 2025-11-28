@@ -74,13 +74,13 @@ int USilentWaifuSaveGame::GetLimitLevel() const
 }
 
 
-FDateTime USilentWaifuSaveGame::GetLastJoinTime() const
+FDateTime USilentWaifuSaveGame::GetShutdownTime() const
 {
-	return LastJoinTime;
+	return ShutdownTime;
 }
 
 
-void USilentWaifuSaveGame::SaveLastJoinTime(const FDateTime& NewLastJoinTime)
+void USilentWaifuSaveGame::SaveShutdownTime(const FDateTime& NewLastJoinTime)
 {
-	LastJoinTime = NewLastJoinTime;
+	ShutdownTime = NewLastJoinTime;
 }

@@ -48,6 +48,8 @@ public:
 
 	UFUNCTION()
 	void SaveLimitLevel(const int Level);
+
+	void LoadShutdownTime();
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	
@@ -70,9 +72,7 @@ private:
 	UFUNCTION()
 	void LoadLimitLevel();
 
-	void SaveLastJoinTime();
-
-	void LoadLastJoinTime();
+	void SaveShutdownTime();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> DefaultCharacter;

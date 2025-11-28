@@ -49,9 +49,9 @@ public:
 
 	int GetLimitLevel() const;
 
-	FDateTime GetLastJoinTime() const;
+	FDateTime GetShutdownTime() const;
 
-	void SaveLastJoinTime(const FDateTime& NewLastJoinTime);
+	void SaveShutdownTime(const FDateTime& NewLastJoinTime);
 	
 private:
 	
@@ -74,5 +74,5 @@ private:
 	int MoneyLimitLevel;
 
 	UPROPERTY()
-	FDateTime LastJoinTime;
+	FDateTime ShutdownTime;
 };

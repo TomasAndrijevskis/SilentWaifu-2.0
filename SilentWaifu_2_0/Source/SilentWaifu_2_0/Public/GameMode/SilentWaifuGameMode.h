@@ -26,6 +26,10 @@ public:
 	void OnCharacterSpawned(const int CurrentSpawnPosition) const;
 
 	void OnCharacterRemovedDelegate(const int Position) const;
+
+	FDateTime GetShutdownTime() const;
+
+	void SetShutdownTime(const FDateTime& NewLastJoinTime);
 	
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
@@ -69,5 +73,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UDataTable* MoneyLimitsDataTable;
+
+	FDateTime ShutdownTime;
 };
 

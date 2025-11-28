@@ -6,6 +6,7 @@
 #include "CharacterMenuShop.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShopUpdatedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API UCharacterMenuShop : public UCharacterMenuBase
 {
@@ -18,6 +19,8 @@ public:
 	UFUNCTION()
 	void UpdateShop();
 
+	FOnShopUpdatedSignature OnShopUpdatedDelegate;
+	
 protected:
 
 	virtual void CreateCharacterMenu() override;
@@ -44,6 +47,10 @@ private:
 	void CreateShop(TArray<int> Characters);
 
 	void CreateTimeCountdown();
+
+	void CheckShopUpdate(const FString& TimeLeft);
+
+	void CheckLastTime();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
@@ -58,4 +65,6 @@ private:
 	FTimespan UpdateTime;
 
 	FTimerHandle TimerHandle;
+
+	bool CanUpdateShop = false;
 };
