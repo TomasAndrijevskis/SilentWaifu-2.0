@@ -4,6 +4,7 @@
 #include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
+#include "GameMode/Helpers/SoundManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuSaveGame.h"
 
@@ -24,6 +25,7 @@ void USilentWaifuGameInstance::Shutdown()
 	SaveShop();
 	SaveBackgrounds();
 	SaveShutdownTime();
+	SaveSoundsVolume();
 	Super::Shutdown();
 }
 
@@ -48,6 +50,7 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	Data.Level = 1;
 	SaveFirstCharacter(1, Data);
 	SaveLimitLevel(1);
+	SaveGameInstance->SaveSoundsVolume(1,1);
 	
 	FSavedBackgroundsData BackgroundData;
 	BackgroundData.Id = 1;
@@ -72,6 +75,7 @@ void USilentWaifuGameInstance::SetManagers()
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
 	BackgroundManager = GameMode->BackgroundManager;
+	SoundManager = GameMode->SoundManager;
 }
 
 
@@ -197,4 +201,20 @@ void USilentWaifuGameInstance::LoadShutdownTime()
 	if (!SaveGameInstance) return;
 	GameMode->SetShutdownTime(SaveGameInstance->GetShutdownTime());
 	UE_LOG(LogTemp, Warning, TEXT("Loading time: %s"), *SaveGameInstance->GetShutdownTime().ToString());
+}
+
+
+void USilentWaifuGameInstance::SaveSoundsVolume() const
+{
+	if (!SaveGameInstance || !SoundManager) return;
+	SaveGameInstance->SaveSoundsVolume(SoundManager->GetMusicVolume(), SoundManager->GetSFXVolume());
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+void USilentWaifuGameInstance::LoadSoundsVolume()
+{
+	if (!SaveGameInstance || !SoundManager) return;
+	SoundManager->SetMusicVolume(SaveGameInstance->GetMusicVolume());
+	SoundManager->SetSFXVolume(SaveGameInstance->GetSFXVolume());
 }

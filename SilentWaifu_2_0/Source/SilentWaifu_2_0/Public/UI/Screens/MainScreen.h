@@ -54,12 +54,14 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UVerticalBox* VerticalBox_Characters;
 	
-
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Storage;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Shop;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Settings;
 	
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_BackgroundsMenu;
@@ -84,6 +86,9 @@ private:
 	UFUNCTION()
 	void CreateBgMenu();
 
+	UFUNCTION()
+	void CreateSettings();
+	
 	UFUNCTION()
 	void SetBackground(UTexture2D* CurrentBackground);
 	

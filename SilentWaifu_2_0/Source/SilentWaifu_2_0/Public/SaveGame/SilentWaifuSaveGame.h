@@ -52,6 +52,12 @@ public:
 	FDateTime GetShutdownTime() const;
 
 	void SaveShutdownTime(const FDateTime& NewLastJoinTime);
+
+	void SaveSoundsVolume(const float NewMusicVolume, const float NewSFXVolume);
+
+	float GetMusicVolume() const;
+
+	float GetSFXVolume() const;
 	
 private:
 	
@@ -75,4 +81,10 @@ private:
 
 	UPROPERTY()
 	FDateTime ShutdownTime;
+
+	UPROPERTY()
+	float MusicVolume;
+
+	UPROPERTY()
+	float SFXVolume;
 };

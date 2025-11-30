@@ -84,3 +84,22 @@ void USilentWaifuSaveGame::SaveShutdownTime(const FDateTime& NewLastJoinTime)
 {
 	ShutdownTime = NewLastJoinTime;
 }
+
+
+void USilentWaifuSaveGame::SaveSoundsVolume(const float NewMusicVolume, const float NewSFXVolume)
+{
+	MusicVolume = NewMusicVolume;
+	SFXVolume = NewSFXVolume;
+}
+
+
+float USilentWaifuSaveGame::GetMusicVolume() const
+{
+	return MusicVolume;
+}
+
+
+float USilentWaifuSaveGame::GetSFXVolume() const
+{
+	return SFXVolume;
+}

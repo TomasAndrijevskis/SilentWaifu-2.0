@@ -4,6 +4,7 @@
 #include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
+#include "GameMode/Helpers/SoundManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SilentWaifuGameInstance.h"
 #include "UI/Screens/MainScreen.h"
@@ -24,11 +25,13 @@ void ASilentWaifuGameMode::HandleManagers()
 	MoneyManager = NewObject<UMoneyManager>(this);
 	CharactersManager = NewObject<UCharactersManager>(this);
 	BackgroundManager = NewObject<UBackgroundManager>(this);
-	if (!CharactersManager || !MoneyManager || !BackgroundManager) return;
+	SoundManager = NewObject<USoundManager>(this);
+	if (!CharactersManager || !MoneyManager || !BackgroundManager || !SoundManager) return;
 	if (!CharacterDataTable || !BackgroundDataTable) return;
 	CharactersManager->Init(CharacterDataTable);
 	BackgroundManager->Init(BackgroundDataTable);
 	MoneyManager->Init(MoneyLimitsDataTable);
+	SoundManager->Init(MusicMixModifier, SFXMixModifier, MusicClass, SFXClass);
 }
 
 
@@ -43,6 +46,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadShop();
 	GameInstance->LoadBackgrounds();
 	GameInstance->LoadShutdownTime();
+	GameInstance->LoadSoundsVolume();
 	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	MoneyManager->OnLevelIncreasedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
 	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);

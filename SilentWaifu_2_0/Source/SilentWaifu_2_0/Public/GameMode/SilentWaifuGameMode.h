@@ -6,6 +6,7 @@
 #include "SilentWaifuGameMode.generated.h"
 
 
+class USoundManager;
 class UBackgroundManager;
 class UCharactersManager;
 class UMoneyManager;
@@ -39,6 +40,9 @@ public:
 
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
+
+	UPROPERTY()
+	USoundManager* SoundManager;
 	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
@@ -74,6 +78,18 @@ private:
 	UPROPERTY(EditAnywhere)
 	UDataTable* MoneyLimitsDataTable;
 
+	UPROPERTY(EditAnywhere)
+	USoundMix* MusicMixModifier;
+
+	UPROPERTY(EditAnywhere)
+	USoundMix* SFXMixModifier;
+
+	UPROPERTY(EditAnywhere)
+	USoundClass* MusicClass;
+
+	UPROPERTY(EditAnywhere)
+	USoundClass* SFXClass;
+	
 	FDateTime ShutdownTime;
 };
 

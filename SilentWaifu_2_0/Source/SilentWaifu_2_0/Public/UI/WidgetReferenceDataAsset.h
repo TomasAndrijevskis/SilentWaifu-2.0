@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class USettingsScreen;
 class UCharacterStatsScreen;
 class UCharacterStoryLine;
 class ULimitCardAdditionalInfo;
@@ -96,7 +97,14 @@ public:
 
 	UPROPERTY()
 	UCharacterStatsScreen* CharacterStatsScreenRef;
-	
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<USettingsScreen> SettingsScreenClass;
+
+	UPROPERTY()
+	USettingsScreen* SettingsScreenRef;
+
 	
 
 	

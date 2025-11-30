@@ -1,11 +1,9 @@
 
 #include "UI/Screens/MainScreen.h"
-#include "Components/BackgroundBlur.h"
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
 #include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/BackgroundManager.h"
@@ -19,6 +17,7 @@
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "UI/Screens/BackgroundMenu.h"
 #include "UI/Screens/CharacterMenuShop.h"
+#include "UI/Screens/SettingsScreen.h"
 
 
 void UMainScreen::NativeConstruct()
@@ -48,6 +47,7 @@ void UMainScreen::BindDelegates()
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
+	Button_Settings->OnClicked.AddDynamic(this, &UMainScreen::CreateSettings);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
 }
@@ -96,6 +96,15 @@ void UMainScreen::CreateBgMenu()
 	WidgetReferences->BackgroundMenuRef = Cast<UBackgroundMenu>(CreateWidget(GetWorld(), WidgetReferences->BackgroundMenuClass));
 	if (!WidgetReferences->BackgroundMenuRef) return;
 	WidgetReferences->BackgroundMenuRef->AddToViewport(1);
+}
+
+
+void UMainScreen::CreateSettings()
+{
+	if (!WidgetReferences || !WidgetReferences->SettingsScreenClass) return;
+	WidgetReferences->SettingsScreenRef = Cast<USettingsScreen>(CreateWidget(GetWorld(), WidgetReferences->SettingsScreenClass));
+	if (!WidgetReferences->SettingsScreenRef) return;
+	WidgetReferences->SettingsScreenRef->AddToViewport(1);
 }
 
 

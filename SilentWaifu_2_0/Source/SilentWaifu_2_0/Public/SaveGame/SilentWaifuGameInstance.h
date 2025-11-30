@@ -7,6 +7,7 @@
 #include "SilentWaifuGameInstance.generated.h"
 
 
+class USoundManager;
 class UBackgroundManager;
 class UCharactersManager;
 class UMoneyManager;
@@ -50,6 +51,10 @@ public:
 	void SaveLimitLevel(const int Level);
 
 	void LoadShutdownTime();
+
+	void SaveSoundsVolume() const;
+
+	void LoadSoundsVolume();
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	
@@ -88,6 +93,9 @@ private:
 
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
+	
+	UPROPERTY()
+	USoundManager* SoundManager;
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
