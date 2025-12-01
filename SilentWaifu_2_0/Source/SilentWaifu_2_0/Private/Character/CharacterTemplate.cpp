@@ -4,6 +4,7 @@
 #include "DataTables/CharacterData.h"
 #include "Engine/World.h"
 #include "GameMode/SilentWaifuGameMode.h"
+#include "GameMode/Helpers/CharactersManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,8 +15,19 @@ void ACharacterTemplate::BeginPlay()
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
+	CharactersManager = GameMode->CharactersManager;
+	if (!MoneyManager || !CharactersManager) return;
 	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableTimer);
 	OnValuesUpdatedDelegate.AddDynamic(this, &ACharacterTemplate::SetMoney);
+}
+
+
+void ACharacterTemplate::SetValues(const int NewId, const int NewLevel, const float TimeLeft)
+{
+	Id = NewId;
+	Level = NewLevel;
+	IncomeInterval = TimeLeft;
+	OnValuesUpdatedDelegate.Broadcast();
 }
 
 
@@ -27,11 +39,11 @@ void ACharacterTemplate::SetMoney()
 }
 
 
-void ACharacterTemplate::SetValues(const int NewLevel, const int NewId)
+void ACharacterTemplate::GetCharacterRow()
 {
-	Level = NewLevel;
-	Id = NewId;
-	OnValuesUpdatedDelegate.Broadcast();
+	if (!CharacterDataTable) return;
+	const FName RowName = FName(*FString::FromInt(Id));
+	CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
 }
 
 
@@ -44,20 +56,29 @@ void ACharacterTemplate::UpdateLevel(const int NewLevel)
 
 void ACharacterTemplate::EnableTimer()
 {
+	TempTime = IncomeInterval;
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::IncreaseMoney, 2.f, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::CheckTime, 1, true);
 }
 
 
-void ACharacterTemplate::GetCharacterRow()
+void ACharacterTemplate::CheckTime()
 {
-	if (!CharacterDataTable) return;
-	const FName RowName = FName(*FString::FromInt(Id));
-	CharacterRow = CharacterDataTable->FindRow<FCharacterData>(RowName, TEXT("Find Character By Id"));
+	if (TempTime != 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Time left: %f"), TempTime);
+		TempTime --;
+	}
+	else
+	{
+		IncreaseMoney();
+		if (IncomeInterval != 10) IncomeInterval = 10;
+		TempTime = IncomeInterval;
+	}
 }
 
 
-void ACharacterTemplate::IncreaseMoney() const
+void ACharacterTemplate::IncreaseMoney()
 {
 	if (!MoneyManager) return;
 	MoneyManager->IncreaseMoney(MoneyPerSecond);
@@ -67,4 +88,16 @@ void ACharacterTemplate::IncreaseMoney() const
 int ACharacterTemplate::GetMoneyPerSecond() const
 {
 	return MoneyPerSecond;
+}
+
+
+int ACharacterTemplate::GetId() const
+{
+	return Id;
+}
+
+
+float ACharacterTemplate::GetLeftTime() const
+{
+	return TempTime;
 }

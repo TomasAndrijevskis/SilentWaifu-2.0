@@ -46,6 +46,8 @@ public:
 
 	bool IsCharacterUnlocked(const int CharacterId) const;
 
+	void SaveCharactersLeftTime();
+	
 	FOnCharacterAddedSignature OnCharacterAddedDelegate;
 
 	FOnCharacterUpgradeSignature OnCharacterUpgradeDelegate;
@@ -54,7 +56,7 @@ private:
 
 	UFUNCTION()
 	void UpdateCharacterLevel(const int CharacterId);
-
+	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 	

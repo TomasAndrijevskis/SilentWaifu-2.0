@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CharacterTemplate.generated.h"
 
+class UCharactersManager;
 class UMoneyManager;
 class ASilentWaifuGameMode;
 
@@ -18,11 +19,15 @@ class SILENTWAIFU_2_0_API ACharacterTemplate : public AActor
 	
 public:
 
-	void SetValues(const int NewLevel, const int NewId);
+	void SetValues(const int NewId, const int NewLevel, const float TimeLeft);
 
 	void UpdateLevel(const int NewLevel);
 
 	int GetMoneyPerSecond() const;
+
+	int GetId() const;
+
+	float GetLeftTime() const;
 	
 	FOnCharacterLoadedSignature OnCharacterLoadedDelegate;
 
@@ -37,13 +42,16 @@ private:
 	UFUNCTION()
 	void SetMoney();
 	
-	void IncreaseMoney() const;
+	void IncreaseMoney();
 
 	UFUNCTION()
 	void EnableTimer();
 
-	void GetCharacterRow();
+	UFUNCTION()
+	void CheckTime();
 	
+	void GetCharacterRow();
+
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 
@@ -61,8 +69,15 @@ private:
 
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
 	
 	FCharacterData* CharacterRow;
 	
 	FTimerHandle TimerHandle;
+
+	float IncomeInterval = 10;
+
+	float TempTime;
 };

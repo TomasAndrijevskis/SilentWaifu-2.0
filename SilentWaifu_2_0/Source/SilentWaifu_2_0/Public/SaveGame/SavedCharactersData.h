@@ -24,4 +24,7 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 
 	UPROPERTY()
 	int Level;
+
+	UPROPERTY()
+	float TimeLeft;
 };

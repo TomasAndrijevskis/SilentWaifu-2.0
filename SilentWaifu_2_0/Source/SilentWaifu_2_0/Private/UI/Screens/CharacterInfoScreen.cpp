@@ -114,6 +114,7 @@ void UCharacterInfoScreen::HandleButtonState()
 	}
 }
 
+
 void UCharacterInfoScreen::CreateConfirmationWindow()
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;

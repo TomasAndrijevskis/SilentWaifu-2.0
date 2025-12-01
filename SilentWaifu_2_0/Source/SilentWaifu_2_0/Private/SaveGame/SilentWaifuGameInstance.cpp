@@ -48,9 +48,10 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	Data.bIsOnScreen = false;
 	Data.CharacterId = 1;
 	Data.Level = 1;
+	Data.TimeLeft = 10;
 	SaveFirstCharacter(1, Data);
 	SaveLimitLevel(1);
-	SaveGameInstance->SaveSoundsVolume(1,1);
+	SaveGameInstance->SaveSoundsVolume(0,0);
 	
 	FSavedBackgroundsData BackgroundData;
 	BackgroundData.Id = 1;
@@ -101,6 +102,7 @@ void USilentWaifuGameInstance::SaveFirstCharacter(int const Key, const FSavedCha
 void USilentWaifuGameInstance::SaveCharacters()
 {
 	if (!SaveGameInstance || !CharactersManager) return;
+	CharactersManager->SaveCharactersLeftTime();
 	for (const auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		SaveGameInstance->SaveCharacter(Character.Key, Character.Value);

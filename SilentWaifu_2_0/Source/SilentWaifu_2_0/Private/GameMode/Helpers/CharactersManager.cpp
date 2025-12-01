@@ -24,7 +24,7 @@ void UCharactersManager::SpawnCharacters()
 		{
 			FActorSpawnParameters SpawnParameters;
 			ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
-			Actor->SetValues(Character.Value.Level, Character.Key);
+			Actor->SetValues(Character.Key, Character.Value.Level, Character.Value.TimeLeft);
 		}
 	}
 }
@@ -32,10 +32,12 @@ void UCharactersManager::SpawnCharacters()
 
 void UCharactersManager::SpawnCharacter(const int CharacterId)
 {
+	if (!AvailableCharacters.Contains(CharacterId)) return;
 	const FActorSpawnParameters SpawnParameters;
 	ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+	if (!Actor) return;
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
-	Actor->SetValues(Data->Level, CharacterId);
+	Actor->SetValues(CharacterId, Data->Level, Data->TimeLeft);
 	Data->bIsOnScreen = true;
 	Data->Position = CurrentSpawnPosition;
 	AddTakenPosition(CurrentSpawnPosition, true);
@@ -56,6 +58,7 @@ void UCharactersManager::RemoveCharacter(const int CharacterId)
 	Data->bIsOnScreen = false;
 	GameMode->OnCharacterRemovedDelegate(Data->Position);
 	Data->Position = NULL;
+	Data->TimeLeft = 10;
 }
 
 
@@ -67,6 +70,20 @@ void UCharactersManager::UpdateCharacterLevel(const int CharacterId)
 		{
 			Cast<ACharacterTemplate>(UGameplayStatics::GetActorOfClass(GetWorld(),Character.Value.CharacterClass))->UpdateLevel(Character.Value.Level);
 		}
+	}
+}
+
+
+void UCharactersManager::SaveCharactersLeftTime()
+{
+	TArray<AActor*> SpawnedActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacterTemplate::StaticClass(),SpawnedActors);
+	for (const auto& SpawnedActor : SpawnedActors)
+	{
+		if (!SpawnedActor) return;
+		FSavedCharactersData* Data = AvailableCharacters.Find(Cast<ACharacterTemplate>(SpawnedActor)->GetId());
+		if (!Data) return;
+		Data->TimeLeft = Cast<ACharacterTemplate>(SpawnedActor)->GetLeftTime();
 	}
 }
 
