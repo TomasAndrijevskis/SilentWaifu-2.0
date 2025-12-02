@@ -27,10 +27,10 @@ public:
 
 	virtual void Shutdown() override;
 	
-	UFUNCTION()
-	void SaveCurrentMoney(int const CurrentMoney);
+	void SaveCurrentMoney();
 
-	void LoadMoney() const;
+	UFUNCTION()
+	void LoadMoney();
 
 	void LoadPositions() const;
 
@@ -50,6 +50,7 @@ public:
 	UFUNCTION()
 	void SaveLimitLevel(const int Level);
 
+	UFUNCTION()
 	void LoadShutdownTime();
 
 	void SaveSoundsVolume() const;

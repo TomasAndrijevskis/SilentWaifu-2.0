@@ -12,6 +12,7 @@ class ASilentWaifuGameMode;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterLoadedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnValuesUpdatedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWasPreviouslyOnScreenSignature, bool, WasOnScreen);
 UCLASS()
 class SILENTWAIFU_2_0_API ACharacterTemplate : public AActor
 {
@@ -19,12 +20,14 @@ class SILENTWAIFU_2_0_API ACharacterTemplate : public AActor
 	
 public:
 
-	void SetValues(const int NewId, const int NewLevel, const float TimeLeft);
+	void SetValues(const int NewId, const int NewLevel, const int NewTimeLeft);
 
 	void UpdateLevel(const int NewLevel);
 
-	int GetMoneyPerSecond() const;
+	int GetMoneyPerMinute() const;
 
+	int GetMoneyPerHour() const;
+	
 	int GetId() const;
 
 	float GetLeftTime() const;
@@ -32,6 +35,8 @@ public:
 	FOnCharacterLoadedSignature OnCharacterLoadedDelegate;
 
 	FOnValuesUpdatedSignature OnValuesUpdatedDelegate;
+
+	FWasPreviouslyOnScreenSignature WasPreviouslyOnScreenDelegate;
 	
 protected:
 
@@ -52,6 +57,9 @@ private:
 	
 	void GetCharacterRow();
 
+	UFUNCTION()
+	void HandleOfflineIncome(const bool WasOnScreen);
+	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 
@@ -59,7 +67,7 @@ private:
 	UDataTable* CharacterDataTable;
 
 	UPROPERTY(VisibleAnywhere)
-	int MoneyPerSecond;
+	int MoneyPerMinute;
 
 	UPROPERTY(VisibleAnywhere)
 	int Level;
@@ -77,7 +85,7 @@ private:
 	
 	FTimerHandle TimerHandle;
 
-	float IncomeInterval = 10;
+	int IncomeInterval = 60;
 
-	float TempTime;
+	int TimeLeft;
 };

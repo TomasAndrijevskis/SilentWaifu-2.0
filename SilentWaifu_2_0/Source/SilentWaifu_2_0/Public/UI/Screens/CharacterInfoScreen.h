@@ -96,7 +96,7 @@ private:
 	void SetLevel();
 	
 	UFUNCTION()
-	void SetMoneyGain();
+	void SetMoney();
 
 	UFUNCTION()
 	void SetUpgradePrice();

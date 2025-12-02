@@ -34,7 +34,7 @@ void UMoneyPanelAdditionInfo::SetOverallMoney()
 	{
 		if (IsValid(Cast<ACharacterTemplate>(Character)))
 		{
-			OverallMoney += Cast<ACharacterTemplate>(Character)->GetMoneyPerSecond();
+			OverallMoney += Cast<ACharacterTemplate>(Character)->GetMoneyPerHour();
 		}
 	}
 	SetText();

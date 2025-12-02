@@ -14,8 +14,9 @@ void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	HandleManagers();
-	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
+	OnCharactersLoadedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::LoadShutdownTime);
+	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	HandleGameLoad();
 }
 
@@ -42,12 +43,9 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadPositions();
 	CreateMainScreenWidget();
 	SetInputSettings();
-	GameInstance->LoadMoney();
 	GameInstance->LoadShop();
 	GameInstance->LoadBackgrounds();
-	GameInstance->LoadShutdownTime();
 	GameInstance->LoadSoundsVolume();
-	MoneyManager->OnCurrentMoneyChangedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveCurrentMoney);
 	MoneyManager->OnLevelIncreasedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
 	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
 }

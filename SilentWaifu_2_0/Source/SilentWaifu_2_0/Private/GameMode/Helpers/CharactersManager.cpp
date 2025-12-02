@@ -25,6 +25,7 @@ void UCharactersManager::SpawnCharacters()
 			FActorSpawnParameters SpawnParameters;
 			ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
 			Actor->SetValues(Character.Key, Character.Value.Level, Character.Value.TimeLeft);
+			Actor->WasPreviouslyOnScreenDelegate.Broadcast(true);
 		}
 	}
 }
@@ -38,6 +39,7 @@ void UCharactersManager::SpawnCharacter(const int CharacterId)
 	if (!Actor) return;
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
 	Actor->SetValues(CharacterId, Data->Level, Data->TimeLeft);
+	Actor->WasPreviouslyOnScreenDelegate.Broadcast(false);
 	Data->bIsOnScreen = true;
 	Data->Position = CurrentSpawnPosition;
 	AddTakenPosition(CurrentSpawnPosition, true);

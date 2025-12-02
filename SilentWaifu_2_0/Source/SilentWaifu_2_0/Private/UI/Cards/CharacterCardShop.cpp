@@ -80,7 +80,7 @@ void UCharacterCardShop::UnlockCharacter()
 	Data.bIsOnScreen = false;
 	Data.CharacterId = CharacterId;
 	Data.Level = 1;
-	Data.TimeLeft = 10;
+	Data.TimeLeft = 60;
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 	OnCharacterUnlockedDelegate.Broadcast();
 }

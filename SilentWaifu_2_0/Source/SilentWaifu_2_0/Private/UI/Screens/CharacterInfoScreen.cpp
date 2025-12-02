@@ -41,7 +41,7 @@ void UCharacterInfoScreen::BindDelegates()
 {
 	OnCharacterIdSetDelegate.AddDynamic(this, &UCharacterInfoScreen::SetCharacterInfo);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetLevel);
-	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetMoneyGain);
+	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetMoney);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::SetUpgradePrice);
 	OnCharacterUpgradedDelegate.AddDynamic(this, &UCharacterInfoScreen::HandleButtonState);
 }
@@ -91,7 +91,7 @@ void UCharacterInfoScreen::SetCharacterInfo()
 	SetImage();
 	SetRarityBorder();
 	SetLevel();
-	SetMoneyGain();
+	SetMoney();
 	SetUpgradePrice();
 	HandleButtonState();
 }
@@ -189,7 +189,7 @@ void UCharacterInfoScreen::SetLevel()
 }
 
 
-void UCharacterInfoScreen::SetMoneyGain()
+void UCharacterInfoScreen::SetMoney()
 {
 	Text_MoneyGainValue->SetText(FText::FromString(FString::FromInt(CharacterRow->Numbers.CoinsPerLevel[CurrentLevel-1])));
 }

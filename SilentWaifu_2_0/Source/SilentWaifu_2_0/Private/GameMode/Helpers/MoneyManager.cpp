@@ -13,11 +13,7 @@ void UMoneyManager::Init(UDataTable* DataTable)
 
 void UMoneyManager::IncreaseMoney(const int Money)
 {
-	/*UE_LOG(LogTemp, Error, TEXT("IncreaseMoney"));
-	UE_LOG(LogTemp, Warning, TEXT("CurrentMoney: %i"), CurrentMoney);
-	UE_LOG(LogTemp, Warning, TEXT("Money: %i"), Money);
-	UE_LOG(LogTemp, Warning, TEXT("MaxMoney: %i"), MaxMoney);*/
-	if (CurrentMoney + Money < MaxMoney)CurrentMoney += Money;
+	if (CurrentMoney + Money < MaxMoney) CurrentMoney += Money;
 	else CurrentMoney = MaxMoney;
 	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);
 }
@@ -40,7 +36,7 @@ bool UMoneyManager::HasEnoughMoney(const int Money) const
 void UMoneyManager::IncreaseMoneyLimit()
 {
 	MoneyLimitLevel++;
-	UE_LOG(LogTemp, Warning, TEXT("MaxMoney: %i"), MaxMoney);
+	//UE_LOG(LogTemp, Warning, TEXT("MaxMoney: %i"), MaxMoney);
 	OnLevelIncreasedDelegate.Broadcast(MoneyLimitLevel);
 }
 
@@ -48,9 +44,9 @@ void UMoneyManager::IncreaseMoneyLimit()
 void UMoneyManager::SetMaxMoney(const int NewMaxMoney)
 {
 	MaxMoney = NewMaxMoney;
-	UE_LOG(LogTemp, Error, TEXT("MaxMoney: %i"), MaxMoney);
+	/*UE_LOG(LogTemp, Error, TEXT("MaxMoney: %i"), MaxMoney);
 	UE_LOG(LogTemp, Error, TEXT("Level: %i"), MoneyLimitLevel);
-	UE_LOG(LogTemp, Error, TEXT("upgrade price: %i"), GetLimitLevelUpgradePrice());
+	UE_LOG(LogTemp, Error, TEXT("upgrade price: %i"), GetLimitLevelUpgradePrice());*/
 	OnLimitLevelUpgradedDelegate.Broadcast();
 	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
 }
@@ -59,7 +55,7 @@ void UMoneyManager::SetMaxMoney(const int NewMaxMoney)
 void UMoneyManager::SetMoneyLimitLevel(const int Level)
 {
 	MoneyLimitLevel = Level;
-	UE_LOG(LogTemp, Warning, TEXT("Level: %i"), MoneyLimitLevel);
+	//UE_LOG(LogTemp, Warning, TEXT("Level: %i"), MoneyLimitLevel);
 	CalculateMaxMoney();
 }
 

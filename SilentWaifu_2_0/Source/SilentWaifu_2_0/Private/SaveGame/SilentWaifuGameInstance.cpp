@@ -15,11 +15,13 @@ void USilentWaifuGameInstance::Init()
 	HandleSaveGame();
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadLimitLevel);
 	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadCharacters);
+	OnGameModeLoadedDelegate.AddDynamic(this, &USilentWaifuGameInstance::LoadMoney);
 }
 
 
 void USilentWaifuGameInstance::Shutdown()
 {
+	SaveCurrentMoney();
 	SavePositions();
 	SaveCharacters();
 	SaveShop();
@@ -48,7 +50,7 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	Data.bIsOnScreen = false;
 	Data.CharacterId = 1;
 	Data.Level = 1;
-	Data.TimeLeft = 10;
+	Data.TimeLeft = 60;
 	SaveFirstCharacter(1, Data);
 	SaveLimitLevel(1);
 	SaveGameInstance->SaveSoundsVolume(0,0);
@@ -111,18 +113,20 @@ void USilentWaifuGameInstance::SaveCharacters()
 }
 
 
-void USilentWaifuGameInstance::SaveCurrentMoney(int const CurrentMoney)
+void USilentWaifuGameInstance::SaveCurrentMoney()
 {
-	if (!SaveGameInstance) return;
-	SaveGameInstance->SaveCurrentMoney(CurrentMoney);
+	if (!SaveGameInstance || !MoneyManager) return;
+	//UE_LOG(LogTemp, Warning, TEXT("SaveCurrentMoney"));
+	SaveGameInstance->SaveCurrentMoney(MoneyManager->GetCurrentMoney());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
 
-void USilentWaifuGameInstance::LoadMoney() const
+void USilentWaifuGameInstance::LoadMoney()
 {
 	if (!SaveGameInstance || !MoneyManager) return;
 	MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
+	//UE_LOG(LogTemp, Warning, TEXT("Saved Money: %i"), SaveGameInstance->GetCurrentMoney())
 }
 
 
@@ -192,8 +196,7 @@ void USilentWaifuGameInstance::LoadLimitLevel()
 void USilentWaifuGameInstance::SaveShutdownTime()
 {
 	if (!SaveGameInstance) return;
-	FDateTime CurrentTime = FDateTime::Now();
-	SaveGameInstance->SaveShutdownTime(CurrentTime);
+	SaveGameInstance->SaveShutdownTime(FDateTime::Now());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
 
