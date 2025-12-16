@@ -7,6 +7,7 @@
 #include "EventScreen.generated.h"
 
 
+class UEventsManager;
 class UCharactersManager;
 class ASilentWaifuGameMode;
 class UMoneyManager;
@@ -121,6 +122,9 @@ private:
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
+
+	UPROPERTY()
+	UEventsManager* EventsManager;
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

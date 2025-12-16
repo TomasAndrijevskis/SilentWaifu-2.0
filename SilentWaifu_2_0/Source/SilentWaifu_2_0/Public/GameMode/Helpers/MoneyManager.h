@@ -57,6 +57,9 @@ public:
 
 	UFUNCTION()
 	void DecreaseEventMoney(const int Money);
+
+	UFUNCTION()
+	void EraseEventMoney();
 	
 	FOnCurrentMoneyChangedSignature OnCurrentMoneyChangedDelegate;
 
@@ -71,6 +74,7 @@ public:
 	FOnEventMoneyIncreasedSignature OnEventMoneyIncreasedDelegate;
 
 	FOnEventMoneyDecreasedSignature OnEventMoneyDecreasedDelegate;
+	
 private:
 
 	void CalculateMaxMoney();

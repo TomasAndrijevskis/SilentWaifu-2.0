@@ -6,6 +6,7 @@
 #include "SilentWaifuGameMode.generated.h"
 
 
+class UEventsManager;
 class USoundManager;
 class UBackgroundManager;
 class UCharactersManager;
@@ -17,9 +18,6 @@ class USilentWaifuGameInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharactersLoadedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShopCreatedSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHasEventStartedSignature, bool, HasStarted);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEventStartedSignature, const FDateTime&, EventEndTime);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEventEndedSignature);
 UCLASS()
 class SILENTWAIFU_2_0_API ASilentWaifuGameMode : public AGameModeBase
 {
@@ -48,6 +46,9 @@ public:
 
 	UPROPERTY()
 	USoundManager* SoundManager;
+
+	UPROPERTY()
+	UEventsManager* EventsManager;
 	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
@@ -55,12 +56,6 @@ public:
 	FOnCharactersLoadedSignature OnCharactersLoadedDelegate;
 	
 	FOnShopCreatedSignature OnShopCreatedDelegate;
-
-	FHasEventStartedSignature HasEventStartedDelegate;
-
-	FOnEventStartedSignature OnEventStartedDelegate;
-
-	FOnEventEndedSignature OnEventEndedDelegate;
 	
 protected:
 
@@ -74,15 +69,11 @@ private:
 
 	void SetInputSettings() const;
 
-	void HandleManagers();
-	
-	void HandleEvent();
+	void CreateManagers();
 
-	UFUNCTION()
-	void SetTimerUntilEventStarts();
+	void InitializeManagers();
 
-	UFUNCTION()
-	void SetTimerUntilEventEnds();
+	void BindDelegates();
 	
 	UPROPERTY()
 	USilentWaifuGameInstance* GameInstance;
@@ -115,14 +106,6 @@ private:
 	FDateTime EventEndTime;
 	
 	FDateTime ShutdownTime;
-
-	FTimerHandle EventStartTimer;
-
-	FTimerHandle EventEndTimer;
-	
-	int TimeLeftUntilEventStart = 0;
-
-	int TimeLeftUntilEventEnd = 0;
 };
 
 

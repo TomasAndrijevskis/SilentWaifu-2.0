@@ -45,7 +45,6 @@ bool UMoneyManager::HasEnoughEventMoney(const int Money) const
 void UMoneyManager::IncreaseMoneyLimit()
 {
 	MoneyLimitLevel++;
-	//UE_LOG(LogTemp, Warning, TEXT("MaxMoney: %i"), MaxMoney);
 	OnLevelIncreasedDelegate.Broadcast(MoneyLimitLevel);
 }
 
@@ -53,9 +52,6 @@ void UMoneyManager::IncreaseMoneyLimit()
 void UMoneyManager::SetMaxMoney(const int NewMaxMoney)
 {
 	MaxMoney = NewMaxMoney;
-	/*UE_LOG(LogTemp, Error, TEXT("MaxMoney: %i"), MaxMoney);
-	UE_LOG(LogTemp, Error, TEXT("Level: %i"), MoneyLimitLevel);
-	UE_LOG(LogTemp, Error, TEXT("upgrade price: %i"), GetLimitLevelUpgradePrice());*/
 	OnLimitLevelUpgradedDelegate.Broadcast();
 	OnMaxMoneyChangedDelegate.Broadcast(MaxMoney);
 }
@@ -64,7 +60,6 @@ void UMoneyManager::SetMaxMoney(const int NewMaxMoney)
 void UMoneyManager::SetMoneyLimitLevel(const int Level)
 {
 	MoneyLimitLevel = Level;
-	//UE_LOG(LogTemp, Warning, TEXT("Level: %i"), MoneyLimitLevel);
 	CalculateMaxMoney();
 }
 
@@ -172,7 +167,6 @@ int UMoneyManager::GetNextAdditionToLimit()
 void UMoneyManager::SetEventMoney(const int Money)
 {
 	EventMoney = Money;
-	UE_LOG(LogTemp, Warning, TEXT("SetEventMoney: %i"), Money)
 }
 
 
@@ -195,3 +189,8 @@ void UMoneyManager::DecreaseEventMoney(const int Money)
 	OnEventMoneyChangedDelegate.Broadcast();
 }
 
+
+void UMoneyManager::EraseEventMoney()
+{
+	DecreaseEventMoney(EventMoney);
+}

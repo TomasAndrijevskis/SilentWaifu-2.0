@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UEventsManager;
 class UBackgroundManager;
 class UImage;
 class UMoneyManager;
@@ -111,7 +112,7 @@ private:
 	void CreateMoneyPanel();
 
 	UFUNCTION()
-	void HandleEvent(bool HasEventStarted);
+	void HandleEvent(const bool HasEventStarted);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
@@ -124,6 +125,9 @@ private:
 
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
+
+	UPROPERTY()
+	UEventsManager* EventsManager;
 	
 	int AmountOfSlots = 5;
 };

@@ -11,7 +11,6 @@
 void UConfirmationWindow::NativeConstruct()
 {
 	Super::NativeConstruct();
-	UE_LOG(LogTemp, Warning, TEXT("NativeConstruct"));
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
@@ -36,7 +35,6 @@ void UConfirmationWindow::BindActions()
 
 void UConfirmationWindow::SetPrice(const int NewPrice)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetPrice"));
 	Price = NewPrice;
 }
 

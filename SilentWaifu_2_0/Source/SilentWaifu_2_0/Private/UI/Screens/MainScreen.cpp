@@ -8,6 +8,7 @@
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
+#include "GameMode/Helpers/EventsManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/Screens/CharacterMenuStorage.h"
@@ -38,12 +39,13 @@ void UMainScreen::InitializeReferences()
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
 	BackgroundManager = GameMode->BackgroundManager;
+	EventsManager = GameMode->EventsManager;
 }
 
 
 void UMainScreen::BindDelegates()
 {
-	if (!MoneyManager || !BackgroundManager) return;
+	if (!MoneyManager || !BackgroundManager || !EventsManager) return;
 	BackgroundManager->OnCurrentBackgroundSetDelegate.AddDynamic(this, &UMainScreen::SetBackground);
 	Button_Storage->OnClicked.AddDynamic(this, &UMainScreen::CreateStorage);
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
@@ -52,7 +54,7 @@ void UMainScreen::BindDelegates()
 	Button_Event->OnClicked.AddDynamic(this, &UMainScreen::CreateEventScreen);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
-	GameMode->HasEventStartedDelegate.AddDynamic(this, &UMainScreen::HandleEvent);
+	EventsManager->HasEventStartedDelegate.AddDynamic(this, &UMainScreen::HandleEvent);
 }
 
 
@@ -221,7 +223,7 @@ void UMainScreen::CreateMoneyPanel()
 }
 
 
-void UMainScreen::HandleEvent(bool HasEventStarted)
+void UMainScreen::HandleEvent(const bool HasEventStarted)
 {
 	if (HasEventStarted) Button_Event->SetVisibility(ESlateVisibility::Visible);
 	else Button_Event->SetVisibility(ESlateVisibility::Hidden);

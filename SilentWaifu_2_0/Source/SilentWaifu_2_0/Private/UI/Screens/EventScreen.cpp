@@ -7,6 +7,7 @@
 #include "DataTables/CharacterData.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
+#include "GameMode/Helpers/EventsManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/SavedCharactersData.h"
@@ -23,7 +24,7 @@ void UEventScreen::NativeConstruct()
 	if (!GameMode) return;
 	SetEventEndDate(GameMode->GetEventEndTime());
 	SetManagers();
-	if (!MoneyManager || !CharactersManager) return;
+	if (!MoneyManager || !CharactersManager || !EventsManager) return;
 	BindDelegates();
 	BindActions();
 	SetEventMoneyText();
@@ -46,6 +47,7 @@ void UEventScreen::SetManagers()
 {
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
+	EventsManager = GameMode->EventsManager;
 }
 
 
@@ -55,7 +57,7 @@ void UEventScreen::BindDelegates()
 	OnCharacterDataLoadedDelegate.AddUniqueDynamic(this, &UEventScreen::SetPrice);
 	OnCharacterDataLoadedDelegate.AddUniqueDynamic(this, &UEventScreen::HandleState);
 	OnEventCharacterUnlockedDelegate.AddUniqueDynamic(this, &UEventScreen::HandleState);
-	GameMode->OnEventEndedDelegate.AddDynamic(this, &UEventScreen::CloseScreen);
+	EventsManager->OnEventEndedDelegate.AddDynamic(this, &UEventScreen::CloseScreen);
 	MoneyManager->OnEventMoneyChangedDelegate.AddUniqueDynamic(this, &UEventScreen::SetEventMoneyText);
 }
 

@@ -3,6 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GameMode/Helpers/BackgroundManager.h"
 #include "GameMode/Helpers/CharactersManager.h"
+#include "GameMode/Helpers/EventsManager.h"
 #include "GameMode/Helpers/MoneyManager.h"
 #include "GameMode/Helpers/SoundManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -13,26 +14,35 @@
 void ASilentWaifuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	HandleManagers();
+	CreateManagers();
+	InitializeManagers();
 	GameInstance = Cast<USilentWaifuGameInstance>(UGameplayStatics::GetGameInstance(this));
 	OnCharactersLoadedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::LoadShutdownTime);
 	OnCharactersLoadedDelegate.AddDynamic(CharactersManager, &UCharactersManager::SpawnCharacters);
 	HandleGameLoad();
+	BindDelegates();
 }
 
 
-void ASilentWaifuGameMode::HandleManagers()
+void ASilentWaifuGameMode::CreateManagers()
 {
 	MoneyManager = NewObject<UMoneyManager>(this);
 	CharactersManager = NewObject<UCharactersManager>(this);
 	BackgroundManager = NewObject<UBackgroundManager>(this);
 	SoundManager = NewObject<USoundManager>(this);
-	if (!CharactersManager || !MoneyManager || !BackgroundManager || !SoundManager) return;
+	EventsManager = NewObject<UEventsManager>(this);
+}
+
+
+void ASilentWaifuGameMode::InitializeManagers()
+{
+	if (!CharactersManager || !MoneyManager || !BackgroundManager || !SoundManager || !EventsManager) return;
 	if (!CharacterDataTable || !BackgroundDataTable) return;
 	CharactersManager->Init(CharacterDataTable);
 	BackgroundManager->Init(BackgroundDataTable);
 	MoneyManager->Init(MoneyLimitsDataTable);
 	SoundManager->Init(MusicMixModifier, SFXMixModifier, MusicClass, SFXClass);
+	EventsManager->Init(EventStartTime, EventEndTime);
 }
 
 
@@ -47,58 +57,15 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadBackgrounds();
 	GameInstance->LoadSoundsVolume();
 	GameInstance->LoadEventMoney();
+}
+
+
+void ASilentWaifuGameMode::BindDelegates()
+{
 	MoneyManager->OnLevelIncreasedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
 	MoneyManager->OnEventMoneyChangedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveEventMoney);
+	EventsManager->OnEventEndedDelegate.AddUniqueDynamic(MoneyManager, &UMoneyManager::EraseEventMoney);
 	OnShopCreatedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
-	HandleEvent();
-}
-
-
-void ASilentWaifuGameMode::HandleEvent()
-{
-	FDateTime CurrentTime = FDateTime::Now();
-	if (CurrentTime > EventEndTime)
-	{
-		MoneyManager->DecreaseEventMoney(MoneyManager->GetEventMoney());
-		HasEventStartedDelegate.Broadcast(false);
-		return;
-	}
-	if (CurrentTime < EventStartTime)
-	{
-		FTimespan TimeLeft = EventStartTime - CurrentTime;
-		TimeLeftUntilEventStart = TimeLeft.GetTotalSeconds();
-		GetWorld()->GetTimerManager().SetTimer(EventStartTimer, this, &ASilentWaifuGameMode::SetTimerUntilEventStarts, 1, true, 0);
-		HasEventStartedDelegate.Broadcast(false);
-		return;
-	}
-	GetWorld()->GetTimerManager().SetTimer(EventEndTimer, this, &ASilentWaifuGameMode::SetTimerUntilEventEnds, 1, true, 0);
-	FTimespan TimeLeft = EventEndTime - CurrentTime;
-	TimeLeftUntilEventEnd = TimeLeft.GetTotalSeconds();
-	HasEventStartedDelegate.Broadcast(true);
-}
-
-
-void ASilentWaifuGameMode::SetTimerUntilEventStarts()
-{
-	if (TimeLeftUntilEventStart > 0) TimeLeftUntilEventStart--;
-	else
-	{
-		GetWorld()->GetTimerManager().ClearTimer(EventStartTimer);
-		HasEventStartedDelegate.Broadcast(true);
-		OnEventStartedDelegate.Broadcast(EventEndTime);
-	}
-}
-
-
-void ASilentWaifuGameMode::SetTimerUntilEventEnds()
-{
-	if (TimeLeftUntilEventEnd > 0) TimeLeftUntilEventEnd--;
-	else
-	{
-		GetWorld()->GetTimerManager().ClearTimer(EventEndTimer);
-		HasEventStartedDelegate.Broadcast(false);
-		OnEventEndedDelegate.Broadcast();
-	}
 }
 
 
