@@ -46,8 +46,59 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadShop();
 	GameInstance->LoadBackgrounds();
 	GameInstance->LoadSoundsVolume();
-	MoneyManager->OnLevelIncreasedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
-	OnShopCreatedDelegate.AddDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
+	GameInstance->LoadEventMoney();
+	MoneyManager->OnLevelIncreasedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveLimitLevel);
+	MoneyManager->OnEventMoneyChangedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveEventMoney);
+	OnShopCreatedDelegate.AddUniqueDynamic(GameInstance, &USilentWaifuGameInstance::SaveShop);
+	HandleEvent();
+}
+
+
+void ASilentWaifuGameMode::HandleEvent()
+{
+	FDateTime CurrentTime = FDateTime::Now();
+	if (CurrentTime > EventEndTime)
+	{
+		MoneyManager->DecreaseEventMoney(MoneyManager->GetEventMoney());
+		HasEventStartedDelegate.Broadcast(false);
+		return;
+	}
+	if (CurrentTime < EventStartTime)
+	{
+		FTimespan TimeLeft = EventStartTime - CurrentTime;
+		TimeLeftUntilEventStart = TimeLeft.GetTotalSeconds();
+		GetWorld()->GetTimerManager().SetTimer(EventStartTimer, this, &ASilentWaifuGameMode::SetTimerUntilEventStarts, 1, true, 0);
+		HasEventStartedDelegate.Broadcast(false);
+		return;
+	}
+	GetWorld()->GetTimerManager().SetTimer(EventEndTimer, this, &ASilentWaifuGameMode::SetTimerUntilEventEnds, 1, true, 0);
+	FTimespan TimeLeft = EventEndTime - CurrentTime;
+	TimeLeftUntilEventEnd = TimeLeft.GetTotalSeconds();
+	HasEventStartedDelegate.Broadcast(true);
+}
+
+
+void ASilentWaifuGameMode::SetTimerUntilEventStarts()
+{
+	if (TimeLeftUntilEventStart > 0) TimeLeftUntilEventStart--;
+	else
+	{
+		GetWorld()->GetTimerManager().ClearTimer(EventStartTimer);
+		HasEventStartedDelegate.Broadcast(true);
+		OnEventStartedDelegate.Broadcast(EventEndTime);
+	}
+}
+
+
+void ASilentWaifuGameMode::SetTimerUntilEventEnds()
+{
+	if (TimeLeftUntilEventEnd > 0) TimeLeftUntilEventEnd--;
+	else
+	{
+		GetWorld()->GetTimerManager().ClearTimer(EventEndTimer);
+		HasEventStartedDelegate.Broadcast(false);
+		OnEventEndedDelegate.Broadcast();
+	}
 }
 
 
@@ -92,4 +143,10 @@ FDateTime ASilentWaifuGameMode::GetShutdownTime() const
 void ASilentWaifuGameMode::SetShutdownTime(const FDateTime& NewLastJoinTime)
 {
 	ShutdownTime = NewLastJoinTime;	
+}
+
+
+FDateTime ASilentWaifuGameMode::GetEventEndTime() const
+{
+	return EventEndTime;
 }

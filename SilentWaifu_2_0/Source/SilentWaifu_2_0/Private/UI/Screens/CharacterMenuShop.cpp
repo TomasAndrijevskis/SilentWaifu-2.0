@@ -151,7 +151,6 @@ void UCharacterMenuShop::CreateTimeCountdown()
 	else UpdateTime = FTimespan(11, 59, 59);
 	
 	FTimespan TimeLeft = UpdateTime - CurrentTime;
-	FString TimeLeftString = TimeLeft.GetDuration().ToString();
 	FString FormatedTime = TimeLeft.GetDuration().ToString(TEXT("%h:%m:%s"));
 	if (FormatedTime.StartsWith(TEXT("+"))) FormatedTime.RemoveAt(0);
 	Text_RemainingTime->SetText(FText::FromString(FormatedTime));
@@ -161,7 +160,7 @@ void UCharacterMenuShop::CreateTimeCountdown()
 
 void UCharacterMenuShop::CheckLiveShopUpdate(const FString& TimeLeft)
 {
-	UE_LOG(LogTemp, Warning, TEXT("TimeLeft %s"), *TimeLeft);
+	//UE_LOG(LogTemp, Warning, TEXT("TimeLeft %s"), *TimeLeft);
 	FString ZeroTime = TEXT("00:00:00");
 	if (ZeroTime == TimeLeft && !CanUpdateShop)
 	{

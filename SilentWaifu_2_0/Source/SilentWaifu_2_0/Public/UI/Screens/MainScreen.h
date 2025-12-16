@@ -30,7 +30,7 @@ public:
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()
-	void CreateConfirmationWindow();
+	void CreateConfirmationWindow(bool IsEvent);
 
 	UFUNCTION()
 	void RemoveConfirmationWindow();
@@ -65,6 +65,9 @@ private:
 	
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_BackgroundsMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Event;
 	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Background;
@@ -91,6 +94,9 @@ private:
 	
 	UFUNCTION()
 	void SetBackground(UTexture2D* CurrentBackground);
+
+	UFUNCTION()
+	void CreateEventScreen();
 	
 	UButtonCreateChooseScreen* CreateButton(const int SpawnPosition) const;
 
@@ -103,6 +109,9 @@ private:
 	void RemoveCharacter(const int Position);
 
 	void CreateMoneyPanel();
+
+	UFUNCTION()
+	void HandleEvent(bool HasEventStarted);
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;

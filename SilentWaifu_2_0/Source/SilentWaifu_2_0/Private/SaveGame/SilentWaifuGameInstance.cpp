@@ -223,3 +223,20 @@ void USilentWaifuGameInstance::LoadSoundsVolume()
 	SoundManager->SetMusicVolume(SaveGameInstance->GetMusicVolume());
 	SoundManager->SetSFXVolume(SaveGameInstance->GetSFXVolume());
 }
+
+
+void USilentWaifuGameInstance::LoadEventMoney()
+{
+	if (!SaveGameInstance || !MoneyManager) return;
+	MoneyManager->SetEventMoney(SaveGameInstance->GetEventMoney());
+	//UE_LOG(LogTemp, Error, TEXT("LoadEventMoney: %i"), SaveGameInstance->GetEventMoney())
+}
+
+
+void USilentWaifuGameInstance::SaveEventMoney()
+{
+	if (!SaveGameInstance || !MoneyManager) return;
+	SaveGameInstance->SaveEventMoney(MoneyManager->GetEventMoney());
+	//UE_LOG(LogTemp, Error, TEXT("SaveEventMoney: %i"), MoneyManager->GetEventMoney())
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}

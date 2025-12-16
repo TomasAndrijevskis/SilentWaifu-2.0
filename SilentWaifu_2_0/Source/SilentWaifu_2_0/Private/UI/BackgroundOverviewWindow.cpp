@@ -40,7 +40,7 @@ void UBackgroundOverviewWindow::HandleActionButton(const bool IsUnlocked)
 void UBackgroundOverviewWindow::CreateConfirmationWindow()
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
-	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow(false);
 	if (!WidgetReferences->ConfirmationWindowRef) return;
 	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UBackgroundOverviewWindow::UnlockBackground);
 	WidgetReferences->ConfirmationWindowRef->SetPrice(Price);

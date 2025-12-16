@@ -103,3 +103,14 @@ float USilentWaifuSaveGame::GetSFXVolume() const
 {
 	return SFXVolume;
 }
+
+
+int USilentWaifuSaveGame::GetEventMoney() const
+{
+	return EventMoney;
+}
+
+void USilentWaifuSaveGame::SaveEventMoney(const int NewEventMoney)
+{
+	EventMoney = NewEventMoney;
+}

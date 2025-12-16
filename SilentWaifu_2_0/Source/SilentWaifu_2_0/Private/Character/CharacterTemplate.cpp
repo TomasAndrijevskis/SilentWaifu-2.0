@@ -55,9 +55,6 @@ void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 	FDateTime CurrentTime = FDateTime::Now();
 	FTimespan ElapsedTime = CurrentTime - ShutdownTime;
 	int ElapsedSeconds = ElapsedTime.GetTotalSeconds();
-	/*UE_LOG(LogTemp, Error, TEXT("Interval: %s"), *ElapsedTime.ToString());
-	UE_LOG(LogTemp, Error, TEXT("Seconds: %i"), ElapsedSeconds);
-	UE_LOG(LogTemp, Error, TEXT("TimeLeft before : %i"), TimeLeft);*/
 	if (ElapsedSeconds == TimeLeft)
 	{
 		IncreaseMoney();
@@ -66,9 +63,7 @@ void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 	}
 	if (ElapsedSeconds < TimeLeft)
 	{
-		//UE_LOG(LogTemp, Error, TEXT("Seconds < TimeLeft"));
 		TimeLeft -= ElapsedSeconds;
-		//UE_LOG(LogTemp, Error, TEXT("TimeLeft - seconds: %i"), TimeLeft);
 		return;
 	}
 	if (ElapsedSeconds > TimeLeft)
@@ -76,13 +71,8 @@ void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 		IncreaseMoney();
 		ElapsedSeconds -= TimeLeft;
 		int AmountOfTimes = ElapsedSeconds / IncomeInterval;
-		//UE_LOG(LogTemp, Error, TEXT("AmountOfTimes: %i"), AmountOfTimes);
 		TimeLeft = IncomeInterval - (ElapsedSeconds % IncomeInterval);
-		//UE_LOG(LogTemp, Error, TEXT("TimeLeft After : %i"), TimeLeft);
-		for (int i = 0; i < AmountOfTimes; i++)
-		{
-			IncreaseMoney();
-		}
+		for (int i = 0; i < AmountOfTimes; i++) IncreaseMoney();
 	}
 }
 
@@ -103,11 +93,7 @@ void ACharacterTemplate::EnableTimer()
 
 void ACharacterTemplate::CheckTime()
 {
-	if (TimeLeft != 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Time left: %i"), TimeLeft);
-		TimeLeft --;
-	}
+	if (TimeLeft != 0) TimeLeft--;
 	else
 	{
 		IncreaseMoney();
@@ -119,7 +105,6 @@ void ACharacterTemplate::CheckTime()
 void ACharacterTemplate::IncreaseMoney()
 {
 	if (!MoneyManager) return;
-	UE_LOG(LogTemp, Warning, TEXT("IncreaseMoney"));
 	MoneyManager->IncreaseMoney(MoneyPerMinute);
 }
 

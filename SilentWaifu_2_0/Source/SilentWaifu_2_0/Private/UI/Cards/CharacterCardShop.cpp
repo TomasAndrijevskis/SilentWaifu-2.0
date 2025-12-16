@@ -5,7 +5,6 @@
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "GameMode/Helpers/CharactersManager.h"
-#include "GameMode/Helpers/MoneyManager.h"
 #include "UI/ConfirmationWindow.h"
 #include "UI/WidgetReferenceDataAsset.h"
 #include "UI/Screens/CharacterStatsScreen.h"
@@ -56,7 +55,7 @@ void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 void UCharacterCardShop::Action()
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
-	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow(false);
 	if (!WidgetReferences->ConfirmationWindowRef) return;
 	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UCharacterCardShop::UnlockCharacter);
 	WidgetReferences->ConfirmationWindowRef->SetPrice(GetCharacterPrice());

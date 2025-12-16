@@ -25,6 +25,8 @@ public:
 	virtual void NativeConstruct() override;
 
 	void SetPrice(const int NewPrice);
+
+	void SetIsEvent(const bool bIsEvent);
 	
 	FOnConfirmedSignature OnConfirmedDelegate;
 
@@ -57,10 +59,17 @@ private:
 	UFUNCTION()
 	void CheckMoney();
 
+	UFUNCTION()
+	void CheckEventMoney();
+	
 	void CreateNotification(const FText& Message);
 
 	UFUNCTION()
 	void RemoveNotificationReference();
+
+	void BindDelegates();
+
+	void BindActions();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
@@ -72,4 +81,6 @@ private:
 	UWidgetReferenceDataAsset* WidgetReferences;
 	
 	int Price;
+
+	bool IsEvent;
 };

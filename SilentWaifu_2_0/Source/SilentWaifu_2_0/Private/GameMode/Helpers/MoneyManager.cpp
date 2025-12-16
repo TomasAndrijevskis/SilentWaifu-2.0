@@ -7,7 +7,9 @@ void UMoneyManager::Init(UDataTable* DataTable)
 {
 	if (!DataTable) return;
 	MoneyLimitDataTable = DataTable;
-	OnLevelIncreasedDelegate.AddDynamic(this, &UMoneyManager::SetMoneyLimitLevel);
+	OnLevelIncreasedDelegate.AddUniqueDynamic(this, &UMoneyManager::SetMoneyLimitLevel);
+	OnEventMoneyIncreasedDelegate.AddUniqueDynamic(this, &UMoneyManager::IncreaseEventMoney);
+	OnEventMoneyDecreasedDelegate.AddUniqueDynamic(this, &UMoneyManager::DecreaseEventMoney);
 }
 
 
@@ -29,6 +31,13 @@ void UMoneyManager::DecreaseMoney(const int Money)
 bool UMoneyManager::HasEnoughMoney(const int Money) const
 {
 	if (CurrentMoney >= Money) return true;
+	return false;
+}
+
+
+bool UMoneyManager::HasEnoughEventMoney(const int Money) const
+{
+	if (EventMoney >= Money) return true;
 	return false;
 }
 
@@ -158,5 +167,31 @@ int UMoneyManager::GetNextAdditionToLimit()
 	}
 	return 0;
 }
-	
+
+
+void UMoneyManager::SetEventMoney(const int Money)
+{
+	EventMoney = Money;
+	UE_LOG(LogTemp, Warning, TEXT("SetEventMoney: %i"), Money)
+}
+
+
+int UMoneyManager::GetEventMoney() const
+{
+	return EventMoney;
+}
+
+
+void UMoneyManager::IncreaseEventMoney(const int Money)
+{
+	EventMoney += Money;
+	OnEventMoneyChangedDelegate.Broadcast();
+}
+
+
+void UMoneyManager::DecreaseEventMoney(const int Money)
+{
+	EventMoney -= Money;
+	OnEventMoneyChangedDelegate.Broadcast();
+}
 

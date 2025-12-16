@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "WidgetReferenceDataAsset.generated.h"
 
+class UEventScreen;
 class USettingsScreen;
 class UCharacterStatsScreen;
 class UCharacterStoryLine;
@@ -105,6 +106,12 @@ public:
 	UPROPERTY()
 	USettingsScreen* SettingsScreenRef;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UEventScreen> EventScreenClass;
+
+	UPROPERTY()
+	UEventScreen* EventScreenRef;
 	
 
 	

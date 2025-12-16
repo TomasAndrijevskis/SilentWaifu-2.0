@@ -52,7 +52,7 @@ void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 void ULimitIncreaseCard::Action()
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
-	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow(false);
 	if (!WidgetReferences->ConfirmationWindowRef) return;
 	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &ULimitIncreaseCard::IncreaseLimit);
 	WidgetReferences->ConfirmationWindowRef->SetPrice(Price);

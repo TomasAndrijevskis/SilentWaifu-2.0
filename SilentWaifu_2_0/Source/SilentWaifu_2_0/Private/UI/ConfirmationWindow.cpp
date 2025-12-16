@@ -11,17 +11,32 @@
 void UConfirmationWindow::NativeConstruct()
 {
 	Super::NativeConstruct();
+	UE_LOG(LogTemp, Warning, TEXT("NativeConstruct"));
 	GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!GameMode) return;
 	MoneyManager = GameMode->MoneyManager;
-	Button_Confirm->OnClicked.AddDynamic(this, &UConfirmationWindow::UConfirmationWindow::OnConfirmed);
+	BindActions();
+	BindDelegates();
+}
+
+
+void UConfirmationWindow::BindDelegates()
+{
+	IsEvent ?
+		OnConfirmedDelegate.AddUniqueDynamic(this, &UConfirmationWindow::CheckEventMoney) :
+		OnConfirmedDelegate.AddUniqueDynamic(this, &UConfirmationWindow::CheckMoney);
+}
+
+void UConfirmationWindow::BindActions()
+{
+	Button_Confirm->OnClicked.AddDynamic(this, &UConfirmationWindow::OnConfirmed);
 	Button_Cancel->OnClicked.AddDynamic(this, &UConfirmationWindow::OnCanceled);
-	OnConfirmedDelegate.AddUniqueDynamic(this, &UConfirmationWindow::CheckMoney);
 }
 
 
 void UConfirmationWindow::SetPrice(const int NewPrice)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetPrice"));
 	Price = NewPrice;
 }
 
@@ -29,6 +44,17 @@ void UConfirmationWindow::SetPrice(const int NewPrice)
 void UConfirmationWindow::CheckMoney()
 {
 	if (!MoneyManager || !MoneyManager->HasEnoughMoney(Price))
+	{
+		OnFail();
+		return;
+	}
+	OnSuccess();
+}
+
+
+void UConfirmationWindow::CheckEventMoney()
+{
+	if (!MoneyManager || !MoneyManager->HasEnoughEventMoney(Price))
 	{
 		OnFail();
 		return;
@@ -57,7 +83,9 @@ void UConfirmationWindow::OnFail()
 
 void UConfirmationWindow::OnSuccess()
 {
-	MoneyManager->DecreaseMoney(Price);
+	IsEvent ?
+		MoneyManager->DecreaseEventMoney(Price) :
+		MoneyManager->DecreaseMoney(Price);
 	CreateNotification(FText::FromString(TEXT("Success")));
 	OnSuccessDelegate.Broadcast();
 }
@@ -79,4 +107,10 @@ void UConfirmationWindow::RemoveNotificationReference()
 	if (!WidgetReferences || !WidgetReferences->NotificationWindowRef) return;
 	WidgetReferences->NotificationWindowRef->RemoveFromParent();
 	WidgetReferences->NotificationWindowRef = nullptr;
+}
+
+
+void UConfirmationWindow::SetIsEvent(const bool bIsEvent)
+{
+	IsEvent = bIsEvent;
 }

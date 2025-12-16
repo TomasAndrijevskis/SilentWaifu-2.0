@@ -58,11 +58,18 @@ public:
 	float GetMusicVolume() const;
 
 	float GetSFXVolume() const;
+
+	int GetEventMoney() const;
+
+	void SaveEventMoney(const int NewEventMoney);
 	
 private:
 	
 	UPROPERTY()
 	int CurrentMoney;
+
+	UPROPERTY()
+	int EventMoney;
 	
 	UPROPERTY()
 	TMap<int, FSavedCharactersData> SavedCharacters;

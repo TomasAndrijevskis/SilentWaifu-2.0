@@ -17,6 +17,7 @@
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "UI/Screens/BackgroundMenu.h"
 #include "UI/Screens/CharacterMenuShop.h"
+#include "UI/Screens/EventScreen.h"
 #include "UI/Screens/SettingsScreen.h"
 
 
@@ -48,16 +49,19 @@ void UMainScreen::BindDelegates()
 	Button_Shop->OnClicked.AddDynamic(this, &UMainScreen::CreateShop);
 	Button_BackgroundsMenu->OnClicked.AddDynamic(this, &UMainScreen::CreateBgMenu);
 	Button_Settings->OnClicked.AddDynamic(this, &UMainScreen::CreateSettings);
+	Button_Event->OnClicked.AddDynamic(this, &UMainScreen::CreateEventScreen);
 	OnCharacterSpawnedDelegate.AddDynamic(this, &UMainScreen::RemoveButton);
 	OnCharacterRemovedDelegate.AddDynamic(this, &UMainScreen::RemoveCharacter);
+	GameMode->HasEventStartedDelegate.AddDynamic(this, &UMainScreen::HandleEvent);
 }
 
 
-void UMainScreen::CreateConfirmationWindow()
+void UMainScreen::CreateConfirmationWindow(bool IsEvent)
 {
 	if (!WidgetReferences || !WidgetReferences->ConfirmationWindowClass) return;
 	WidgetReferences->ConfirmationWindowRef = Cast<UConfirmationWindow>(CreateWidget(GetWorld(), WidgetReferences->ConfirmationWindowClass));
 	if (!WidgetReferences->ConfirmationWindowRef) return;
+	WidgetReferences->ConfirmationWindowRef->SetIsEvent(IsEvent);
 	WidgetReferences->ConfirmationWindowRef->AddToViewport(4);
 	WidgetReferences->ConfirmationWindowRef->OnConfirmedDelegate.AddDynamic(this, &UMainScreen::RemoveConfirmationWindow);
 	WidgetReferences->ConfirmationWindowRef->OnCanceledDelegate.AddDynamic(this, &UMainScreen::RemoveConfirmationWindow);
@@ -113,6 +117,16 @@ void UMainScreen::SetBackground(UTexture2D* CurrentBackground)
 	if (!CurrentBackground) return;
 	Image_Background->SetBrushFromTexture(CurrentBackground);
 	OnBackgroundSetDelegate.Broadcast();
+}
+
+
+void UMainScreen::CreateEventScreen()
+{
+	if (!WidgetReferences || !WidgetReferences->EventScreenClass) return;
+	WidgetReferences->EventScreenRef = Cast<UEventScreen>(CreateWidget(GetWorld(), WidgetReferences->EventScreenClass));
+	if (!WidgetReferences->EventScreenRef) return;
+	WidgetReferences->EventScreenRef->AddToViewport(1);
+	WidgetReferences->EventScreenRef->Init(101);//!!!!!!!!!!! Look at the required character's id
 }
 
 
@@ -204,4 +218,11 @@ void UMainScreen::CreateMoneyPanel()
 	WidgetReferences->MoneyPanelRef = Cast<UMoneyPanel>(CreateWidget(GetWorld(), WidgetReferences->MoneyPanelClass));
 	if (!WidgetReferences->MoneyPanelRef) return;
 	WidgetReferences->MoneyPanelRef->AddToViewport(1);
+}
+
+
+void UMainScreen::HandleEvent(bool HasEventStarted)
+{
+	if (HasEventStarted) Button_Event->SetVisibility(ESlateVisibility::Visible);
+	else Button_Event->SetVisibility(ESlateVisibility::Hidden);
 }

@@ -56,6 +56,11 @@ public:
 	void SaveSoundsVolume() const;
 
 	void LoadSoundsVolume();
+
+	void LoadEventMoney();
+
+	UFUNCTION()
+	void SaveEventMoney();
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	

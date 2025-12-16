@@ -41,7 +41,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D ImageSize = FVector2D(340, 540);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
 
 	UPROPERTY()

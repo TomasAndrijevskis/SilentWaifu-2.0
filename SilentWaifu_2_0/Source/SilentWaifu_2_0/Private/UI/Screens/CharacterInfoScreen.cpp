@@ -6,6 +6,7 @@
 #include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "DataTables/CharacterRarities.h"
+#include "DataTables/ERarities.h"
 #include "GameMode/SilentWaifuGameMode.h"
 #include "GameMode/Helpers/CharactersManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -118,7 +119,9 @@ void UCharacterInfoScreen::HandleButtonState()
 void UCharacterInfoScreen::CreateConfirmationWindow()
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
-	WidgetReferences->MainScreenRef->CreateConfirmationWindow();
+	bool IsEvent = false;
+	if (CharacterRow->Rarity == Event) IsEvent = true;
+	WidgetReferences->MainScreenRef->CreateConfirmationWindow(IsEvent);
 	if (!WidgetReferences->ConfirmationWindowRef) return;
 	WidgetReferences->ConfirmationWindowRef->OnSuccessDelegate.AddDynamic(this, &UCharacterInfoScreen::UpgradeCharacter);
 	WidgetReferences->ConfirmationWindowRef->SetPrice(CurrentUpgradePrice);
