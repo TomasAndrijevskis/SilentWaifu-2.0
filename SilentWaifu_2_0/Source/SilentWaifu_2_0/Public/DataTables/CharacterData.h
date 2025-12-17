@@ -5,8 +5,9 @@
 #include "CharacterValues.h"
 #include "CharacterData.generated.h"
 
-enum ERarities : int;
+class UAbilityComponent_Base;
 class ACharacterTemplate;
+enum ERarities : int;
 
 
 USTRUCT(BlueprintType)
@@ -18,20 +19,23 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 	int CharacterId;
 
 	UPROPERTY(EditDefaultsOnly)
+	FString Name;
+	
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACharacterTemplate> CharacterClass;
 
 	UPROPERTY(EditDefaultsOnly)
-	FString Name;
+	TEnumAsByte<ERarities> Rarity;
 
 	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<ERarities> Rarity;
+	TSubclassOf<UAbilityComponent_Base> Ability;
 	
 	UPROPERTY(EditDefaultsOnly)
 	FCharacterValues Numbers;
 
 	UPROPERTY(EditDefaultsOnly)
 	FCharacterImages Images;
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	FString StoryLine;
 };

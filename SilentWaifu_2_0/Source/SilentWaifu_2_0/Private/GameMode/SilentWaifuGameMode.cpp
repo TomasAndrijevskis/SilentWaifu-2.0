@@ -57,6 +57,7 @@ void ASilentWaifuGameMode::HandleGameLoad()
 	GameInstance->LoadBackgrounds();
 	GameInstance->LoadSoundsVolume();
 	GameInstance->LoadEventMoney();
+	EventsManager->HandleEvent();
 }
 
 
