@@ -59,6 +59,9 @@ private:
 
 	UFUNCTION()
 	void HandleOfflineIncome(const bool WasOnScreen);
+
+	UFUNCTION()
+	void CreateAbilityComponent();
 	
 	UPROPERTY()
 	ASilentWaifuGameMode* GameMode;
@@ -66,6 +69,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
 
+	UPROPERTY(EditAnywhere)
+	UDataTable* AbilityDataTable;
+	
 	UPROPERTY(VisibleAnywhere)
 	int MoneyPerMinute;
 
@@ -80,6 +86,9 @@ private:
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
+
+	UPROPERTY()
+	UAbilityComponent_Base* AbilityComponent;
 	
 	FCharacterData* CharacterRow;
 	
