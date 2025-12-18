@@ -23,6 +23,7 @@ void UCharacterCardMainScreen::Init()
 	Button_Action->OnClicked.Clear();
 	Button_Action->OnPressed.AddDynamic(this, &UCharacterCardMainScreen::EnablePressedTimer);
 	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
+	Button_Ability->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::ActivateAbility);
 }
 
 
@@ -53,6 +54,12 @@ void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 	CustomStyle.SetPressed(HoveredBrush);
 	
 	Button_Action->SetStyle(CustomStyle);
+}
+
+
+void UCharacterCardMainScreen::ActivateAbility()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Activating Ability"));
 }
 
 

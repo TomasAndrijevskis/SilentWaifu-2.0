@@ -6,6 +6,8 @@
 #include "AbilityComponent_Base.generated.h"
 
 
+struct FAbilityData;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SILENTWAIFU_2_0_API UAbilityComponent_Base : public UActorComponent
 {
@@ -25,6 +27,9 @@ protected:
 	
 private:
 
+	UPROPERTY(EditAnywhere)
+	UDataTable* AbilityDataTable;
+	
 	UPROPERTY(VisibleAnywhere)
 	bool bIsAbilityActive = false;
 

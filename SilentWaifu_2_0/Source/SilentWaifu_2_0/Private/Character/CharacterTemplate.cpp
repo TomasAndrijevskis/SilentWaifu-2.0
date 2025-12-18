@@ -19,21 +19,8 @@ void ACharacterTemplate::BeginPlay()
 	CharactersManager = GameMode->CharactersManager;
 	if (!MoneyManager || !CharactersManager) return;
 	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableTimer);
-	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::CreateAbilityComponent);
 	OnValuesUpdatedDelegate.AddDynamic(this, &ACharacterTemplate::SetMoney);
 	WasPreviouslyOnScreenDelegate.AddDynamic(this, &ACharacterTemplate::HandleOfflineIncome);
-}
-
-
-void ACharacterTemplate::CreateAbilityComponent()
-{
-	if (!AbilityDataTable) return;
-	if (!CharacterRow) GetCharacterRow();
-	if (!CharacterRow || !CharacterRow->Ability) return;
-	AbilityComponent = NewObject<UAbilityComponent_Base>(this, CharacterRow->Ability);
-	if (!AbilityComponent) return;
-	UE_LOG(LogTemp, Warning, TEXT("Created Ability Component"));
-	AbilityComponent->RegisterComponent();
 }
 
 

@@ -28,6 +28,12 @@ protected:
 
 private:
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Ability;
+
+	UFUNCTION()
+	void ActivateAbility();
+	
 	UFUNCTION()
 	void EnablePressedTimer();
 

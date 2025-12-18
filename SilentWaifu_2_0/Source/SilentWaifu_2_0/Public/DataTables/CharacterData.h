@@ -26,9 +26,6 @@ struct SILENTWAIFU_2_0_API FCharacterData: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<ERarities> Rarity;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UAbilityComponent_Base> Ability;
 	
 	UPROPERTY(EditDefaultsOnly)
 	FCharacterValues Numbers;
