@@ -16,6 +16,9 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 	UPROPERTY()
 	TSubclassOf<ACharacterTemplate> CharacterClass;
 
+	UPROPERTY(Transient)
+	ACharacterTemplate* SpawnedCharacter = nullptr;
+	
 	UPROPERTY()
 	bool bIsOnScreen;
 

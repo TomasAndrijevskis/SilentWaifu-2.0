@@ -182,7 +182,7 @@ UCharacterCardMainScreen* UMainScreen::CreateCharacterCard(const int SpawnPositi
 	if (!WidgetReferences || !WidgetReferences->CharacterCardMainScreenClass || !CharactersManager) return nullptr;
 	UCharacterCardMainScreen* CharacterCard = CreateWidget<UCharacterCardMainScreen>(GetWorld(), WidgetReferences->CharacterCardMainScreenClass);
 	if (!CharacterCard) return nullptr;
-	int CharacterId = NULL;
+	int CharacterId = INDEX_NONE;
 	for (const auto& Character : CharactersManager->GetAvailableCharacters())
 	{
 		if (Character.Value.Position == SpawnPosition)

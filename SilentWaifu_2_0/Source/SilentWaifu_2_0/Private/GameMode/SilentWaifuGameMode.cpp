@@ -95,7 +95,7 @@ void ASilentWaifuGameMode::OnCharacterSpawned(const int CurrentSpawnPosition) co
 }
 
 
-void ASilentWaifuGameMode::OnCharacterRemovedDelegate(const int Position) const
+void ASilentWaifuGameMode::OnCharacterRemoved(const int Position) const
 {
 	if (!WidgetReferences || !WidgetReferences->MainScreenRef) return;
 	WidgetReferences->MainScreenRef->OnCharacterRemovedDelegate.Broadcast(Position);

@@ -27,7 +27,7 @@ public:
 	
 	void OnCharacterSpawned(const int CurrentSpawnPosition) const;
 
-	void OnCharacterRemovedDelegate(const int Position) const;
+	void OnCharacterRemoved(const int Position) const;
 
 	FDateTime GetShutdownTime() const;
 

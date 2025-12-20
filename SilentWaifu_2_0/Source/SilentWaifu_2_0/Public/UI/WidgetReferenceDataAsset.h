@@ -73,13 +73,6 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCharacterCardMainScreen> CharacterCardMainScreenClass;
-
-	UPROPERTY()
-	UCharacterCardMainScreen* CharacterCardMainScreenRef;
-
-
-	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UBackgroundMenu> BackgroundMenuClass;
 
 	UPROPERTY()
@@ -113,6 +106,10 @@ public:
 	UPROPERTY()
 	UEventScreen* EventScreenRef;
 	
+
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterCardMainScreen> CharacterCardMainScreenClass;
 
 	
 	UPROPERTY(EditDefaultsOnly)
