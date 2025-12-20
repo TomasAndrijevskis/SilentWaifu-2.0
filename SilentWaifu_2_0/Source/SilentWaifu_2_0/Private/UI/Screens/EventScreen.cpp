@@ -109,7 +109,7 @@ void UEventScreen::SetEventMoneyText()
 
 void UEventScreen::SetExchangeRate()
 {
-	FString RateText = "1: "+ FString::FromInt(ExchangeRate);
+	FString RateText = "1 : "+ FString::FromInt(ExchangeRate);
 	Text_ExchangeRateValue->SetText(FText::FromString(RateText));
 }
 
@@ -136,10 +136,7 @@ void UEventScreen::UnlockEventCharacter()
 	if (!CharacterRow || !CharactersManager) return;
 	FSavedCharactersData Data;
 	Data.CharacterClass = CharacterRow->CharacterClass;
-	Data.bIsOnScreen = false;
 	Data.CharacterId = CharacterId;
-	Data.Level = 1;
-	Data.TimeLeft = 60;
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 	OnEventCharacterUnlockedDelegate.Broadcast();
 }

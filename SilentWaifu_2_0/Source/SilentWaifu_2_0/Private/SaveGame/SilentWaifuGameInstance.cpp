@@ -47,10 +47,7 @@ void USilentWaifuGameInstance::SetDefaultValues()
 {
 	FSavedCharactersData Data;
 	Data.CharacterClass = DefaultCharacter;
-	Data.bIsOnScreen = false;
 	Data.CharacterId = 1;
-	Data.Level = 1;
-	Data.TimeLeft = 60;
 	SaveFirstCharacter(1, Data);
 	SaveLimitLevel(1);
 	SaveGameInstance->SaveSoundsVolume(0,0);

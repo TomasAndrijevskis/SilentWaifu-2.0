@@ -76,10 +76,7 @@ void UCharacterCardShop::UnlockCharacter()
 	if (!CharacterRow || !CharactersManager) return;
 	FSavedCharactersData Data;
 	Data.CharacterClass = CharacterRow->CharacterClass;
-	Data.bIsOnScreen = false;
 	Data.CharacterId = CharacterId;
-	Data.Level = 1;
-	Data.TimeLeft = 60;
 	CharactersManager->OnCharacterAddedDelegate.Broadcast(CharacterId, Data);
 	OnCharacterUnlockedDelegate.Broadcast();
 }

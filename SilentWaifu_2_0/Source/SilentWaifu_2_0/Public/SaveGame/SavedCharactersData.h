@@ -20,14 +20,14 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 	ACharacterTemplate* SpawnedCharacter = nullptr;
 	
 	UPROPERTY()
-	bool bIsOnScreen;
+	bool bIsOnScreen = false;
 
 	UPROPERTY()
-	int Position;
+	int Position = INDEX_NONE;
 
 	UPROPERTY()
-	int Level;
+	int Level = 1;
 
 	UPROPERTY()
-	int TimeLeft;
+	int TimeLeft = 60;
 };
