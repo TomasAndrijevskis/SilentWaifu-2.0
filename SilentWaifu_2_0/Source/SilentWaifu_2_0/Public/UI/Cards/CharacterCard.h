@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataTables/CharacterData.h"
 #include "UI/Cards/CardBase.h"
 #include "CharacterCard.generated.h"
 
@@ -18,19 +19,24 @@ public:
 	virtual void CreateCard(const int NewCharacterId) override;
 
 	virtual void Init() override;
+
+	FCharacterData* GetCharacterData();
 	
 protected:
 
+	void SetCharacterData();
+	
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
 	
-	int CharacterId;
-
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
+	
+	int CharacterId;
 
 private:
 
 	void SetCharacterManager();
 
+	FCharacterData* CharacterRow;
 };

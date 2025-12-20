@@ -15,8 +15,6 @@ class SILENTWAIFU_2_0_API UCharacterCardMainScreen : public UCharacterCard
 	GENERATED_BODY()
 
 public:
-	
-	virtual void CreateCard(const int Id) override;
 
 	virtual void Init() override;
 	
@@ -31,6 +29,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Ability;
 
+	UFUNCTION()
+	void OnCardCreated();
+	
 	UFUNCTION()
 	void ActivateAbility();
 	
