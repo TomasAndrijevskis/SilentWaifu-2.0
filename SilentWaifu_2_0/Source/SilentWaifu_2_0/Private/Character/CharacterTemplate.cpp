@@ -103,7 +103,7 @@ void ACharacterTemplate::CheckTime()
 }
 
 
-void ACharacterTemplate::IncreaseMoney()
+void ACharacterTemplate::IncreaseMoney() const
 {
 	if (!MoneyManager) return;
 	MoneyManager->IncreaseMoney(MoneyPerMinute);

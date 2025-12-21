@@ -47,7 +47,7 @@ private:
 	UFUNCTION()
 	void SetMoney();
 	
-	void IncreaseMoney();
+	void IncreaseMoney() const;
 
 	UFUNCTION()
 	void EnableTimer();
@@ -80,9 +80,6 @@ private:
 
 	UPROPERTY()
 	UCharactersManager* CharactersManager;
-
-	UPROPERTY()
-	UAbilityComponent_Base* AbilityComponent;
 	
 	FCharacterData* CharacterRow;
 	
