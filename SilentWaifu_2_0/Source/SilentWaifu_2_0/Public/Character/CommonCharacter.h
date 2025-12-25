@@ -15,8 +15,4 @@ public:
 
 	ACommonCharacter();
 	
-private:
-
-	UPROPERTY(EditAnywhere)
-	UAbilityComponent_Base* AbilityComponent;
 };

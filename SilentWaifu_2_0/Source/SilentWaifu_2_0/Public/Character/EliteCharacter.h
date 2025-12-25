@@ -15,8 +15,4 @@ public:
 
 	AEliteCharacter();
 	
-private:
-
-	UPROPERTY(EditAnywhere)
-	UAbilityComponent_Base* AbilityComponent;
 };

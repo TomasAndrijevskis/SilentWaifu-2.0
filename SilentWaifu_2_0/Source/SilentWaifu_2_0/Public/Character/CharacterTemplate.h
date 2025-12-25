@@ -42,6 +42,9 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)
+	UAbilityComponent_Base* AbilityComponent;
+	
 private:
 
 	UFUNCTION()

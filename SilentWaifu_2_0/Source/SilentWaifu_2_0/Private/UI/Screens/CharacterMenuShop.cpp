@@ -88,39 +88,15 @@ TArray<int>& UCharacterMenuShop::GetRandomCharacters(TArray<int>& OutCharacters)
 		{
 			MaxRandomNumber = OriginalMaxNumber;
 			OutCharacters.Add(NewShopCharacterID);
-			UE_LOG(LogTemp, Warning, TEXT("Added to shop: %i"), NewShopCharacterID);
+			//UE_LOG(LogTemp, Warning, TEXT("Added to shop: %i"), NewShopCharacterID);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Already in shop: %i"), NewShopCharacterID);
+			//UE_LOG(LogTemp, Warning, TEXT("Already in shop: %i"), NewShopCharacterID);
 			MaxRandomNumber -= 5;	
 		}
 	}
 	return OutCharacters;
-}
-
-
-int UCharacterMenuShop::GetCharacterRarity()
-{
-	if (!CharacterDataTable || !RarityDataTable) return 0;
-	TArray<FCharacterRarities*> Rarities;
-	RarityDataTable->GetAllRows(TEXT("Find Rarity Rows"), Rarities);
-	if (Rarities.Num() == 0) return 0;
-	TArray<int> DropChances;
-	for (const auto RowArray : Rarities)
-	{
-		DropChances.Add(RowArray->DropChance);
-	}
-	int RandomNumber = FMath::RandRange(1, MaxRandomNumber);
-	//UE_LOG(LogTemp, Warning, TEXT("Random Number: %i"), RandomNumber);
-	for (int RarityId = DropChances.Num() - 1; RarityId > 0; RarityId--)
-	{
-		if (RandomNumber <= DropChances[RarityId])
-		{
-			return RarityId;
-		}
-	}
-	return 0;
 }
 
 
@@ -144,6 +120,27 @@ int UCharacterMenuShop::GetCharacter()
 }
 
 
+int UCharacterMenuShop::GetCharacterRarity()
+{
+	if (!RarityDataTable) return 0;
+	TArray<FCharacterRarities*> Rarities;
+	RarityDataTable->GetAllRows(TEXT("Find Rarity Rows"), Rarities);
+	if (Rarities.Num() == 0) return 0;
+	TArray<int> DropChances;
+	for (const auto RowArray : Rarities)
+	{
+		DropChances.Add(RowArray->DropChance);
+	}
+	int RandomNumber = FMath::RandRange(1, MaxRandomNumber);
+	//UE_LOG(LogTemp, Warning, TEXT("Random Number: %i"), RandomNumber);
+	for (int RarityId = DropChances.Num() - 1; RarityId > 0; RarityId--)
+	{
+		if (RandomNumber <= DropChances[RarityId]) return RarityId;
+	}
+	return 0;
+}
+
+
 void UCharacterMenuShop::CreateTimeCountdown()
 {
 	FTimespan CurrentTime = FDateTime().Now().GetTimeOfDay();
@@ -164,7 +161,7 @@ void UCharacterMenuShop::CheckLiveShopUpdate(const FString& TimeLeft)
 	FString ZeroTime = TEXT("00:00:00");
 	if (ZeroTime == TimeLeft && !CanUpdateShop)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Time is zero"));
+		//UE_LOG(LogTemp, Warning, TEXT("Time is zero"));
 		OnShopNeedUpdateDelegate.Broadcast();
 		CanUpdateShop = true;
 	}

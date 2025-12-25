@@ -30,6 +30,7 @@ void ACharacterTemplate::SetValues(const int NewId, const int NewLevel, const in
 	Level = NewLevel;
 	TimeLeft = NewTimeLeft;
 	OnValuesUpdatedDelegate.Broadcast();
+	AbilityComponent->OnCharacterIdRequestDelegate.Broadcast(Id);
 }
 
 

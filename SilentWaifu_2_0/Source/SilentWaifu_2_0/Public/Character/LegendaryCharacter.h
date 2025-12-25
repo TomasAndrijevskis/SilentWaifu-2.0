@@ -15,9 +15,4 @@ public:
 
 	ALegendaryCharacter();
 	
-private:
-
-	UPROPERTY(EditAnywhere)
-	UAbilityComponent_Base* AbilityComponent;
-	
 };

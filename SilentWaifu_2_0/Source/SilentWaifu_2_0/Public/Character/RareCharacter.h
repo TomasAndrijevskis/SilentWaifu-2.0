@@ -15,8 +15,4 @@ public:
 
 	ARareCharacter();
 	
-private:
-
-	UPROPERTY(EditAnywhere)
-	UAbilityComponent_Base* AbilityComponent;
 };

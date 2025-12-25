@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilityData.h"
 #include "CharacterRarities.generated.h"
 
 class ACharacterTemplate;
@@ -15,4 +16,7 @@ struct SILENTWAIFU_2_0_API FCharacterRarities: public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	int DropChance;
+
+	UPROPERTY(EditDefaultsOnly)
+	FAbilityData AbilityData;
 };

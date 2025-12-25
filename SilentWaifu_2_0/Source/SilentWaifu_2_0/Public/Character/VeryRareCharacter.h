@@ -15,9 +15,5 @@ class SILENTWAIFU_2_0_API AVeryRareCharacter : public ACharacterTemplate
 public:
 
 	AVeryRareCharacter();
-	
-private:
 
-	UPROPERTY(EditAnywhere)
-	UAbilityComponent_Base* AbilityComponent;
 };

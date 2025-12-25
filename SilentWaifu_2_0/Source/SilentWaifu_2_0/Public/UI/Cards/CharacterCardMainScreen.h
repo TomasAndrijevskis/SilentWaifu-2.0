@@ -40,6 +40,13 @@ private:
 
 	UFUNCTION()
 	void DisablePressedTimer();
+
+	void SetAbilityImage();
+
+	UTexture2D* GetAbilityImage();
+	
+	UPROPERTY(EditAnywhere)
+	UDataTable* RarityDataTable;
 	
 	FTimerHandle TimerHandle;
 };
