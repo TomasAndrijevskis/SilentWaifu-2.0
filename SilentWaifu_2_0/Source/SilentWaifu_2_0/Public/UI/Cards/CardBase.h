@@ -37,6 +37,8 @@ protected:
 
 	UFUNCTION()
 	virtual void Action(){};
+
+	virtual void ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image) {};
 	
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D ImageSize = FVector2D(340, 540);

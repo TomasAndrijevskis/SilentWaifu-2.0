@@ -30,22 +30,22 @@ void ULimitIncreaseCard::CreateCard()
 void ULimitIncreaseCard::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
-	
-	FButtonStyle CustomStyle;
-	// Normal Brush (Image)
-	FSlateBrush NormalBrush;
-	NormalBrush.SetResourceObject(NewImage);
-	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
-	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
-	NormalBrush.ImageSize = ImageSize;
-	
-	// Apply Brushes
-	CustomStyle.SetNormal(NormalBrush);
-	CustomStyle.SetHovered(NormalBrush);
-	CustomStyle.SetDisabled(NormalBrush);
-	CustomStyle.SetPressed(NormalBrush);
-	
-	Button_Image->SetStyle(CustomStyle);
+	FButtonStyle Style;
+	ApplyCardBrushStyle(Style.Normal, NewImage);
+	ApplyCardBrushStyle(Style.Hovered, NewImage);
+	ApplyCardBrushStyle(Style.Pressed, NewImage);
+	ApplyCardBrushStyle(Style.Disabled, NewImage);
+	Style.Disabled.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.2f)); 
+	Button_Image->SetStyle(Style);
+}
+
+
+void ULimitIncreaseCard::ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image)
+{
+	BrushStyle.SetResourceObject(Image);
+	BrushStyle.DrawAs = ESlateBrushDrawType::Image;
+	BrushStyle.Tiling = ESlateBrushTileType::NoTile;
+	BrushStyle.ImageSize = ImageSize;
 }
 
 

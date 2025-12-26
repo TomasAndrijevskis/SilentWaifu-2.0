@@ -21,6 +21,8 @@ protected:
 
 	virtual void Action() override;
 
+	virtual void ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image) override;
+	
 private:
 
 	UFUNCTION()

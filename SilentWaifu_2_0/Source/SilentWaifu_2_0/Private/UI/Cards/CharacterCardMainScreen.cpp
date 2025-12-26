@@ -27,55 +27,41 @@ void UCharacterCardMainScreen::OnCardCreated()
 void UCharacterCardMainScreen::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
-	
-	FButtonStyle CustomStyle;
+	FButtonStyle Style;
+	ApplyCardBrushStyle(Style.Normal, NewImage);
+	ApplyCardBrushStyle(Style.Hovered, NewImage);
+	Style.Hovered.TintColor = FSlateColor(FLinearColor(0.65f, .4f, .4f, 1.f)); 
+	ApplyCardBrushStyle(Style.Pressed, NewImage);
+	Style.Pressed.TintColor = FSlateColor(FLinearColor(0.65f, .2f, .2f, 1.f)); 
+	Button_Action->SetStyle(Style);
+}
 
-	// Normal Brush (Image)
-	FSlateBrush NormalBrush;
-	NormalBrush.SetResourceObject(NewImage);
-	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
-	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
-	NormalBrush.ImageSize = ImageSize;
-	
-	// Hovered Brush
-	FSlateBrush HoveredBrush;
-	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
-	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
-	HoveredBrush.ImageSize = ImageSize;
-	HoveredBrush.TintColor = FSlateColor(FLinearColor(0.65f, .4f, .4f, 1.f)); 
-	
-	// Apply Brushes
-	CustomStyle.SetNormal(NormalBrush);
-	CustomStyle.SetHovered(HoveredBrush);
-	CustomStyle.SetPressed(HoveredBrush);
-	
-	Button_Action->SetStyle(CustomStyle);
+
+void UCharacterCardMainScreen::ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image)
+{
+	BrushStyle.SetResourceObject(Image);
+	BrushStyle.DrawAs = ESlateBrushDrawType::Image;
+	BrushStyle.Tiling = ESlateBrushTileType::NoTile;
+	BrushStyle.ImageSize = ImageSize;
 }
 
 
 void UCharacterCardMainScreen::SetAbilityImage()
 {
 	UTexture2D* AbilityImage = GetAbilityImage();
-	FButtonStyle CustomStyle = Button_Ability->GetStyle();
-	
-	FSlateBrush NormalBrush = CustomStyle.Normal;
-	FSlateBrush HoveredBrush = CustomStyle.Hovered;
-	FSlateBrush PressedBrush = CustomStyle.Pressed;
-	
-	NormalBrush.SetResourceObject(AbilityImage);
-	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
-	
-	HoveredBrush.SetResourceObject(AbilityImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
-	
-	PressedBrush.SetResourceObject(AbilityImage);
-	PressedBrush.DrawAs = ESlateBrushDrawType::Image;
-	
-	CustomStyle.SetNormal(NormalBrush);
-	CustomStyle.SetHovered(HoveredBrush);
-	CustomStyle.SetPressed(PressedBrush);
-	Button_Ability->SetStyle(CustomStyle);
+	if (!AbilityImage) return;
+	FButtonStyle Style = Button_Ability->GetStyle();
+	ApplyAbilityBrushStyle(Style.Normal, AbilityImage);
+	ApplyAbilityBrushStyle(Style.Hovered, AbilityImage);
+	ApplyAbilityBrushStyle(Style.Pressed, AbilityImage);
+	Button_Ability->SetStyle(Style);
+}
+
+
+void UCharacterCardMainScreen::ApplyAbilityBrushStyle(FSlateBrush& BrushStyle, UTexture2D* AbilityImage) const
+{
+	BrushStyle.SetResourceObject(AbilityImage);
+	BrushStyle.DrawAs = ESlateBrushDrawType::Image;
 }
 
 

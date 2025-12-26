@@ -27,6 +27,8 @@ protected:
 	
 	virtual void Action() override;
 
+	virtual void ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* CardImage) override;
+	
 	UPROPERTY(EditAnywhere)
 	UWidgetReferenceDataAsset* WidgetReferences;
 	

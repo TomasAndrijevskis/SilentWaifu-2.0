@@ -53,9 +53,9 @@ void ACharacterTemplate::GetCharacterRow()
 void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 {
 	if (!WasOnScreen || !GameMode) return;
-	FDateTime ShutdownTime = GameMode->GetShutdownTime();
-	FDateTime CurrentTime = FDateTime::Now();
-	FTimespan ElapsedTime = CurrentTime - ShutdownTime;
+	const FDateTime ShutdownTime = GameMode->GetShutdownTime();
+	const FDateTime CurrentTime = FDateTime::Now();
+	const FTimespan ElapsedTime = CurrentTime - ShutdownTime;
 	int ElapsedSeconds = ElapsedTime.GetTotalSeconds();
 	if (ElapsedSeconds == TimeLeft)
 	{
@@ -72,7 +72,7 @@ void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 	{
 		IncreaseMoney();
 		ElapsedSeconds -= TimeLeft;
-		int AmountOfTimes = ElapsedSeconds / IncomeInterval;
+		const int AmountOfTimes = ElapsedSeconds / IncomeInterval;
 		TimeLeft = IncomeInterval - (ElapsedSeconds % IncomeInterval);
 		for (int i = 0; i < AmountOfTimes; i++) IncreaseMoney();
 	}

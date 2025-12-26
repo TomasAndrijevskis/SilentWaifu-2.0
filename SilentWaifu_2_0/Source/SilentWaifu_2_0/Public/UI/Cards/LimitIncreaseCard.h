@@ -26,6 +26,8 @@ protected:
 	
 	virtual void Action() override;
 
+	virtual void ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image) override;
+	
 	UFUNCTION()
 	virtual void SetPriceText(const FString& NewPriceText);
 

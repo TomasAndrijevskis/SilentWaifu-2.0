@@ -44,22 +44,13 @@ void UBackgroundCard::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
 	Image = NewImage;
-	FButtonStyle CustomStyle;
-
-	FSlateBrush NormalBrush;
-	NormalBrush.SetResourceObject(NewImage);
-	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
-	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
-	NormalBrush.ImageSize = ImageSize;
-	NormalBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
-		
-	FSlateBrush HoveredBrush;
-	HoveredBrush.SetResourceObject(NewImage);
-	HoveredBrush.DrawAs = ESlateBrushDrawType::Image;
-	HoveredBrush.Tiling = ESlateBrushTileType::NoTile;
-	HoveredBrush.ImageSize = ImageSize;
-	HoveredBrush.TintColor = FSlateColor(FLinearColor(.5f, .5f, .5f, 1.f));
-	
+	FButtonStyle Style;
+	ApplyCardBrushStyle(Style.Normal, NewImage);
+	Style.Normal.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
+	ApplyCardBrushStyle(Style.Hovered, NewImage);
+	Style.Normal.TintColor = FSlateColor(FLinearColor(.5f, .5f, .5f, 1.f));
+	ApplyCardBrushStyle(Style.Pressed, NewImage);
+	ApplyCardBrushStyle(Style.Disabled, NewImage);
 	if (IsBackgroundUnlocked())
 	{
 		Border->SetBrushColor(FLinearColor(0.f, 1.f, 0, 1.f));
@@ -67,16 +58,19 @@ void UBackgroundCard::SetImage(UTexture2D* NewImage)
 	else
 	{
 		Border->SetBrushColor(FLinearColor(1.f, 0.f, 0, 1.f)),
-		NormalBrush.TintColor = FSlateColor(FLinearColor(.3f, .3f, .3f, 1.f));
-		HoveredBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
+		Style.Normal.TintColor = FSlateColor(FLinearColor(.3f, .3f, .3f, 1.f));
+		Style.Hovered.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
 	}
-	
-	CustomStyle.SetNormal(NormalBrush);
-	CustomStyle.SetHovered(HoveredBrush);
-	CustomStyle.SetDisabled(NormalBrush);
-	CustomStyle.SetPressed(NormalBrush);
-	
-	Button_Action->SetStyle(CustomStyle);
+	Button_Action->SetStyle(Style);
+}
+
+
+void UBackgroundCard::ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* CardImage)
+{
+	BrushStyle.SetResourceObject(CardImage);
+	BrushStyle.DrawAs = ESlateBrushDrawType::Image;
+	BrushStyle.Tiling = ESlateBrushTileType::NoTile;
+	BrushStyle.ImageSize = ImageSize;
 }
 
 

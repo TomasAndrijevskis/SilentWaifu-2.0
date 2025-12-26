@@ -24,6 +24,8 @@ protected:
 	
 	virtual void Action() override;
 
+	virtual void ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image) override;
+	
 private:
 
 	UPROPERTY(meta = (BindWidget))
@@ -43,6 +45,8 @@ private:
 
 	void SetAbilityImage();
 
+	void ApplyAbilityBrushStyle(FSlateBrush& BrushStyle, UTexture2D* AbilityImage) const;
+	
 	UTexture2D* GetAbilityImage();
 	
 	UPROPERTY(EditAnywhere)

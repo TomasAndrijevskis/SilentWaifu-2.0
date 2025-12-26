@@ -25,30 +25,22 @@ void UCharacterCardShop::Init()
 void UCharacterCardShop::SetImage(UTexture2D* NewImage)
 {
 	if (!NewImage) return;
+	FButtonStyle Style;
+	ApplyCardBrushStyle(Style.Normal, NewImage);
+	ApplyCardBrushStyle(Style.Hovered, NewImage);
+	ApplyCardBrushStyle(Style.Pressed, NewImage);
+	ApplyCardBrushStyle(Style.Disabled, NewImage);
+	Style.Disabled.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.2f)); 
+	Button_CharacterImage->SetStyle(Style);
+}
 
-	FButtonStyle CustomStyle;
-	// Normal Brush (Image)
-	FSlateBrush NormalBrush;
-	NormalBrush.SetResourceObject(NewImage);
-	NormalBrush.DrawAs = ESlateBrushDrawType::Image;
-	NormalBrush.Tiling = ESlateBrushTileType::NoTile;
-	NormalBrush.ImageSize = ImageSize;
-	
-	// Disabled Brush
-	FSlateBrush DisabledBrush;
-	DisabledBrush.SetResourceObject(NewImage);
-	DisabledBrush.DrawAs = ESlateBrushDrawType::Image;
-	DisabledBrush.Tiling = ESlateBrushTileType::NoTile;
-	DisabledBrush.ImageSize = ImageSize;
-	DisabledBrush.TintColor = FSlateColor(FLinearColor(1.f, 1.f, 1.f, 0.3f)); 
-	
-	// Apply Brushes
-	CustomStyle.SetNormal(NormalBrush);
-	CustomStyle.SetHovered(NormalBrush);
-	CustomStyle.SetDisabled(DisabledBrush);
-	CustomStyle.SetPressed(NormalBrush);
-	
-	Button_CharacterImage->SetStyle(CustomStyle);
+
+void UCharacterCardShop::ApplyCardBrushStyle(FSlateBrush& BrushStyle, UTexture2D* Image)
+{
+	BrushStyle.SetResourceObject(Image);
+	BrushStyle.DrawAs = ESlateBrushDrawType::Image;
+	BrushStyle.Tiling = ESlateBrushTileType::NoTile;
+	BrushStyle.ImageSize = ImageSize;
 }
 
 
