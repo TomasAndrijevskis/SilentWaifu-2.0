@@ -31,6 +31,8 @@ public:
 	int GetId() const;
 
 	float GetLeftTime() const;
+
+	void ActivateAbility();
 	
 	FOnCharacterLoadedSignature OnCharacterLoadedDelegate;
 

@@ -38,7 +38,7 @@ public:
 	
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
-	FOnCharacterSpawnedSignature OnCharacterSpawnedDelegate;;
+	FOnCharacterSpawnedSignature OnCharacterSpawnedDelegate;
 
 	FOnBackgroundSetSignature OnBackgroundSetDelegate;
 	

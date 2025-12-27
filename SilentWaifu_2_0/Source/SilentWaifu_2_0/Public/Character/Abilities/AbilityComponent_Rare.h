@@ -13,6 +13,6 @@ class SILENTWAIFU_2_0_API UAbilityComponent_Rare : public UAbilityComponent_Base
 
 protected:
 
-	virtual void Action() override;
+	//virtual void Action() override;
 	
 };

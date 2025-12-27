@@ -32,7 +32,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	virtual void Action() {};
+	virtual void Action();
 	
 	bool IsAbilityActive() const;
 

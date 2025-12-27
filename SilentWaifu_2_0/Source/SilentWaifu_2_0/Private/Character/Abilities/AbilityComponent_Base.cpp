@@ -18,6 +18,12 @@ void UAbilityComponent_Base::BeginPlay()
 }
 
 
+void UAbilityComponent_Base::Action()
+{
+	UE_LOG(LogTemp, Error, TEXT("Ability used"));
+}
+
+
 void UAbilityComponent_Base::SetManagers()
 {
 	const ASilentWaifuGameMode* GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));

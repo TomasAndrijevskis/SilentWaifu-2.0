@@ -86,6 +86,12 @@ void ACharacterTemplate::UpdateLevel(const int NewLevel)
 }
 
 
+void ACharacterTemplate::ActivateAbility()
+{
+	AbilityComponent->OnAbilityActivatedDelegate.Broadcast();
+}
+
+
 void ACharacterTemplate::EnableTimer()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);

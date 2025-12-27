@@ -17,7 +17,6 @@ void UCharactersManager::Init(UDataTable* DataTable)
 
 void UCharactersManager::SpawnCharacters()
 {
-	UE_LOG(LogTemp, Error, TEXT("SpawnCharacters"));
 	for (auto& Character : GetAvailableCharacters())
 	{
 		if (Character.Value.bIsOnScreen == true)
@@ -43,6 +42,7 @@ void UCharactersManager::SpawnCharacter(const int CharacterId)
 	ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(AvailableCharacters.FindRef(CharacterId).CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
 	if (!Actor) return;
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
+	if (!Data) return;
 	Actor->SetValues(CharacterId, Data->Level, Data->TimeLeft);
 	Actor->WasPreviouslyOnScreenDelegate.Broadcast(false);
 	Data->bIsOnScreen = true;
@@ -56,16 +56,13 @@ void UCharactersManager::SpawnCharacter(const int CharacterId)
 void UCharactersManager::RemoveCharacter(const int CharacterId)
 {
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
-	if (IsValid(Data->SpawnedCharacter))
-	{
-		Data->SpawnedCharacter->Destroy();
-	}
-	TakenPositions.Remove(Data->Position);
+	if (IsValid(Data->SpawnedCharacter)) Data->SpawnedCharacter->Destroy();
 	Data->bIsOnScreen = false;
-	GameMode->OnCharacterRemoved(Data->Position);
 	Data->Position = INDEX_NONE;
 	Data->TimeLeft = 60;
 	Data->SpawnedCharacter = nullptr;
+	TakenPositions.Remove(Data->Position);
+	GameMode->OnCharacterRemoved(Data->Position);
 }
 
 

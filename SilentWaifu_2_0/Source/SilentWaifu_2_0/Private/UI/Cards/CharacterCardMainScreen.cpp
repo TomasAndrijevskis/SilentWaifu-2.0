@@ -1,5 +1,6 @@
 
 #include "UI/Cards/CharacterCardMainScreen.h"
+#include "Character/CharacterTemplate.h"
 #include "Components/Button.h"
 #include "DataTables/CharacterData.h"
 #include "DataTables/CharacterRarities.h"
@@ -14,6 +15,7 @@ void UCharacterCardMainScreen::Init()
 	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
 	Button_Ability->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::ActivateAbility);
 	OnCardCreatedDelegate.AddUniqueDynamic(this, &UCharacterCardMainScreen::OnCardCreated);
+	OnCardCreatedDelegate.AddUniqueDynamic(this, &UCharacterCardMainScreen::HandleAbilityButtonState);
 }
 
 
@@ -65,30 +67,62 @@ void UCharacterCardMainScreen::ApplyAbilityBrushStyle(FSlateBrush& BrushStyle, U
 }
 
 
-UTexture2D* UCharacterCardMainScreen::GetAbilityImage()
+void UCharacterCardMainScreen::ActivateAbility()
 {
-	if (!RarityDataTable) return nullptr;
-	const FName CharacterRarityName = StaticEnum<ERarities>()->GetNameByValue(static_cast<int64>(GetCharacterData()->Rarity));
-	const FCharacterRarities* Row = RarityDataTable->FindRow<FCharacterRarities>(CharacterRarityName, TEXT("Find ability image"));
-	return Row ? Row->AbilityData.Icon : nullptr;
+	FSavedCharactersData* Data = GetCharactersSavedData();
+	if (!Data || !Data->SpawnedCharacter) return;
+	Data->SpawnedCharacter->ActivateAbility();
+	Data->AbilityData.UsageTime = FDateTime::Now();
+	Data->AbilityData.WasAbilityUsed = true;
+	HandleAbilityButtonState();
 }
 
 
-void UCharacterCardMainScreen::ActivateAbility()
+void UCharacterCardMainScreen::HandleAbilityButtonState()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Activating Ability"));
+	bool bCanUseAbility = CanUseAbility();
+	Button_Ability->SetIsEnabled(bCanUseAbility);
+	FSavedCharactersData* Data = GetCharactersSavedData();
+	if (!Data) return;
+	if (bCanUseAbility) Data->AbilityData.WasAbilityUsed = false;
+	else SetCooldownTimer();
+}
+
+
+void UCharacterCardMainScreen::SetCooldownTimer()
+{
+	if (GetWorld()->GetTimerManager().IsTimerActive(CooldownTimerHandle)) return;
+	FSavedCharactersData* Data = GetCharactersSavedData();
+	FCharacterRarities* RarityRow = GetCharacterRarity();
+	if (!Data || !RarityRow) return;
+	int CooldownHours = RarityRow->AbilityData.Cooldown;
+	FDateTime CooldownEndTime = Data->AbilityData.UsageTime + FTimespan::FromHours(CooldownHours);
+	float CooldownTimeLeft = (CooldownEndTime - FDateTime::Now()).GetTotalSeconds();
+	if (CooldownTimeLeft <= 0.f)
+	{
+		HandleAbilityButtonState();
+		return;
+	}
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimerHandle, this, &UCharacterCardMainScreen::OnCooldownFinished, .1f, false, CooldownTimeLeft);
+}
+
+
+void UCharacterCardMainScreen::OnCooldownFinished()
+{
+	GetWorld()->GetTimerManager().ClearTimer(CooldownTimerHandle);
+	HandleAbilityButtonState();
 }
 
 
 void UCharacterCardMainScreen::EnablePressedTimer()
 {
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCharacterCardMainScreen::Action, 1, false);
+	GetWorld()->GetTimerManager().SetTimer(PressedTimerHandle, this, &UCharacterCardMainScreen::Action, 1, false);
 }
 
 
 void UCharacterCardMainScreen::DisablePressedTimer()
 {
-	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(PressedTimerHandle);
 }
 
 
@@ -96,4 +130,38 @@ void UCharacterCardMainScreen::Action()
 {
 	if (!CharactersManager) return;
 	CharactersManager->RemoveCharacter(CharacterId);
+}
+
+
+FSavedCharactersData* UCharacterCardMainScreen::GetCharactersSavedData() const
+{
+	return CharactersManager ? CharactersManager->GetAvailableCharacters().Find(CharacterId) : nullptr;
+}
+
+
+FCharacterRarities* UCharacterCardMainScreen::GetCharacterRarity()
+{
+	if (!RarityDataTable) return nullptr;
+	const FName CharacterRarityName = StaticEnum<ERarities>()->GetNameByValue(static_cast<int64>(GetCharacterData()->Rarity));
+	FCharacterRarities* RarityRow = RarityDataTable->FindRow<FCharacterRarities>(CharacterRarityName, TEXT("Find ability image"));
+	return RarityRow;
+}
+
+
+bool UCharacterCardMainScreen::CanUseAbility()
+{
+	FSavedCharactersData* Data = GetCharactersSavedData();
+	FCharacterRarities* RarityRow = GetCharacterRarity();
+	if (!Data || !RarityRow) return false;
+	if (!Data->AbilityData.WasAbilityUsed) return true;
+	int CooldownHours = RarityRow->AbilityData.Cooldown;
+	FDateTime CooldownEndTime = Data->AbilityData.UsageTime + FTimespan::FromHours(CooldownHours);
+	return FDateTime::Now() >= CooldownEndTime;
+}
+
+
+UTexture2D* UCharacterCardMainScreen::GetAbilityImage()
+{
+	FCharacterRarities* RarityRow = GetCharacterRarity();
+	return RarityRow ? RarityRow->AbilityData.Icon : nullptr;
 }

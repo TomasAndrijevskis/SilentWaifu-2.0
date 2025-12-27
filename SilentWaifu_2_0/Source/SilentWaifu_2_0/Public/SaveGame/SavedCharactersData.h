@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SavedAbilityData.h"
 #include "SavedCharactersData.generated.h"
 
 class ACharacterTemplate;
@@ -30,4 +31,7 @@ struct SILENTWAIFU_2_0_API FSavedCharactersData: public FTableRowBase
 
 	UPROPERTY()
 	int TimeLeft = 60;
+
+	UPROPERTY()
+	FSavedAbilityData AbilityData;
 };

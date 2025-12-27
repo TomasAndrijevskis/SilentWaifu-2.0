@@ -3,6 +3,8 @@
 
 #include "CoreMinimal.h"
 #include "CharacterCard.h"
+#include "DataTables/CharacterRarities.h"
+#include "SaveGame/SavedCharactersData.h"
 #include "CharacterCardMainScreen.generated.h"
 
 
@@ -43,14 +45,30 @@ private:
 	UFUNCTION()
 	void DisablePressedTimer();
 
+	UFUNCTION()
+	void HandleAbilityButtonState();
+	
 	void SetAbilityImage();
 
 	void ApplyAbilityBrushStyle(FSlateBrush& BrushStyle, UTexture2D* AbilityImage) const;
+
+	FSavedCharactersData* GetCharactersSavedData() const;
+
+	FCharacterRarities* GetCharacterRarity();
+	
+	bool CanUseAbility();
 	
 	UTexture2D* GetAbilityImage();
+	
+	void SetCooldownTimer();
+
+	UFUNCTION()
+	void OnCooldownFinished();
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* RarityDataTable;
 	
-	FTimerHandle TimerHandle;
+	FTimerHandle PressedTimerHandle;
+
+	FTimerHandle CooldownTimerHandle;
 };

@@ -32,10 +32,10 @@ public:
 private:
 
 	UFUNCTION()
-	void SetTimerUntilEventStarts();
+	void HandleEventStart();
 
 	UFUNCTION()
-	void SetTimerUntilEventEnds();
+	void HandleEventEnd();
 	
 	FDateTime EventStartTime;
 
