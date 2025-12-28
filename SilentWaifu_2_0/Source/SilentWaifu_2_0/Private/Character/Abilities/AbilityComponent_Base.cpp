@@ -10,7 +10,6 @@ void UAbilityComponent_Base::BeginPlay()
 	Super::BeginPlay();
 	SetManagers();
 	if (!CharactersManager || !MoneyManager) return;
-	UE_LOG(LogTemp, Error, TEXT("UAbilityComponent_Base::BeginPlay"));
 	CharacterRef = Cast<ACharacterTemplate>(GetOwner());
 	if (!CharacterRef) return;
 	OnCharacterIdRequestDelegate.AddUniqueDynamic(this, &UAbilityComponent_Base::SetCharacterID);
