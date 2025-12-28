@@ -9,8 +9,7 @@ void UAbilityComponent_Elite::Action()
 	const int CurrentMoney = MoneyManager->GetCurrentMoney();
 	if (CurrentMoney == 0) return;
 	const int RoundedMoney = RoundDigits(CurrentMoney);
-	MoneyManager->DecreaseMoney(MoneyManager->GetCurrentMoney());
-	MoneyManager->IncreaseMoney(RoundedMoney);
+	MoneyManager->IncreaseMoney(RoundedMoney - MoneyManager->GetCurrentMoney());
 }
 
 

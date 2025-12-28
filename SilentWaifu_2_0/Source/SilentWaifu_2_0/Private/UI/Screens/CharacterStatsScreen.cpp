@@ -6,6 +6,7 @@
 #include "Components/ScaleBox.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "DataTables/CharacterRarities.h"
 #include "UI/WidgetReferenceDataAsset.h"
 
 
@@ -14,6 +15,7 @@ void UCharacterStatsScreen::Init(FCharacterData* CharacterData)
 	if (!CharacterData) return;
 	CharacterRow = CharacterData;
 	CreateSlots(CharacterRow->Numbers.MaxLevel);
+	SetAbilityInfo();
 	Button_Close->OnClicked.AddDynamic(this, &UCharacterStatsScreen::RemoveStatsScreen);
 }
 
@@ -46,6 +48,18 @@ void UCharacterStatsScreen::FillSlots()
 			Level++;
 		}
 	}
+}
+
+
+void UCharacterStatsScreen::SetAbilityInfo()
+{
+	if (!RarityDataTable || !CharacterRow) return;
+	const FName CharacterRarityName = StaticEnum<ERarities>()->GetNameByValue(static_cast<int64>(CharacterRow->Rarity));
+	FCharacterRarities* RarityRow = RarityDataTable->FindRow<FCharacterRarities>(CharacterRarityName, TEXT("Find rarity row"));
+	if (!RarityRow) return;
+
+	Text_AbilityDescription->SetText(FText::FromString(RarityRow->AbilityData.Description));
+	Text_CoolDown->SetText(FText::AsNumber(RarityRow->AbilityData.Cooldown));
 }
 
 

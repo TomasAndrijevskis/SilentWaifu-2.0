@@ -47,6 +47,8 @@ private:
 
 	void FillSlots();
 
+	void SetAbilityInfo();
+	
 	UScaleBox* CreateLevelStatLine(int Level);
 	
 	UTextBlock* CreateTextBlock(const FString& Text, int FontSize);
@@ -55,6 +57,9 @@ private:
 
 	UFUNCTION()
 	void RemoveStatsScreen();
+
+	UPROPERTY(EditAnywhere)
+	UDataTable* RarityDataTable;
 	
 	FCharacterData* CharacterRow;
 
