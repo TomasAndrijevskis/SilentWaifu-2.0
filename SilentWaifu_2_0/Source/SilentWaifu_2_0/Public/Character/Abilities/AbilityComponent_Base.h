@@ -26,13 +26,15 @@ public:
 	
 	UFUNCTION()
 	void SetCharacterID(int NewId);
+
+	int GetCharacterID() const;
 	
 protected:
 	
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	virtual void Action();
+	virtual void Action(){};
 	
 	bool IsAbilityActive() const;
 
@@ -45,6 +47,9 @@ protected:
 
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
+
+	UPROPERTY()
+	ACharacterTemplate* CharacterRef;
 	
 private:
 
@@ -64,9 +69,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	FString AbilityName;
-
-	UPROPERTY()
-	ACharacterTemplate* CharacterRef;
 
 	int CharacterId;
 };

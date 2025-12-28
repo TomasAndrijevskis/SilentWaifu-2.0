@@ -57,12 +57,12 @@ void UCharactersManager::RemoveCharacter(const int CharacterId)
 {
 	FSavedCharactersData* Data = AvailableCharacters.Find(CharacterId);
 	if (IsValid(Data->SpawnedCharacter)) Data->SpawnedCharacter->Destroy();
+	TakenPositions.Remove(Data->Position);
 	Data->bIsOnScreen = false;
+	GameMode->OnCharacterRemoved(Data->Position);
 	Data->Position = INDEX_NONE;
 	Data->TimeLeft = 60;
 	Data->SpawnedCharacter = nullptr;
-	TakenPositions.Remove(Data->Position);
-	GameMode->OnCharacterRemoved(Data->Position);
 }
 
 

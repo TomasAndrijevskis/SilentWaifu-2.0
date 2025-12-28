@@ -125,7 +125,7 @@ int ACharacterTemplate::GetMoneyPerMinute() const
 
 int ACharacterTemplate::GetMoneyPerHour() const
 {
-	return  CharacterRow->Numbers.CoinsPerLevel[Level-1];
+	return CharacterRow->Numbers.CoinsPerLevel[Level-1];
 }
 
 

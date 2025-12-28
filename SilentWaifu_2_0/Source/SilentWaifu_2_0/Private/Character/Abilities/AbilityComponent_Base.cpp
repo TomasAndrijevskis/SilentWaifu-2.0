@@ -18,12 +18,6 @@ void UAbilityComponent_Base::BeginPlay()
 }
 
 
-void UAbilityComponent_Base::Action()
-{
-	UE_LOG(LogTemp, Error, TEXT("Ability used"));
-}
-
-
 void UAbilityComponent_Base::SetManagers()
 {
 	const ASilentWaifuGameMode* GameMode = Cast<ASilentWaifuGameMode>(UGameplayStatics::GetGameMode(this));
@@ -36,6 +30,12 @@ void UAbilityComponent_Base::SetManagers()
 void UAbilityComponent_Base::SetCharacterID(int NewId)
 {
 	CharacterId = NewId;
+}
+
+
+int UAbilityComponent_Base::GetCharacterID() const
+{
+	return CharacterId;
 }
 
 
