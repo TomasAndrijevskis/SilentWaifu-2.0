@@ -17,6 +17,5 @@ void UAbilityComponent_Legendary::Action()
 		if (!IsValid(Character)) continue;
 		OverallMoney += Cast<ACharacterTemplate>(Character)->GetMoneyPerHour() * 2;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("OverallMoney: %i"), OverallMoney);
 	MoneyManager->IncreaseMoney(OverallMoney);
 }
