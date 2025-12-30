@@ -18,7 +18,7 @@ void ACharacterTemplate::BeginPlay()
 	MoneyManager = GameMode->MoneyManager;
 	CharactersManager = GameMode->CharactersManager;
 	if (!MoneyManager || !CharactersManager) return;
-	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableTimer);
+	OnCharacterLoadedDelegate.AddDynamic(this, &ACharacterTemplate::EnableIncomeTimer);
 	OnValuesUpdatedDelegate.AddDynamic(this, &ACharacterTemplate::SetMoney);
 	WasPreviouslyOnScreenDelegate.AddDynamic(this, &ACharacterTemplate::HandleOfflineIncome);
 }
@@ -36,13 +36,13 @@ void ACharacterTemplate::SetValues(const int NewId, const int NewLevel, const in
 
 void ACharacterTemplate::SetMoney()
 {
-	if (!CharacterRow) GetCharacterRow();
+	if (!CharacterRow) SetCharacterRow();
 	MoneyPerMinute = CharacterRow->Numbers.CoinsPerLevel[Level-1] / 60;
 	OnCharacterLoadedDelegate.Broadcast();
 }
 
 
-void ACharacterTemplate::GetCharacterRow()
+void ACharacterTemplate::SetCharacterRow()
 {
 	if (!CharacterDataTable) return;
 	const FName RowName = FName(*FString::FromInt(Id));
@@ -70,11 +70,12 @@ void ACharacterTemplate::HandleOfflineIncome(const bool WasOnScreen)
 	}
 	if (ElapsedSeconds > TimeLeft)
 	{
-		IncreaseMoney();
+		const FDateTime FirstPayoutTime = ShutdownTime + FTimespan::FromSeconds(TimeLeft);
+		IncreaseMoneyAtTime(FirstPayoutTime);
 		ElapsedSeconds -= TimeLeft;
 		const int AmountOfTimes = ElapsedSeconds / IncomeInterval;
 		TimeLeft = IncomeInterval - (ElapsedSeconds % IncomeInterval);
-		for (int i = 0; i < AmountOfTimes; i++) IncreaseMoney();
+		for (int i = 0; i < AmountOfTimes; i++) IncreaseMoneyAtTime(FirstPayoutTime + FTimespan::FromSeconds(i * IncomeInterval));
 	}
 }
 
@@ -92,7 +93,7 @@ void ACharacterTemplate::ActivateAbility()
 }
 
 
-void ACharacterTemplate::EnableTimer()
+void ACharacterTemplate::EnableIncomeTimer()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterTemplate::CheckTime, 1, true);
@@ -117,6 +118,25 @@ void ACharacterTemplate::IncreaseMoney() const
 }
 
 
+void ACharacterTemplate::IncreaseMoneyAtTime(const FDateTime& Time) const
+{
+	if (!MoneyManager) return;
+	MoneyManager->IncreaseMoney(MoneyPerMinute * GetMoneyMultiplier(Time));
+}
+
+
+int ACharacterTemplate::GetMoneyMultiplier(const FDateTime& Time) const
+{
+	return 1;
+}
+
+
+FCharacterData* ACharacterTemplate::GetCharacterRow() const
+{
+	return CharacterRow;
+}
+
+
 int ACharacterTemplate::GetMoneyPerMinute() const
 {
 	return MoneyPerMinute;
@@ -125,7 +145,7 @@ int ACharacterTemplate::GetMoneyPerMinute() const
 
 int ACharacterTemplate::GetMoneyPerHour() const
 {
-	return CharacterRow->Numbers.CoinsPerLevel[Level-1];
+	return CharacterRow->Numbers.CoinsPerLevel[Level-1] * GetMoneyMultiplier(FDateTime::Now());
 }
 
 

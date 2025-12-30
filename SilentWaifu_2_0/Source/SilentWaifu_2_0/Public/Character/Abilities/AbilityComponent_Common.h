@@ -10,8 +10,16 @@ UCLASS()
 class SILENTWAIFU_2_0_API UAbilityComponent_Common : public UAbilityComponent_Base
 {
 	GENERATED_BODY()
+
+public:
+
+	int GetAbilityDuration() const;
 	
 protected:
 
 	virtual void Action() override;
+
+private:
+
+	int DurationHours = 2;
 };

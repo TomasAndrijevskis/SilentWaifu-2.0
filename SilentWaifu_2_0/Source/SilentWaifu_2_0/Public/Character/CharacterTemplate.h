@@ -26,7 +26,7 @@ public:
 
 	int GetMoneyPerMinute() const;
 
-	int GetMoneyPerHour() const;
+	virtual int GetMoneyPerHour() const;
 	
 	int GetId() const;
 
@@ -44,53 +44,59 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	virtual void SetMoney();
+
+	void SetCharacterRow();
+
+	void IncreaseMoney() const;
+
+	void IncreaseMoneyAtTime(const FDateTime& Time) const;
+	
+	virtual int GetMoneyMultiplier(const FDateTime& Time) const;
+	
+	FCharacterData* GetCharacterRow() const;
+	
 	UPROPERTY(EditAnywhere)
 	UAbilityComponent_Base* AbilityComponent;
+
+	UPROPERTY()
+	UCharactersManager* CharactersManager;
+
+	UPROPERTY()
+	ASilentWaifuGameMode* GameMode;
+
+	UPROPERTY(VisibleAnywhere)
+	int MoneyPerMinute;
+	
+	UPROPERTY(VisibleAnywhere)
+	int Level;
+	
+	int TimeLeft;
+
+	int IncomeInterval = 60;
 	
 private:
 
 	UFUNCTION()
-	void SetMoney();
-	
-	void IncreaseMoney() const;
-
-	UFUNCTION()
-	void EnableTimer();
+	void EnableIncomeTimer();
 
 	UFUNCTION()
 	void CheckTime();
-	
-	void GetCharacterRow();
 
 	UFUNCTION()
 	void HandleOfflineIncome(const bool WasOnScreen);
 	
-	UPROPERTY()
-	ASilentWaifuGameMode* GameMode;
-
 	UPROPERTY(EditAnywhere)
 	UDataTable* CharacterDataTable;
-	
-	UPROPERTY(VisibleAnywhere)
-	int MoneyPerMinute;
-
-	UPROPERTY(VisibleAnywhere)
-	int Level;
 
 	UPROPERTY(VisibleAnywhere)
 	int Id;
 
 	UPROPERTY()
 	UMoneyManager* MoneyManager;
-
-	UPROPERTY()
-	UCharactersManager* CharactersManager;
-	
-	FCharacterData* CharacterRow;
 	
 	FTimerHandle TimerHandle;
 
-	int IncomeInterval = 60;
-
-	int TimeLeft;
+	FCharacterData* CharacterRow;
 };

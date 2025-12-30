@@ -15,6 +15,7 @@ void UMoneyManager::Init(UDataTable* DataTable)
 
 void UMoneyManager::IncreaseMoney(const int Money)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Money: %i"), Money);
 	if (CurrentMoney + Money < MaxMoney) CurrentMoney += Money;
 	else CurrentMoney = MaxMoney;
 	OnCurrentMoneyChangedDelegate.Broadcast(CurrentMoney);

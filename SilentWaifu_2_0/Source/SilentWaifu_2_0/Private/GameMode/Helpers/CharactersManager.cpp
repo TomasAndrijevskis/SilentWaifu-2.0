@@ -21,10 +21,7 @@ void UCharactersManager::SpawnCharacters()
 	{
 		if (Character.Value.bIsOnScreen == true)
 		{
-			if (IsValid(Character.Value.SpawnedCharacter))
-			{
-				Character.Value.SpawnedCharacter->Destroy();
-			}
+			if (IsValid(Character.Value.SpawnedCharacter)) Character.Value.SpawnedCharacter->Destroy();
 			FActorSpawnParameters SpawnParameters;
 			ACharacterTemplate* Actor = GetWorld()->SpawnActor<ACharacterTemplate>(Character.Value.CharacterClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
 			Character.Value.SpawnedCharacter = Actor;
