@@ -8,6 +8,9 @@
 #include "CharacterCardMainScreen.generated.h"
 
 
+class UCharacterAbilityCooldownPanel;
+class UHorizontalBox;
+class UTextBlock;
 class UWidgetReferenceDataAsset;
 class UButton;
 
@@ -33,6 +36,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Ability;
 
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* HorizontalBox_CooldownTimer;
+	
 	UFUNCTION()
 	void OnCardCreated();
 	
@@ -64,6 +70,22 @@ private:
 
 	UFUNCTION()
 	void OnCooldownFinished();
+	
+	FDateTime GetCooldownEndTime();
+
+	UFUNCTION()
+	void CreateAbilityCooldownPanel();
+
+	UFUNCTION()
+	void RemoveAbilityCooldownPanel();
+
+	void RebindActions(bool IsCooldownPanelCreated);
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCharacterAbilityCooldownPanel> CharacterAbilityCooldownPanelClass;
+
+	UPROPERTY()
+	UCharacterAbilityCooldownPanel* CharacterAbilityCooldownPanelRef;
 	
 	UPROPERTY(EditAnywhere)
 	UDataTable* RarityDataTable;

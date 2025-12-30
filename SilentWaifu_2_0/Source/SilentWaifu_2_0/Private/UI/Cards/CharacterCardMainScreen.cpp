@@ -2,9 +2,12 @@
 #include "UI/Cards/CharacterCardMainScreen.h"
 #include "Character/CharacterTemplate.h"
 #include "Components/Button.h"
+#include "Components/HorizontalBox.h"
+#include "Components/TextBlock.h"
 #include "DataTables/CharacterData.h"
 #include "DataTables/CharacterRarities.h"
 #include "GameMode/Helpers/CharactersManager.h"
+#include "UI/CharacterAbilityCooldownPanel.h"
 
 
 void UCharacterCardMainScreen::Init()
@@ -13,6 +16,7 @@ void UCharacterCardMainScreen::Init()
 	Button_Action->OnClicked.Clear();
 	Button_Action->OnPressed.AddDynamic(this, &UCharacterCardMainScreen::EnablePressedTimer);
 	Button_Action->OnReleased.AddDynamic(this, &UCharacterCardMainScreen::DisablePressedTimer);
+	Button_Action->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::CreateAbilityCooldownPanel);
 	Button_Ability->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::ActivateAbility);
 	OnCardCreatedDelegate.AddUniqueDynamic(this, &UCharacterCardMainScreen::OnCardCreated);
 	OnCardCreatedDelegate.AddUniqueDynamic(this, &UCharacterCardMainScreen::HandleAbilityButtonState);
@@ -92,12 +96,7 @@ void UCharacterCardMainScreen::HandleAbilityButtonState()
 void UCharacterCardMainScreen::SetCooldownTimer()
 {
 	if (GetWorld()->GetTimerManager().IsTimerActive(CooldownTimerHandle)) return;
-	FSavedCharactersData* Data = GetCharactersSavedData();
-	FCharacterRarities* RarityRow = GetCharacterRarity();
-	if (!Data || !RarityRow) return;
-	int CooldownHours = RarityRow->AbilityData.Cooldown;
-	FDateTime CooldownEndTime = Data->AbilityData.UsageTime + FTimespan::FromHours(CooldownHours);
-	float CooldownTimeLeft = (CooldownEndTime - FDateTime::Now()).GetTotalSeconds();
+	float CooldownTimeLeft = (GetCooldownEndTime() - FDateTime::Now()).GetTotalSeconds();
 	if (CooldownTimeLeft <= 0.f)
 	{
 		HandleAbilityButtonState();
@@ -111,6 +110,46 @@ void UCharacterCardMainScreen::OnCooldownFinished()
 {
 	GetWorld()->GetTimerManager().ClearTimer(CooldownTimerHandle);
 	HandleAbilityButtonState();
+}
+
+
+FDateTime UCharacterCardMainScreen::GetCooldownEndTime()
+{
+	const FSavedCharactersData* Data = GetCharactersSavedData();
+	const FCharacterRarities* RarityRow = GetCharacterRarity();
+	if (!Data || !RarityRow) return 0;
+	const int CooldownHours = RarityRow->AbilityData.Cooldown;
+	return Data->AbilityData.UsageTime + FTimespan::FromHours(CooldownHours);
+}
+
+
+void UCharacterCardMainScreen::CreateAbilityCooldownPanel()
+{
+	if (!CharacterAbilityCooldownPanelClass) return;
+	CharacterAbilityCooldownPanelRef = Cast<UCharacterAbilityCooldownPanel>(CreateWidget(GetWorld(), CharacterAbilityCooldownPanelClass));
+	if (!CharacterAbilityCooldownPanelRef) return;
+	CharacterAbilityCooldownPanelRef->Init(GetCooldownEndTime());
+	CharacterAbilityCooldownPanelRef->OnCooldownEndedDelegate.AddUniqueDynamic(this, &UCharacterCardMainScreen::RemoveAbilityCooldownPanel);
+	HorizontalBox_CooldownTimer->AddChild(CharacterAbilityCooldownPanelRef);
+	RebindActions(true);
+}
+
+
+void UCharacterCardMainScreen::RemoveAbilityCooldownPanel()
+{
+	if (!CharacterAbilityCooldownPanelRef) return;
+	HorizontalBox_CooldownTimer->RemoveChildAt(0);
+	CharacterAbilityCooldownPanelRef->RemoveFromParent();
+	CharacterAbilityCooldownPanelRef = nullptr;
+	RebindActions(false);
+}
+
+
+void UCharacterCardMainScreen::RebindActions(bool IsCooldownPanelCreated)
+{
+	Button_Action->OnClicked.Clear();
+	if (!IsCooldownPanelCreated) Button_Action->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::CreateAbilityCooldownPanel);
+	else Button_Action->OnClicked.AddUniqueDynamic(this, &UCharacterCardMainScreen::RemoveAbilityCooldownPanel);
 }
 
 

@@ -28,7 +28,7 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_OverallMoney;
 	
-	void SetCountdown();
+	void OnTimerFinished();
 	
 	void SetOverallMoney();
 
