@@ -19,6 +19,7 @@
 #include "UI/Screens/BackgroundMenu.h"
 #include "UI/Screens/CharacterMenuShop.h"
 #include "UI/Screens/EventScreen.h"
+#include "UI/Screens/Guide.h"
 #include "UI/Screens/SettingsScreen.h"
 
 
@@ -29,6 +30,13 @@ void UMainScreen::NativeConstruct()
 	BindDelegates();
 	CreateSlots();
 	CreateMoneyPanel();
+	if (IsFirstLoad) CreateGuide();
+}
+
+
+void UMainScreen::SetIsFirstLoad(bool bIsFirstLoad)
+{
+	IsFirstLoad = bIsFirstLoad;
 }
 
 
@@ -57,6 +65,14 @@ void UMainScreen::BindDelegates()
 	EventsManager->HasEventStartedDelegate.AddDynamic(this, &UMainScreen::HandleEvent);
 }
 
+
+void UMainScreen::CreateGuide()
+{
+	if (!GuideClass) return;
+	GuideRef = Cast<UGuide>(CreateWidget(this, GuideClass));
+	if (!GuideRef) return;
+	GuideRef->AddToViewport(10);
+}
 
 void UMainScreen::CreateConfirmationWindow(bool IsEvent)
 {

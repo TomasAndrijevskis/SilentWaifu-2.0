@@ -61,6 +61,8 @@ public:
 
 	UFUNCTION()
 	void SaveEventMoney();
+
+	bool GetIsFirstLoad() const;
 	
 	FOnGameModeLoadedSignature OnGameModeLoadedDelegate;
 	
@@ -108,4 +110,6 @@ private:
 	
 	UPROPERTY()
 	UBackgroundManager* BackgroundManager;
+
+	bool IsFirstLoad;
 };

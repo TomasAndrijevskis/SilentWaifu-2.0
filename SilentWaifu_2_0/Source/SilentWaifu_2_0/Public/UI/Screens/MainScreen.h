@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+class UGuide;
 class UEventsManager;
 class UBackgroundManager;
 class UImage;
@@ -35,6 +36,10 @@ public:
 
 	UFUNCTION()
 	void RemoveConfirmationWindow();
+
+	void CreateGuide();
+
+	void SetIsFirstLoad(bool bIsFirstLoad);
 	
 	FOnCharacterRemovedSignature OnCharacterRemovedDelegate;
 
@@ -128,7 +133,16 @@ private:
 
 	UPROPERTY()
 	UEventsManager* EventsManager;
+
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGuide> GuideClass;
+	
+	UPROPERTY()
+	UGuide* GuideRef;
 	
 	int AmountOfSlots = 5;
+
+	bool IsFirstLoad = false;
 };
 

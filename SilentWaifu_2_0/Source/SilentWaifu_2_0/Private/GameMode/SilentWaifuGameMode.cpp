@@ -75,6 +75,7 @@ void ASilentWaifuGameMode::CreateMainScreenWidget()
 	if (!WidgetReferences || !WidgetReferences->MainScreenClass) return;
 	WidgetReferences->MainScreenRef = Cast<UMainScreen>(CreateWidget(GetWorld(), WidgetReferences->MainScreenClass));
 	if (!WidgetReferences->MainScreenRef) return;
+	WidgetReferences->MainScreenRef->SetIsFirstLoad(GameInstance->GetIsFirstLoad());
 	WidgetReferences->MainScreenRef->AddToViewport(0);
 }
 

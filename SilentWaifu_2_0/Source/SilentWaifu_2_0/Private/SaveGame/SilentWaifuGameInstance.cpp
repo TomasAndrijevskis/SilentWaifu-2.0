@@ -58,6 +58,7 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	TArray<FSavedBackgroundsData> Backgrounds;
 	Backgrounds.Add(BackgroundData);
 	SaveGameInstance->SaveUnlockedBackgrounds(Backgrounds);
+	IsFirstLoad = true;
 }
 
 
@@ -234,4 +235,10 @@ void USilentWaifuGameInstance::SaveEventMoney()
 	if (!SaveGameInstance || !MoneyManager) return;
 	SaveGameInstance->SaveEventMoney(MoneyManager->GetEventMoney());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+}
+
+
+bool USilentWaifuGameInstance::GetIsFirstLoad() const
+{
+	return IsFirstLoad;
 }
