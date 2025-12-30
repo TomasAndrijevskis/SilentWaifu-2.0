@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "AbilityData.generated.h"
 
+
 USTRUCT(BlueprintType)
 struct SILENTWAIFU_2_0_API FAbilityData: public FTableRowBase
 {

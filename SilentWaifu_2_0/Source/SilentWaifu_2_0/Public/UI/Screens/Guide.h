@@ -18,7 +18,6 @@ public:
 
 	virtual void NativeConstruct() override;
 
-
 private:
 
 	UPROPERTY(meta=(BindWidget))

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "SavedBackgroundsData.generated.h"
 
+
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)

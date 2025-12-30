@@ -114,7 +114,6 @@ void USilentWaifuGameInstance::SaveCharacters()
 void USilentWaifuGameInstance::SaveCurrentMoney()
 {
 	if (!SaveGameInstance || !MoneyManager) return;
-	//UE_LOG(LogTemp, Warning, TEXT("SaveCurrentMoney"));
 	SaveGameInstance->SaveCurrentMoney(MoneyManager->GetCurrentMoney());
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 }
@@ -124,7 +123,6 @@ void USilentWaifuGameInstance::LoadMoney()
 {
 	if (!SaveGameInstance || !MoneyManager) return;
 	MoneyManager->IncreaseMoney(SaveGameInstance->GetCurrentMoney());
-	//UE_LOG(LogTemp, Warning, TEXT("Saved Money: %i"), SaveGameInstance->GetCurrentMoney())
 }
 
 
@@ -203,7 +201,6 @@ void USilentWaifuGameInstance::LoadShutdownTime()
 {
 	if (!SaveGameInstance) return;
 	GameMode->SetShutdownTime(SaveGameInstance->GetShutdownTime());
-	UE_LOG(LogTemp, Warning, TEXT("Loading time: %s"), *SaveGameInstance->GetShutdownTime().ToString());
 }
 
 

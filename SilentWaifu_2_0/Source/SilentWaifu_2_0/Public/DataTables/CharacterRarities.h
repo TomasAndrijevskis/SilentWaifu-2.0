@@ -4,6 +4,7 @@
 #include "AbilityData.h"
 #include "CharacterRarities.generated.h"
 
+
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)

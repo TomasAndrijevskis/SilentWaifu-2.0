@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainScreen.generated.h"
 
+
 class UGuide;
 class UEventsManager;
 class UBackgroundManager;
@@ -133,7 +134,6 @@ private:
 
 	UPROPERTY()
 	UEventsManager* EventsManager;
-
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGuide> GuideClass;

@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 
+
 UENUM(BlueprintType)
 enum ERarities
 {

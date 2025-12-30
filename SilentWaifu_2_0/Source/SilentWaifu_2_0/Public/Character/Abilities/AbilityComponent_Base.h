@@ -52,9 +52,6 @@ protected:
 	ACharacterTemplate* CharacterRef;
 	
 private:
-
-	//UPROPERTY(EditAnywhere)
-	//int Duration_Hours;// only first ability
 	
 	void SetManagers();
 	

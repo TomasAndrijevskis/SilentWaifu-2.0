@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "MoneyLimitUpgradeData.generated.h"
 
+
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)

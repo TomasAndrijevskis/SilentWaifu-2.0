@@ -33,7 +33,7 @@ private:
 	UHorizontalBox* HorizontalBox_Shop;
 
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_UpdateShop;//testing
+	UButton* Button_UpdateShop;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Text_RemainingTime;

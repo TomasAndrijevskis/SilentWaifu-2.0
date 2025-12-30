@@ -2,9 +2,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataTables/BackgroundData.h"
 #include "SaveGame/SavedBackgroundsData.h"
 #include "BackgroundManager.generated.h"
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBackgroundsLoadedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentBackgroundSetSignature, UTexture2D*, Background);

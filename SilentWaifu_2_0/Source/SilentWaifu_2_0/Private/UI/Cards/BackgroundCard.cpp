@@ -1,6 +1,5 @@
 
 #include "UI/Cards/BackgroundCard.h"
-
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "GameMode/SilentWaifuGameMode.h"

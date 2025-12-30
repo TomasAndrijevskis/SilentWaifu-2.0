@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CharacterTemplate.generated.h"
 
+
 class UCharactersManager;
 class UMoneyManager;
 class ASilentWaifuGameMode;

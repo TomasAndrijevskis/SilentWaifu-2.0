@@ -53,5 +53,4 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UBorder* Border_Padding;
-	
 };

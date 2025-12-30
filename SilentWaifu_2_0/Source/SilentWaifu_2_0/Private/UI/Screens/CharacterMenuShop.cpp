@@ -88,13 +88,8 @@ TArray<int>& UCharacterMenuShop::GetRandomCharacters(TArray<int>& OutCharacters)
 		{
 			MaxRandomNumber = OriginalMaxNumber;
 			OutCharacters.Add(NewShopCharacterID);
-			//UE_LOG(LogTemp, Warning, TEXT("Added to shop: %i"), NewShopCharacterID);
 		}
-		else
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Already in shop: %i"), NewShopCharacterID);
-			MaxRandomNumber -= 5;	
-		}
+		else MaxRandomNumber -= 5;
 	}
 	return OutCharacters;
 }
@@ -113,7 +108,7 @@ int UCharacterMenuShop::GetCharacter()
 	}
 
 	int NumberOfPossibleCharacters = CharacterIds.Num();
-	if (NumberOfPossibleCharacters == 0) return GetCharacter(); // try again
+	if (NumberOfPossibleCharacters == 0) return GetCharacter();
 	if (NumberOfPossibleCharacters == 1) return CharacterIds[0];
 	int CharacterIndex = FMath::RandRange(0, NumberOfPossibleCharacters - 1);
 	return CharacterIds[CharacterIndex];
@@ -132,7 +127,6 @@ int UCharacterMenuShop::GetCharacterRarity()
 		DropChances.Add(RowArray->DropChance);
 	}
 	int RandomNumber = FMath::RandRange(1, MaxRandomNumber);
-	//UE_LOG(LogTemp, Warning, TEXT("Random Number: %i"), RandomNumber);
 	for (int RarityId = DropChances.Num() - 1; RarityId > 0; RarityId--)
 	{
 		if (RandomNumber <= DropChances[RarityId]) return RarityId;
@@ -157,11 +151,9 @@ void UCharacterMenuShop::CreateTimeCountdown()
 
 void UCharacterMenuShop::CheckLiveShopUpdate(const FString& TimeLeft)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("TimeLeft %s"), *TimeLeft);
 	FString ZeroTime = TEXT("00:00:00");
 	if (ZeroTime == TimeLeft && !CanUpdateShop)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Time is zero"));
 		OnShopNeedUpdateDelegate.Broadcast();
 		CanUpdateShop = true;
 	}

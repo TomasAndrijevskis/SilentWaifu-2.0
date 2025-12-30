@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "CharacterImages.generated.h"
 
+
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)

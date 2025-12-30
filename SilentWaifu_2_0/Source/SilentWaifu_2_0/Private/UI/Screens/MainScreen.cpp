@@ -170,14 +170,8 @@ void UMainScreen::FillSlots()
 	for (const auto& CharacterSlot : HorizontalBox_CharacterSlots->GetAllChildren())
 	{
 		bool IsSpawned = CharactersManager->GetTakenPositions().FindRef(SlotNumber);
-		if (!IsSpawned)
-		{
-			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
-		}
-		else
-		{
-			Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateCharacterCard(SlotNumber));
-		}
+		if (!IsSpawned) Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateButton(SlotNumber));
+		else Cast<UVerticalBox>(CharacterSlot)->AddChild(CreateCharacterCard(SlotNumber));
 		SlotNumber++;
 	}
 }

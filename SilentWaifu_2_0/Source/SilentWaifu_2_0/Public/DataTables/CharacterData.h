@@ -5,6 +5,7 @@
 #include "CharacterValues.h"
 #include "CharacterData.generated.h"
 
+
 class UAbilityComponent_Base;
 class ACharacterTemplate;
 enum ERarities : int;

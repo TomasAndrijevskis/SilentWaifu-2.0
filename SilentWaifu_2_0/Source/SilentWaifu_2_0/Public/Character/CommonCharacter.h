@@ -3,7 +3,6 @@
 
 #include "CoreMinimal.h"
 #include "Character/CharacterTemplate.h"
-#include "SaveGame/SavedCharactersData.h"
 #include "CommonCharacter.generated.h"
 
 

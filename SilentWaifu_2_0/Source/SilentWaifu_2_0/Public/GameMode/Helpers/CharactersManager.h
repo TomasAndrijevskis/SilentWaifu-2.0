@@ -5,6 +5,7 @@
 #include "SaveGame/SavedCharactersData.h"
 #include "CharactersManager.generated.h"
 
+
 class ASilentWaifuGameMode;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCharacterAddedSignature, int const, CharacterId, const FSavedCharactersData&, CharacterData);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterUpgradeSignature, const int, CharacterId);
@@ -73,5 +74,4 @@ private:
 	UDataTable* CharacterDataTable;
 	
 	int CurrentSpawnPosition = -1;
-	
 };

@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "SoundManager.generated.h"
 
+
 UCLASS()
 class SILENTWAIFU_2_0_API USoundManager : public UObject
 {

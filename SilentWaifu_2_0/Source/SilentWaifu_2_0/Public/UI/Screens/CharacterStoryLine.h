@@ -32,5 +32,4 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Character;
-	
 };

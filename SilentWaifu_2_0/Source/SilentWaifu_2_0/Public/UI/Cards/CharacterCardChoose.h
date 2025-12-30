@@ -27,5 +27,4 @@ private:
 
 	UFUNCTION()
 	void HandleCardState();
-	
 };

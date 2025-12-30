@@ -69,7 +69,6 @@ void ULimitIncreaseCard::IncreaseLimit()
 void ULimitIncreaseCard::HandleCardState()
 {
 	if (!MoneyManager) return;
-	//UE_LOG(LogTemp, Warning, TEXT("Is level maxed: %i"), (MoneyManager->IsLimitLevelMaxed() ? 1 : 0));
 	if (MoneyManager->IsLimitLevelMaxed())
 	{
 		SetPriceText("Maxed");

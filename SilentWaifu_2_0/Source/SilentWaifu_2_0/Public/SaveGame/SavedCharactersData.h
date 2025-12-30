@@ -4,6 +4,7 @@
 #include "SavedAbilityData.h"
 #include "SavedCharactersData.generated.h"
 
+
 class ACharacterTemplate;
 
 USTRUCT(BlueprintType)
