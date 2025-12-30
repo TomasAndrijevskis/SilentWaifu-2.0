@@ -50,7 +50,7 @@ void USilentWaifuGameInstance::SetDefaultValues()
 	Data.CharacterId = 1;
 	SaveFirstCharacter(1, Data);
 	SaveLimitLevel(1);
-	SaveGameInstance->SaveSoundsVolume(0,0);
+	SaveGameInstance->SaveSoundsVolume(1,1);
 	
 	FSavedBackgroundsData BackgroundData;
 	BackgroundData.Id = 1;
