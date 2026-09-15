@@ -15,3 +15,7 @@ This remake exists because of two reasons:
 - The UI was completely redesigned. Previously, every screen (shop, storage, etc.) was implemented inside a single Blueprint file. Now, each screen is separated into its own file.
 - The save system was completely reworked. Previously, the save file contained an array with pre-added empty elements, where each element represented a character ID. If new characters were added later and exceeded the array size, old accounts could not save them because the array size could not be increased after the save file was created. Now, the arrays are fully dynamic.
 - The process of how characters gain coins was slightly reworked. Previously, when a character was placed on the main screen, the earning timer started. If the player left the game before the timer finished, offline earnings would restart the timer from zero instead of continuing from the remaining time. The same issue occurred when the player rejoined the game. Now, the remaining time is saved and correctly handled for both online and offline earnings.
+
+## Demonstration
+Visually the game looks the same so the demonstration was recorded from the original project.
+[Link](https://youtu.be/3d-J_NJFSZU) 
