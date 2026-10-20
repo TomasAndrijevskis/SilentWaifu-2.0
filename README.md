@@ -17,6 +17,6 @@ This remake exists because of two reasons:
 - The process of how characters gain coins was slightly reworked. Previously, when a character was placed on the main screen, the earning timer started. If the player left the game before the timer finished, offline earnings would restart the timer from zero instead of continuing from the remaining time. The same issue occurred when the player rejoined the game. Now, the remaining time is saved and correctly handled for both online and offline earnings.
 
 ## Demonstration
-Visually the game looks the same so the demonstration was recorded from the original project. 
+Since this is a remake, the gameplay looks and works the same as in the original project. The gameplay demonstration video is the same one used in the original project's README.
 
 [Link](https://youtu.be/3d-J_NJFSZU) 
